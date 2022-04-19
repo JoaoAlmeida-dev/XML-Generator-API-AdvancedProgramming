@@ -2,7 +2,6 @@ package newArquitecture
 
 import firstSketch.Book
 import firstSketch.Library
-import firstSketch.XmlApi
 
 fun main() {
     val header: String = "<?xml version = \"1.0\"?>"
@@ -16,15 +15,14 @@ fun main() {
     println(createdXML)*/
 
     val libraryEntity: Entity =
-        Entity.builder()
-            .atributes(
-                mutableListOf(
-                    Atribute(name = "book", value = "Jeronimo em Belém"),
-                    Atribute(name = "author", value = "Jeronimo Stilton"),
-                    Atribute(name = "pages", value = 100),
-                )
+        Entity(
+            name = "Stilton", depth = 1, atributes =
+            mutableListOf(
+                Atribute(name = "book", value = "Jeronimo em Belém"),
+                Atribute(name = "author", value = "Jeronimo Stilton"),
+                Atribute(name = "pages", value = 100),
             )
-            .build("Stilton", 1)
+        )
 
     val bookAtributes: Collection<Atribute> =
         mutableListOf(Atribute(name = "serialN", value = 3425), Atribute(name = "Library", value = "Lisboa"))

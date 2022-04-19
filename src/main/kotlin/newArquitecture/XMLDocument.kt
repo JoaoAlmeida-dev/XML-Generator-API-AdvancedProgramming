@@ -1,7 +1,5 @@
 package newArquitecture
 
-import kotlin.reflect.full.isSubclassOf
-
 class XMLDocument(
     val header: String,
     val entities: Collection<Entity>,
