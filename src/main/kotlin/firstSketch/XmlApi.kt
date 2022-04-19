@@ -1,3 +1,5 @@
+package firstSketch
+
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.isSubclassOf
 
