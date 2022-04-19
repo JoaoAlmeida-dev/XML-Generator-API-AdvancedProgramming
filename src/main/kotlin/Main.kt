@@ -14,6 +14,21 @@ fun main() {
     val createdXML: String = XmlApi.createXML(library)
     println(createdXML)*/
 
+
+    //xmlDemoHardCoded(header)
+
+    xmlInference(header, library)
+
+}
+
+fun xmlInference(header: String, obj: Any) {
+    val entity: Entity = Entity(obj = obj, depth = 0)
+
+    val xmlDocument: XMLDocument = XMLDocument(header = header, entities = mutableListOf(entity))
+    println(xmlDocument)
+}
+
+private fun xmlDemoHardCoded(header: String) {
     val libraryEntity: Entity =
         Entity(
             name = "Stilton", depth = 1, atributes =
@@ -24,19 +39,18 @@ fun main() {
             )
         )
 
-    val bookAtributes: Collection<Atribute> =
+    val bookAtributes: MutableCollection<Atribute> =
         mutableListOf(Atribute(name = "serialN", value = 3425), Atribute(name = "Library", value = "Lisboa"))
 
-    val xmlEntities: Collection<Entity> =
-        mutableListOf(
-            Entity(
-                name = "Book",
-                depth = 0,
-                atributes = bookAtributes,
-                children = mutableListOf(libraryEntity)
-            )
-        )
+    val entity = Entity(
+        name = "Book",
+        depth = 0,
+        atributes = bookAtributes,
+        children = mutableListOf(libraryEntity, libraryEntity, libraryEntity)
+    )
 
+
+    val xmlEntities: MutableCollection<Entity> = mutableListOf(entity, entity, entity)
     val xmlDocument: XMLDocument = XMLDocument(header = header, entities = xmlEntities)
 
     println(xmlDocument)

@@ -5,4 +5,10 @@ data class Book(
     val title: String,
     val subTitle: String,
     val pages: Int,
-)
+
+
+    ) {
+    override fun toString(): String {
+        return "Book@${this.hashCode()}"
+    }
+}

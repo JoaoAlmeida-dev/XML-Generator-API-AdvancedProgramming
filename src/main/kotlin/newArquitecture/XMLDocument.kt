@@ -6,6 +6,6 @@ class XMLDocument(
 
     ) {
     override fun toString(): String {
-        return "$header\n${entities.joinToString(separator = "\n", prefix = "\n", postfix = "\n")} "
+        return "$header${entities.joinToString(separator = "\n", prefix = "\n", postfix = "\n")} "
     }
 }

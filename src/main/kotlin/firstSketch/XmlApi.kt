@@ -1,5 +1,6 @@
 package firstSketch
 
+import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.isSubclassOf
 
@@ -30,7 +31,7 @@ class XmlApi {
             val tab: String = "\t".repeat(depth)
 
 
-            val kClass = clazz::class
+            val kClass: KClass<out Any> = clazz::class
             val entities: MutableList<String> = mutableListOf()
             kClass.declaredMemberProperties.forEach {
                 if (it.isCollection()) {
@@ -58,7 +59,7 @@ class XmlApi {
             return "$tab<$entityName>$entityValue</$entityName>"
         }
 
-        fun Any.isCollection() = this::class.isSubclassOf(kotlin.collections.Collection::class)
+        private fun Any.isCollection() = this::class.isSubclassOf(kotlin.collections.Collection::class)
     }
 
 }
