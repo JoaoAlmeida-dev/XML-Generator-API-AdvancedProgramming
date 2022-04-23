@@ -18,16 +18,28 @@ class Entity(
 
         kClass.declaredMemberProperties.forEach {
             val propertyInstanciatedValue: Any = it.call(obj)!!
-            if (propertyInstanciatedValue::class.isSubclassOf(Collection::class)) {
-                
-                propertyInstanciatedValue as Collection<*>
+            if (it.isPrimitiveType()) {
+                atributes.add(Atribute(name = it.getPropertyName(), value = it.call(obj)!!))
+            } else if (propertyInstanciatedValue::class.isSubclassOf(Iterable::class)) {
+
+                propertyInstanciatedValue as Iterable<*>
                 propertyInstanciatedValue.forEach {
-                    val entity: Entity = Entity(depth = depth + 1, obj = propertyInstanciatedValue)
+                    val entity: Entity = Entity(depth = depth + 1, obj = it!!)
                     children.add(entity)
                 }
-            } else {
-                atributes.add(Atribute(name = it.getPropertyName(), value = propertyInstanciatedValue))
+            } else if (propertyInstanciatedValue::class.isSubclassOf(Map::class)) {
+                TODO()
+            } else if (propertyInstanciatedValue::class.isSubclassOf(Array::class)) {
+                TODO()
             }
+        }
+    }
+
+    private fun KProperty1<out Any, *>.isPrimitiveType(): Boolean {
+        return when (this.returnType.classifier) {
+            Number::class -> true
+            String::class -> true
+            else -> false
         }
     }
 

@@ -73,5 +73,211 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-junit5-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/annotations-13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-common-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-api-5.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/apiguardian-api-1.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/opentest4j-1.2.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-commons-1.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-engine-5.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-engine-1.6.0.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-reflect.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-test.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk7.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-junit5-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/annotations-13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-common-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-api-5.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/apiguardian-api-1.1.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/opentest4j-1.2.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-commons-1.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-engine-5.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-engine-1.6.0-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-reflect-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-test-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk7-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk8-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-junit5-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/annotations-13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-common-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-api-5.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/apiguardian-api-1.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/opentest4j-1.2.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-commons-1.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-engine-5.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-engine-1.6.0.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-reflect.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-test.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk7.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-junit5-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/annotations-13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-common-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-api-5.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/apiguardian-api-1.1.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/opentest4j-1.2.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-commons-1.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-engine-5.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-engine-1.6.0-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-reflect-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-test-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk7-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk8-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-junit5-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/annotations-13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-common-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-api-5.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/apiguardian-api-1.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/opentest4j-1.2.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-commons-1.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-engine-5.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-engine-1.6.0.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-reflect.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-test.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk7.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-junit5-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/annotations-13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-common-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-api-5.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/apiguardian-api-1.1.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/opentest4j-1.2.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-commons-1.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-engine-5.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-engine-1.6.0-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-reflect-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-test-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk7-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk8-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-junit5-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/annotations-13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-common-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-api-5.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/apiguardian-api-1.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/opentest4j-1.2.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-commons-1.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-engine-5.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-engine-1.6.0.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-reflect.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-test.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk7.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-junit5-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/annotations-13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-common-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-api-5.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/apiguardian-api-1.1.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/opentest4j-1.2.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-commons-1.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-engine-5.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-engine-1.6.0-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-reflect-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-test-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk7-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk8-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-junit5-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/annotations-13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-common-1.6.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-api-5.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/apiguardian-api-1.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/opentest4j-1.2.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-commons-1.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-engine-5.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-engine-1.6.0.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-reflect.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-test.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk7.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-junit5-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-test-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/annotations-13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/kotlin-stdlib-common-1.6.10-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-api-5.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/apiguardian-api-1.1.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/opentest4j-1.2.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-commons-1.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-jupiter-engine-5.6.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/junit-platform-engine-1.6.0-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-reflect-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-test-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk7-sources.jar!/" />
+          <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk8-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
