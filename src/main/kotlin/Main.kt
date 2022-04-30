@@ -4,6 +4,7 @@ import firstSketch.Book
 import firstSketch.Library
 import newArquitecture.model.BookStore
 import project.firstSketch.Chapter
+import java.io.File
 
 fun main() {
     val header: String = "<?xml version = \"1.0\"?>"
@@ -35,7 +36,7 @@ fun main() {
 
     //xmlDemoHardCoded(header)
 
-    xmlInference(header, library)
+    xmlInference(header, mutableListOf(library,library,library,library))
 
 }
 
@@ -44,6 +45,7 @@ fun xmlInference(header: String, obj: Any) {
 
     val xmlDocument: XMLDocument = XMLDocument(header = header, entities = mutableListOf(entity))
     println(xmlDocument)
+    File("output.xml").writeText(xmlDocument.toString())
 }
 
 private fun xmlDemoHardCoded(header: String) {

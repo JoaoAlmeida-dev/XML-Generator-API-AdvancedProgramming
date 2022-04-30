@@ -15,25 +15,32 @@ class Entity(
     constructor(obj: Any, depth: Int) : this(depth, obj::class.simpleName ?: "Default Name") {
         val kClass: KClass<out Any> = obj::class
         println(kClass.declaredMemberProperties)
-
-        kClass.declaredMemberProperties.forEach {
-            val propertyInstanciatedValue: Any = it.call(obj)!!
-            if (it.isPrimitiveType() || propertyInstanciatedValue::class.isSubclassOf(Enum::class)) {
-                atributes.add(Atribute(name = it.getPropertyName(), value = it.call(obj)!!))
-            } else if (propertyInstanciatedValue::class.isSubclassOf(Iterable::class)) {
-
-                propertyInstanciatedValue as Iterable<*>
-                propertyInstanciatedValue.forEach {
-                    val entity: Entity = Entity(depth = depth + 1, obj = it!!)
-                    children.add(entity)
-                }
-            } else if (propertyInstanciatedValue::class.isSubclassOf(Map::class)) {
-                TODO()
-            } else if (propertyInstanciatedValue::class.isSubclassOf(Array::class)) {
-                TODO()
+        if( obj::class.isSubclassOf(Iterable::class) ){
+            obj as Iterable<*>
+            obj.forEach {
+                val entity: Entity = Entity(depth = depth + 1, obj = it!!)
+                children.add(entity)
             }
-        }
-    }
+        }else {
+            kClass.declaredMemberProperties.forEach { it ->
+                val propertyInstanciatedValue: Any = it.call(obj)!!
+                if (it.isPrimitiveType() || propertyInstanciatedValue::class.isSubclassOf(Enum::class)) {
+                    atributes.add(Atribute(name = it.getPropertyName(), value = it.call(obj)!!))
+                } else if (propertyInstanciatedValue::class.isSubclassOf(Iterable::class)) {
+
+                    propertyInstanciatedValue as Iterable<*>
+                    propertyInstanciatedValue.forEach {
+                        val entity: Entity = Entity(depth = depth + 1, obj = it!!)
+                        children.add(entity)
+                    }
+                } else if (propertyInstanciatedValue::class.isSubclassOf(Map::class)) {
+                    TODO()
+                } else if (propertyInstanciatedValue::class.isSubclassOf(Array::class)) {
+                    TODO()
+                }
+            }
+        }    }
+
 
     private fun KProperty1<out Any, *>.isPrimitiveType(): Boolean {
         return when (this.returnType.classifier) {
@@ -49,14 +56,13 @@ class Entity(
     //this.findAnnotation<DbName>()!!.name
         //} else {
         this.name
-
     //}
     override fun toString(): String {
-        val childrenTab1: String = if (children.isNotEmpty()) "\n" else ""
-        val childrenTab2: String = if (children.isNotEmpty()) "\n$tab" else ""
-        return "$tab<$name${atributes.joinToString(separator = ";", prefix = " ", postfix = " ")}>$childrenTab1" +
+        val childrenTab1: String = if (children.isNotEmpty()) ">\n" else ""
+        val closingTag : String = if (children.isNotEmpty()) "\n$tab</$name>" else "/>"
+        return "$tab<$name${atributes.joinToString(separator = " ", prefix = " ", postfix = " ")}$childrenTab1" +
                 children.joinToString(separator = "\n") +
-                "$childrenTab2<\\$name>"
+                closingTag
     }
 
     private val tab: String get() = "\t".repeat(depth)
