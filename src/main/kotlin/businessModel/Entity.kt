@@ -37,6 +37,7 @@ class Entity(
 
     private fun KProperty1<out Any, *>.isPrimitiveType(): Boolean {
         return when (this.returnType.classifier) {
+            Int::class -> true
             Number::class -> true
             String::class -> true
             else -> false
@@ -51,10 +52,11 @@ class Entity(
 
     //}
     override fun toString(): String {
-        val childrenTab: String = if (children.isNotEmpty()) "\n" else ""
-        return "$tab<$name${atributes.joinToString(separator = ";", prefix = " ", postfix = " ")}>$childrenTab" +
+        val childrenTab1: String = if (children.isNotEmpty()) "\n" else ""
+        val childrenTab2: String = if (children.isNotEmpty()) "\n$tab" else ""
+        return "$tab<$name${atributes.joinToString(separator = ";", prefix = " ", postfix = " ")}>$childrenTab1" +
                 children.joinToString(separator = "\n") +
-                "$childrenTab<\\$name>"
+                "$childrenTab2<\\$name>"
     }
 
     private val tab: String get() = "\t".repeat(depth)

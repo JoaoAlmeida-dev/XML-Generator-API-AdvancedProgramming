@@ -2,14 +2,29 @@ package newArquitecture
 
 import firstSketch.Book
 import firstSketch.Library
+import project.firstSketch.Chapter
 
 fun main() {
     val header: String = "<?xml version = \"1.0\"?>"
 
     val book: Book =
-        Book(author = "Jeronimo Stilton", pages = 1000, subTitle = "Aventuras", title = "Jeronimo em Belém")
-    val book2: Book = Book(author = "Fernando Pessoa", pages = 200, subTitle = "Fernado", title = "Fernando no Chiado")
-    val library: Library = Library(title = "Livraria de Lisboa", subTitle = "2022", books = mutableListOf(book, book2))
+        Book(
+            author = "Jeronimo Stilton", pages = 1000, subTitle = "Aventuras", title = "Jeronimo em Belém",
+            chapters = mutableListOf(
+                Chapter(name = "Chapter 1", pageN = 20), Chapter(name = "Chapter 2", pageN = 40),
+            ),
+        )
+    val book2: Book = Book(
+        author = "Fernando Pessoa",
+        pages = 200,
+        subTitle = "Fernado",
+        title = "Fernando no Chiado",
+        chapters = mutableListOf(
+            Chapter(name = "Chapter 1", pageN = 20), Chapter(name = "Chapter 2", pageN = 40),
+        ),
+    )
+    val library: Library =
+        Library(title = "Livraria de Lisboa", subTitle = "2022", books = mutableListOf(book, book2))
 /*
     val createdXML: String = XmlApi.createXML(library)
     println(createdXML)*/
