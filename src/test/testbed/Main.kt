@@ -1,15 +1,23 @@
-package newArquitecture
+package testbed
 
-import firstSketch.Book
-import firstSketch.Library
-import newArquitecture.coreModel.FilterVisitor
-import newArquitecture.coreModel.XMLDocument
-import newArquitecture.model.BookStore
-import project.firstSketch.Chapter
+import core.model.Atribute
+import core.model.Entity
+import core.model.XMLDocument
+import testbed.model.Book
+import testbed.model.Library
+import testbed.model.BookStore
+import testbed.model.Chapter
 import java.io.File
 
 fun main() {
     val header: String = "<?xml version = \"1.0\"?>"
+
+
+    xmlInference(header )
+
+}
+
+fun xmlInference(header: String) {
 
     val book: Book =
         Book(
@@ -31,25 +39,15 @@ fun main() {
     )
     val library: Library =
         Library(title = "Livraria de Lisboa", subTitle = "2022", books = mutableListOf(book, book2))
-/*
-    val createdXML: String = XmlApi.createXML(library)
-    println(createdXML)*/
 
 
-    //xmlDemoHardCoded(header)
-
-    xmlInference(header, mutableListOf(library,library,library,library))
-
-}
-
-fun xmlInference(header: String, obj: Any) {
-    val entity: Entity = Entity(obj = obj, depth = 0)
+    val entity: Entity = Entity(obj = mutableListOf(library,library,library,library), depth = 0)
 
     val xmlDocument: XMLDocument = XMLDocument(header = header, entities = mutableListOf(entity))
     println(xmlDocument)
     File("output.xml").writeText(xmlDocument.toString())
 
-    val entitySearcherVisitor :FilterVisitor = FilterVisitor(decidingFunction = { entity: Entity -> entity.name.contains("Book") })
+    val entitySearcherVisitor : FilterVisitor = FilterVisitor(decidingFunction = { entity: Entity -> entity.name.contains("Book") })
 
     xmlDocument.accept(entitySearcherVisitor)
     println(entitySearcherVisitor.entities)

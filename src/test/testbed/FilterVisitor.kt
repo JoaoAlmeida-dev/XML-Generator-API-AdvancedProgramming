@@ -1,13 +1,13 @@
-package coreModel
+package testbed
 
-import newArquitecture.Entity
-import newArquitecture.Visitor
+import core.model.Entity
+import core.model.Visitor
 
-class FilterVisitor (  val decidingFunction: (entity:Entity) -> Boolean): Visitor{
+class FilterVisitor (  val decidingFunction: (entity: Entity) -> Boolean): Visitor {
 
     var entities : MutableList<Entity> = mutableListOf()
 
-    override fun visit(val e: Entity): Boolean {
+    override fun visit(e: Entity): Boolean {
         if(decidingFunction(e)) {
             entities.add(e)
         }

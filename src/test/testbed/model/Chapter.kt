@@ -1,4 +1,4 @@
-package project.firstSketch
+package testbed.model
 
 class Chapter(
     val name: String,

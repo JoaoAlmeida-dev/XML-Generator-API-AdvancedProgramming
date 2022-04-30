@@ -1,7 +1,4 @@
-package firstSketch
-
-import newArquitecture.model.BookStore
-import project.firstSketch.Chapter
+package testbed.model
 
 data class Book(
     val author: String,
