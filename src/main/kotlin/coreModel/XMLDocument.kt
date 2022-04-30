@@ -1,8 +1,8 @@
-package newArquitecture
+package newArquitecture.coreModel
 
 class XMLDocument(
-    val header: String,
-    val entities: Collection<Entity>,
+    private val header: String,
+    private val entities: Collection<Entity>,
 
     ) {
     override fun toString(): String {

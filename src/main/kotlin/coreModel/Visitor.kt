@@ -1,4 +1,7 @@
-package newArquitecture
+package newArquitecture.coreModel
+
+import newArquitecture.coreModel.Entity
+import newArquitecture.coreModel.XMLDocument
 
 interface Visitor {
 

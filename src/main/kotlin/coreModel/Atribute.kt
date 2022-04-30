@@ -1,4 +1,4 @@
-package newArquitecture
+package newArquitecture.coreModel
 
 class Atribute(
     val name: String,

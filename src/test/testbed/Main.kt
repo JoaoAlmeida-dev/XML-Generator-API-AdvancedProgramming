@@ -3,6 +3,7 @@ package newArquitecture
 import firstSketch.Book
 import firstSketch.Library
 import newArquitecture.coreModel.FilterVisitor
+import newArquitecture.coreModel.XMLDocument
 import newArquitecture.model.BookStore
 import project.firstSketch.Chapter
 import java.io.File
