@@ -1,4 +1,4 @@
-package newArquitecture.coreModel
+package core.model
 
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1

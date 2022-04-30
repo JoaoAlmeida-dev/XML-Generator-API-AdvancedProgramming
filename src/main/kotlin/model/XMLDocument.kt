@@ -1,4 +1,4 @@
-package newArquitecture.coreModel
+package core.model
 
 class XMLDocument(
     private val header: String,

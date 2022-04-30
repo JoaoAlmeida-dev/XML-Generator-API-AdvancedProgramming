@@ -1,4 +1,4 @@
-package newArquitecture.coreModel
+package coreModel
 
 import newArquitecture.Entity
 import newArquitecture.Visitor
@@ -7,7 +7,7 @@ class FilterVisitor (  val decidingFunction: (entity:Entity) -> Boolean): Visito
 
     var entities : MutableList<Entity> = mutableListOf()
 
-    override fun visit(e: Entity): Boolean {
+    override fun visit(val e: Entity): Boolean {
         if(decidingFunction(e)) {
             entities.add(e)
         }
