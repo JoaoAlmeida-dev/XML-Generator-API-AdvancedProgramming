@@ -2,6 +2,7 @@ package newArquitecture
 
 import firstSketch.Book
 import firstSketch.Library
+import newArquitecture.model.BookStore
 import project.firstSketch.Chapter
 
 fun main() {
@@ -10,6 +11,7 @@ fun main() {
     val book: Book =
         Book(
             author = "Jeronimo Stilton", pages = 1000, subTitle = "Aventuras", title = "Jeronimo em Belém",
+            store= BookStore.BERTRAND,
             chapters = mutableListOf(
                 Chapter(name = "Chapter 1", pageN = 20), Chapter(name = "Chapter 2", pageN = 40),
             ),
@@ -19,6 +21,7 @@ fun main() {
         pages = 200,
         subTitle = "Fernado",
         title = "Fernando no Chiado",
+        store= BookStore.BERTRAND,
         chapters = mutableListOf(
             Chapter(name = "Chapter 1", pageN = 20), Chapter(name = "Chapter 2", pageN = 40),
         ),

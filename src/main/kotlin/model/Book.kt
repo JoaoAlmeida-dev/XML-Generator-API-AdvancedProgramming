@@ -1,5 +1,6 @@
 package firstSketch
 
+import newArquitecture.model.BookStore
 import project.firstSketch.Chapter
 
 data class Book(
@@ -7,6 +8,7 @@ data class Book(
     val title: String,
     val subTitle: String,
     val chapters: List<Chapter>,
+    val store : BookStore,
     var pages: Int = chapters.map { chapter: Chapter -> chapter.pageN }.sum(),
 ) {
 

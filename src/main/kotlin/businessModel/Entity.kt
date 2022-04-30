@@ -18,7 +18,7 @@ class Entity(
 
         kClass.declaredMemberProperties.forEach {
             val propertyInstanciatedValue: Any = it.call(obj)!!
-            if (it.isPrimitiveType()) {
+            if (it.isPrimitiveType() || propertyInstanciatedValue::class.isSubclassOf(Enum::class)) {
                 atributes.add(Atribute(name = it.getPropertyName(), value = it.call(obj)!!))
             } else if (propertyInstanciatedValue::class.isSubclassOf(Iterable::class)) {
 
