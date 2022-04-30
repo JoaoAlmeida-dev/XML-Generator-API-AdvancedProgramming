@@ -70,4 +70,13 @@ class Entity(
     private fun Any.isCollection() =
         this::class.isSubclassOf(kotlin.collections.Collection::class) || this::class.isSubclassOf(MutableCollection::class)
 
+    fun accept(v : Visitor){
+        if (v.visit(this)){
+            this.children.forEach {
+                it.accept(v)
+            }
+        }
+        v.endvisit(this)
+    }
+
 }

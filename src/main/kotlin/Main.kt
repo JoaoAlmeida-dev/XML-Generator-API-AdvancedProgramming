@@ -2,6 +2,7 @@ package newArquitecture
 
 import firstSketch.Book
 import firstSketch.Library
+import newArquitecture.coreModel.FilterVisitor
 import newArquitecture.model.BookStore
 import project.firstSketch.Chapter
 import java.io.File
@@ -46,6 +47,13 @@ fun xmlInference(header: String, obj: Any) {
     val xmlDocument: XMLDocument = XMLDocument(header = header, entities = mutableListOf(entity))
     println(xmlDocument)
     File("output.xml").writeText(xmlDocument.toString())
+
+    val entitySearcherVisitor :FilterVisitor = FilterVisitor(decidingFunction = { entity: Entity -> entity.name.contains("Book") })
+
+    xmlDocument.accept(entitySearcherVisitor)
+    println(entitySearcherVisitor.entities)
+
+
 }
 
 private fun xmlDemoHardCoded(header: String) {
