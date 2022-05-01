@@ -5,7 +5,7 @@ import core.model.Visitor
 
 class FilterVisitor (  val decidingFunction: (entity: Entity) -> Boolean): Visitor {
 
-    var entities : MutableList<Entity> = mutableListOf()
+    val entities : MutableList<Entity> = mutableListOf()
 
     override fun visit(e: Entity): Boolean {
         if(decidingFunction(e)) {
