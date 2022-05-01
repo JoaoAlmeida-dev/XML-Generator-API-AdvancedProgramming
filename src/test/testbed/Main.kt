@@ -38,11 +38,21 @@ fun xmlInference(header: String) {
         ),
     )
     val library: Library =
-        Library(title = "Livraria de Lisboa", subTitle = "2022", books = mutableListOf(book, book2))
+        Library(stores = BookStore.values(),
+            title = "Livraria de Lisboa",
+            subTitle = "2022",
+            books = mutableListOf(book, book2))
 
 
-    val entity: Entity = Entity(obj = mutableListOf(library,library,library,library), depth = 0)
-
+    val map:Map<String,Any> = mapOf(
+        "mapHeader" to "header",
+        "mapBody" to mapOf(
+            "title" to "O corpo do mapa",
+            "description" to "descrição do mapa"
+        ),
+        "mapFooter" to "footer"
+    )
+    val entity: Entity = Entity(obj = mutableListOf(library, ), depth = 0)
     val xmlDocument: XMLDocument = XMLDocument(header = header, entities = mutableListOf(entity))
     println(xmlDocument)
     File("output.xml").writeText(xmlDocument.toString())

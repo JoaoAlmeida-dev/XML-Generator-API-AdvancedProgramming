@@ -2,7 +2,7 @@ package core.model
 
 class XMLDocument(
     private val header: String,
-    private val entities: Collection<Entity>,
+    private val entities: MutableCollection<Entity>,
 
     ) {
     override fun toString(): String {

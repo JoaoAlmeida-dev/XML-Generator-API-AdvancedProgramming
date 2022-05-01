@@ -6,6 +6,7 @@ import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.hasAnnotation
 import kotlin.reflect.full.isSubclassOf
+import kotlin.reflect.jvm.isAccessible
 
 class Entity(
     val depth: Int,
@@ -15,12 +16,11 @@ class Entity(
     val children: MutableCollection<Entity> = mutableListOf<Entity>(),
 ) {
 
-    constructor(obj: Any, depth: Int) : this(
+    constructor(obj: Any, depth: Int, name: String? = null) : this(
         depth = depth,
-        name = obj::class.findAnnotation<Annotations.XmlName>()?.name ?: (obj::class.simpleName ?: "Default Name")
+        name = obj::class.findAnnotation<Annotations.XmlName>()?.name ?:  (name ?: (obj::class.simpleName ?: "Default Name"))
     ) {
         val kClass: KClass<out Any> = obj::class
-        //println(kClass.declaredMemberProperties)
 
         if (obj::class.isSubclassOf(Iterable::class)) {
             obj as Iterable<*>
@@ -28,36 +28,46 @@ class Entity(
                 val entity: Entity = Entity(depth = depth + 1, obj = it!!)
                 children.add(entity)
             }
+        }else if (obj::class.isSubclassOf(Map::class)) {
+            obj as Map<*,*>
+            obj.forEach { entry: Map.Entry<Any?, Any?> ->
+                val entity: Entity = Entity(depth = depth + 1, obj = entry)
+                children.add(entity)
+            }
+        } else if (obj::class.isSubclassOf(Array::class)) {
+            TODO()
         } else {
             kClass.declaredMemberProperties.forEach { it ->
                 val shouldIgnore: Boolean = it.hasAnnotation<Annotations.XmlIgnore>()
                 val shouldContent: Boolean = it.hasAnnotation<Annotations.XmlTagContent>()
                 val xmlName: String? = it.findAnnotation<Annotations.XmlName>()?.name
                 if (!shouldIgnore) {
-
                     if (!shouldContent) {
-                        val propertyInstanciatedValue: Any = it.call(obj)!!
-                        if (it.isPrimitiveType() || propertyInstanciatedValue::class.isSubclassOf(Enum::class)) {
+                        it.isAccessible=true
+                        if (it.isPrimitiveType() || obj::class.isSubclassOf(Enum::class)) {
                             atributes.add(Atribute(name = xmlName ?: it.getPropertyName(), value = it.call(obj)!!))
-                        } else if (propertyInstanciatedValue::class.isSubclassOf(Iterable::class)) {
-
+                        } else if (it.isAcceptableType(obj)) {
+                            val propertyInstanciatedValue: Any = it.call(obj)!!
+                            val element = Entity(depth = depth + 1, obj = propertyInstanciatedValue, name = it.name)
+                            children.add(element)
+                            /*
                             propertyInstanciatedValue as Iterable<*>
                             propertyInstanciatedValue.forEach {
                                 val entity: Entity = Entity(depth = depth + 1, obj = it!!)
                                 children.add(entity)
                             }
-                        } else if (propertyInstanciatedValue::class.isSubclassOf(Map::class)) {
-                            TODO()
-                        } else if (propertyInstanciatedValue::class.isSubclassOf(Array::class)) {
-                            TODO()
+                            */
+                        }else{
+                            print(it)
                         }
-                    } else {
-                        contents.add(it.call(obj).toString())
                     }
+                } else {
+                    contents.add(it.call(obj).toString())
                 }
             }
         }
     }
+
 
 
     private fun KProperty1<out Any, *>.isPrimitiveType(): Boolean {
@@ -68,6 +78,16 @@ class Entity(
             else -> false
         }
     }
+    private fun KProperty1<out Any, *>.isAcceptableType( obj:Any): Boolean {
+        val call: Any = this.call(obj)!!
+        val cklass = call::class
+        val isPrimitive: Boolean = this.isPrimitiveType()
+        val isIterable: Boolean = call::class.isSubclassOf(Iterable::class)
+        val isMap: Boolean = call::class.isSubclassOf(Map::class)
+        val isArray: Boolean = call::class.isSubclassOf(Array::class)
+        val isData: Boolean = call::class.isData
+        return isPrimitive || isIterable || isMap || isArray || isData
+    }
 
     private fun KProperty1<out Any, *>.getPropertyName() =
     //if (this.hasAnnotation<DbName>()) {
@@ -77,7 +97,7 @@ class Entity(
     //}
     override fun toString(): String {
         val stayOpenTag: String = if (children.isNotEmpty() || contents.isNotEmpty()) ">" else ""
-        val closingTag : String = if (children.isNotEmpty() && contents.isNotEmpty()) "\n$tab</$name>" else "/>"
+        val closingTag : String = if (children.isNotEmpty() || contents.isNotEmpty()) "\n$tab</$name>" else "/>"
         return "$tab<$name${atributes.joinToString(separator = " ", prefix = " ", postfix = " ")}$stayOpenTag" +
                 (if(contents.isNotEmpty()) "\n$tab" else "") + contents.joinToString(separator = "\n$tab") +
                 (if(children.isNotEmpty()) "\n" else "") + children.joinToString(separator = "\n") +
@@ -85,9 +105,6 @@ class Entity(
     }
 
     private val tab: String get() = "\t".repeat(depth)
-
-    private fun Any.isCollection() =
-        this::class.isSubclassOf(Collection::class) || this::class.isSubclassOf(MutableCollection::class)
 
     fun accept(v : Visitor){
         if (v.visit(this)){
