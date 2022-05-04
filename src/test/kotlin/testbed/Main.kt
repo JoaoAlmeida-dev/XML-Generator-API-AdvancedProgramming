@@ -2,7 +2,8 @@ package testbed
 
 import core.model.Atribute
 import core.model.Entity
-import core.model.XMLDocument
+import model.XMLDocument
+import controller.visitors.SearcherVisitor
 import testbed.model.Book
 import testbed.model.Library
 import testbed.model.BookStore
@@ -13,7 +14,7 @@ fun main() {
     val header: String = "<?xml version = \"1.0\"?>"
 
 
-    xmlInference(header )
+    xmlInference(header)
 
 }
 
@@ -22,7 +23,7 @@ fun xmlInference(header: String) {
     val book: Book =
         Book(
             author = "Jeronimo Stilton", pages = 1000, subTitle = "Aventuras", title = "Jeronimo em Belém",
-            store= BookStore.BERTRAND,
+            store = BookStore.BERTRAND,
             chapters = mutableListOf(
                 Chapter(name = "Chapter 1", pageN = 20), Chapter(name = "Chapter 2", pageN = 40),
             ),
@@ -32,19 +33,21 @@ fun xmlInference(header: String) {
         pages = 200,
         subTitle = "Fernado",
         title = "Fernando no Chiado",
-        store= BookStore.BERTRAND,
+        store = BookStore.BERTRAND,
         chapters = mutableListOf(
             Chapter(name = "Chapter 1", pageN = 20), Chapter(name = "Chapter 2", pageN = 40),
         ),
     )
     val library: Library =
-        Library(stores = BookStore.values(),
+        Library(
+            stores = BookStore.values(),
             title = "Livraria de Lisboa",
             subTitle = "2022",
-            books = mutableListOf(book, book2))
+            books = mutableListOf(book, book2)
+        )
 
 
-    val map:Map<String,Any> = mapOf(
+    val map: Map<String, Any> = mapOf(
         "mapHeader" to "header",
         "mapBody" to mapOf(
             "title" to "O corpo do mapa",
@@ -52,15 +55,21 @@ fun xmlInference(header: String) {
         ),
         "mapFooter" to "footer"
     )
-    val entity: Entity = Entity(obj = mutableListOf(library, ), depth = 0)
+    val entity: Entity = Entity(obj = mutableListOf(library), depth = 0)
     val xmlDocument: XMLDocument = XMLDocument(header = header, entities = mutableListOf(entity))
     println(xmlDocument)
     File("output.xml").writeText(xmlDocument.toString())
 
-    val entitySearcherVisitor : FilterVisitor = FilterVisitor(decidingFunction = { entity: Entity -> entity.name.contains("Book") })
+    val entitySearcherVisitor: SearcherVisitor =
+        SearcherVisitor(decidingFunction = { entity: Entity -> entity.name.contains("Book") })
 
     xmlDocument.accept(entitySearcherVisitor)
+
     println(entitySearcherVisitor.entities)
+
+    val filteredDocument: XMLDocument =
+        xmlDocument.filter(decidingFunction = { entity: Entity -> true })
+    println(filteredDocument)
 
 
 }

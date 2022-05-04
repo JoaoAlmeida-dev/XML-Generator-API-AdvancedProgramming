@@ -1,5 +1,6 @@
 package core.model
 
+import controller.visitors.Visitor
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
@@ -9,29 +10,33 @@ import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.jvm.isAccessible
 
 class Entity(
-    val depth: Int,
-    val name: String ,
+    private var depth: Int,
+    val name: String,
+    val parent: Entity?,
     val atributes: MutableCollection<Atribute> = mutableListOf<Atribute>(),
-    val contents : MutableCollection<String> = mutableListOf<String>(),
+    val contents: MutableCollection<String> = mutableListOf<String>(),
     val children: MutableCollection<Entity> = mutableListOf<Entity>(),
 ) {
 
-    constructor(obj: Any, depth: Int, name: String? = null) : this(
+    constructor(obj: Any, depth: Int, name: String? = null, parent: Entity? = null) : this(
         depth = depth,
-        name = obj::class.findAnnotation<Annotations.XmlName>()?.name ?:  (name ?: (obj::class.simpleName ?: "Default Name"))
+        name = obj::class.findAnnotation<Annotations.XmlName>()?.name ?: (name ?: (obj::class.simpleName
+            ?: "Default Name")),
+        parent = parent
+
     ) {
         val kClass: KClass<out Any> = obj::class
 
         if (obj::class.isSubclassOf(Iterable::class)) {
             obj as Iterable<*>
             obj.forEach {
-                val entity: Entity = Entity(depth = depth + 1, obj = it!!)
+                val entity: Entity = Entity(depth = depth + 1, obj = it!!, parent = this)
                 children.add(entity)
             }
-        }else if (obj::class.isSubclassOf(Map::class)) {
-            obj as Map<*,*>
+        } else if (obj::class.isSubclassOf(Map::class)) {
+            obj as Map<*, *>
             obj.forEach { entry: Map.Entry<Any?, Any?> ->
-                val entity: Entity = Entity(depth = depth + 1, obj = entry)
+                val entity: Entity = Entity(depth = depth + 1, obj = entry, parent = this)
                 children.add(entity)
             }
         } else if (obj::class.isSubclassOf(Array::class)) {
@@ -43,12 +48,17 @@ class Entity(
                 val xmlName: String? = it.findAnnotation<Annotations.XmlName>()?.name
                 if (!shouldIgnore) {
                     if (!shouldContent) {
-                        it.isAccessible=true
+                        it.isAccessible = true
                         if (it.isPrimitiveType() || obj::class.isSubclassOf(Enum::class)) {
                             atributes.add(Atribute(name = xmlName ?: it.getPropertyName(), value = it.call(obj)!!))
                         } else if (it.isAcceptableType(obj)) {
                             val propertyInstanciatedValue: Any = it.call(obj)!!
-                            val element = Entity(depth = depth + 1, obj = propertyInstanciatedValue, name = it.name)
+                            val element = Entity(
+                                depth = depth + 1,
+                                obj = propertyInstanciatedValue,
+                                name = it.name,
+                                parent = this
+                            )
                             children.add(element)
                             /*
                             propertyInstanciatedValue as Iterable<*>
@@ -57,7 +67,7 @@ class Entity(
                                 children.add(entity)
                             }
                             */
-                        }else{
+                        } else {
                             print(it)
                         }
                     }
@@ -68,7 +78,9 @@ class Entity(
         }
     }
 
-
+    public fun setDepth(newDepth: Int) {
+        this.depth = newDepth
+    }
 
     private fun KProperty1<out Any, *>.isPrimitiveType(): Boolean {
         return when (this.returnType.classifier) {
@@ -78,7 +90,8 @@ class Entity(
             else -> false
         }
     }
-    private fun KProperty1<out Any, *>.isAcceptableType( obj:Any): Boolean {
+
+    private fun KProperty1<out Any, *>.isAcceptableType(obj: Any): Boolean {
         val call: Any = this.call(obj)!!
         val cklass = call::class
         val isPrimitive: Boolean = this.isPrimitiveType()
@@ -94,20 +107,21 @@ class Entity(
     //this.findAnnotation<DbName>()!!.name
         //} else {
         this.name
+
     //}
     override fun toString(): String {
         val stayOpenTag: String = if (children.isNotEmpty() || contents.isNotEmpty()) ">" else ""
-        val closingTag : String = if (children.isNotEmpty() || contents.isNotEmpty()) "\n$tab</$name>" else "/>"
+        val closingTag: String = if (children.isNotEmpty() || contents.isNotEmpty()) "\n$tab</$name>" else "/>"
         return "$tab<$name${atributes.joinToString(separator = " ", prefix = " ", postfix = " ")}$stayOpenTag" +
-                (if(contents.isNotEmpty()) "\n$tab" else "") + contents.joinToString(separator = "\n$tab") +
-                (if(children.isNotEmpty()) "\n" else "") + children.joinToString(separator = "\n") +
+                (if (contents.isNotEmpty()) "\n$tab" else "") + contents.joinToString(separator = "\n$tab") +
+                (if (children.isNotEmpty()) "\n" else "") + children.joinToString(separator = "\n") +
                 closingTag
     }
 
     private val tab: String get() = "\t".repeat(depth)
 
-    fun accept(v : Visitor){
-        if (v.visit(this)){
+    fun accept(v: Visitor) {
+        if (v.visit(this)) {
             this.children.forEach {
                 it.accept(v)
             }
