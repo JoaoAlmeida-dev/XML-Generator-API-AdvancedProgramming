@@ -6,10 +6,10 @@ import controller.visitors.Visitor
 import core.model.Entity
 
 class XMLDocument(
-    private val header: String,
-    private val entities: MutableCollection<Entity>,
+    private val header: String, // version e encoding separados sem ser string direto
+    private val entities: MutableCollection<Entity>,//mudar para apenas 1 entity
 
-    ) {
+) {
     override fun toString(): String {
         return "$header${entities.joinToString(separator = "\n", prefix = "\n", postfix = "\n")} "
     }

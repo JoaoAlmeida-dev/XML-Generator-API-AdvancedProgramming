@@ -12,11 +12,14 @@ import kotlin.reflect.jvm.isAccessible
 class Entity(
     private var depth: Int,
     val name: String,
-    val parent: Entity?,
+    val parent: Entity? = null,
     val atributes: MutableCollection<Atribute> = mutableListOf<Atribute>(),
-    val contents: MutableCollection<String> = mutableListOf<String>(),
+    val contents: MutableCollection<String> = mutableListOf<String>(), //TODO apenas 1 string concatenada funcao para adicionar content
     val children: MutableCollection<Entity> = mutableListOf<Entity>(),
 ) {
+    
+//TODO extrair reflection do model
+//TODO fazer test cases antes de mudar
 
     constructor(obj: Any, depth: Int, name: String? = null, parent: Entity? = null) : this(
         depth = depth,
