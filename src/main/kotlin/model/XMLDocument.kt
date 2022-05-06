@@ -1,14 +1,12 @@
-package model
+package core.model
 
-import controller.visitors.DepthFixerVisitor
-import controller.visitors.SearcherVisitor
-import controller.visitors.Visitor
-import core.model.Entity
-import core.model.XmlHeader
+import core.controller.visitors.DepthFixerVisitor
+import core.controller.visitors.SearcherVisitor
+import core.controller.visitors.Visitor
 
 class XMLDocument(
-    private val header: XmlHeader, // version e encoding separados sem ser string direto
-    private val entity: Entity,//mudar para apenas 1 entity
+    private val header: XmlHeader, // TODO version e encoding separados sem ser string direto
+    private val entity: Entity,//TODO mudar para apenas 1 entity
 
 ) {
     override fun toString(): String {
@@ -28,8 +26,13 @@ class XMLDocument(
         val depthFixerVisitor: DepthFixerVisitor = DepthFixerVisitor()
 
         this.accept(entitySearcherVisitor)
+
         val xmlDocument =
-            XMLDocument(this.header, entity = Entity(obj = listOf(entitySearcherVisitor.entities), depth = 1))
+            XMLDocument(
+                this.header,
+                entity = Entity(obj = listOf(entitySearcherVisitor.entities), depth = 1)
+            )
+
         xmlDocument.accept(depthFixerVisitor)
         return xmlDocument
     }

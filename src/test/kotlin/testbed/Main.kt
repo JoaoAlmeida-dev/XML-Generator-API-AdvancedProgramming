@@ -2,8 +2,9 @@ package testbed
 
 import core.model.Atribute
 import core.model.Entity
-import model.XMLDocument
-import controller.visitors.SearcherVisitor
+import core.model.XMLDocument
+import core.controller.visitors.SearcherVisitor
+import core.model.Encoding
 import core.model.XmlHeader
 import testbed.model.Book
 import testbed.model.Library
@@ -12,9 +13,8 @@ import testbed.model.Chapter
 import java.io.File
 
 fun main() {
-    val header: XmlHeader = XmlHeader(version = 1.0, encoding = "UTF-8", standalone = false)
+    val header: XmlHeader = XmlHeader(version = 1.0, encoding = Encoding.UTF_8, standalone = false)
     xmlInference(header)
-
 }
 
 fun xmlInference(header: XmlHeader) {
@@ -27,6 +27,7 @@ fun xmlInference(header: XmlHeader) {
                 Chapter(name = "Chapter 1", pageN = 20), Chapter(name = "Chapter 2", pageN = 40),
             ),
         )
+
     val book2: Book = Book(
         author = "Fernando Pessoa",
         pages = 200,
@@ -37,6 +38,7 @@ fun xmlInference(header: XmlHeader) {
             Chapter(name = "Chapter 1", pageN = 20), Chapter(name = "Chapter 2", pageN = 40),
         ),
     )
+
     val library: Library =
         Library(
             stores = BookStore.values(),
@@ -44,7 +46,6 @@ fun xmlInference(header: XmlHeader) {
             subTitle = "2022",
             books = mutableListOf(book, book2)
         )
-
 
     val map: Map<String, Any> = mapOf(
         "mapHeader" to "header",
@@ -54,8 +55,15 @@ fun xmlInference(header: XmlHeader) {
         ),
         "mapFooter" to "footer"
     )
-    val entity: Entity = Entity(obj = mutableListOf(library), depth = 0)
-    val xmlDocument: XMLDocument = XMLDocument(header = header, entity = entity)
+
+    val xmlDocument: XMLDocument = XMLDocument(
+        header,
+        Entity(
+            obj = library,
+            depth = 0
+        )
+    )
+
     println(xmlDocument)
     File("output.xml").writeText(xmlDocument.toString())
 

@@ -11,7 +11,7 @@ internal class XmlHeaderTest {
 
     @BeforeEach
     internal fun setUp() {
-        header = XmlHeader(1.0, "UTF-8", false)
+        header = XmlHeader(1.0, Encoding.UTF_8, false)
     }
 
     @Test
@@ -26,7 +26,7 @@ internal class XmlHeaderTest {
 
     @Test
     fun getEncoding() {
-        assertEquals("UTF-8", header.encoding)
+        assertEquals("UTF-8", header.encoding!!.value)
     }
 
     @Test

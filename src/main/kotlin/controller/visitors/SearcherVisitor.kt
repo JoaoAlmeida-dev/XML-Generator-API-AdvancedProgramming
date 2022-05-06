@@ -1,4 +1,4 @@
-package controller.visitors
+package core.controller.visitors
 
 import core.model.Entity
 
