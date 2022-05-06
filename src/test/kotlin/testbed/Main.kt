@@ -4,6 +4,7 @@ import core.model.Atribute
 import core.model.Entity
 import model.XMLDocument
 import controller.visitors.SearcherVisitor
+import core.model.XmlHeader
 import testbed.model.Book
 import testbed.model.Library
 import testbed.model.BookStore
@@ -11,14 +12,12 @@ import testbed.model.Chapter
 import java.io.File
 
 fun main() {
-    val header: String = "<?xml version = \"1.0\"?>"
-
-
+    val header: XmlHeader = XmlHeader(version = 1.0, encoding = "UTF-8", standalone = false)
     xmlInference(header)
 
 }
 
-fun xmlInference(header: String) {
+fun xmlInference(header: XmlHeader) {
 
     val book: Book =
         Book(
@@ -56,7 +55,7 @@ fun xmlInference(header: String) {
         "mapFooter" to "footer"
     )
     val entity: Entity = Entity(obj = mutableListOf(library), depth = 0)
-    val xmlDocument: XMLDocument = XMLDocument(header = header, entities = mutableListOf(entity))
+    val xmlDocument: XMLDocument = XMLDocument(header = header, entity = entity)
     println(xmlDocument)
     File("output.xml").writeText(xmlDocument.toString())
 
@@ -74,7 +73,7 @@ fun xmlInference(header: String) {
 
 }
 
-private fun xmlDemoHardCoded(header: String) {
+private fun xmlDemoHardCoded(header: XmlHeader) {
     val libraryEntity: Entity =
         Entity(
             name = "Stilton", depth = 1, atributes =
@@ -97,7 +96,7 @@ private fun xmlDemoHardCoded(header: String) {
 
 
     val xmlEntities: MutableCollection<Entity> = mutableListOf(entity, entity, entity)
-    val xmlDocument: XMLDocument = XMLDocument(header = header, entities = xmlEntities)
+    val xmlDocument: XMLDocument = XMLDocument(header = header, entity = Entity(obj = xmlEntities, depth = 0))
 
     println(xmlDocument)
 }
