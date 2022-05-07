@@ -7,9 +7,10 @@ data class XmlHeader(
 ) {
 
     override fun toString(): String {
-        val versionString: String = version?.toString() ?: ""
-        val encodingString: String = encoding?.value ?: ""
-        val standaloneString: String = if (standalone == null) "" else if (standalone) "yes" else "no"
-        return "<?xml version=\"$versionString\" encoding=\"$encodingString\" standalone=\"$standaloneString\" ?>"
+        val versionString: String = if (version == null) "" else "version=\"$version\" "
+        val encodingString: String = if (encoding == null) "" else "encoding=\"${encoding.value}\" "
+        val standaloneString: String =
+            if (standalone == null) "" else if (standalone) "standalone=\"yes\" " else "standalone=\"no\" "
+        return "<?xml $versionString$encodingString$standaloneString?>"
     }
 }

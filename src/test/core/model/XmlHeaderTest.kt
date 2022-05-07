@@ -20,6 +20,27 @@ internal class XmlHeaderTest {
     }
 
     @Test
+    fun testNoVersionToString() {
+        val headerNoVersion = XmlHeader(encoding = Encoding.UTF_8, standalone = true)
+
+        assertEquals("<?xml encoding=\"UTF-8\" standalone=\"yes\" ?>", headerNoVersion.toString())
+    }
+
+    @Test
+    fun testNoEncodingToString() {
+        val headerNoEncoding = XmlHeader(version = 1.0, standalone = false)
+
+        assertEquals("<?xml version=\"1.0\" standalone=\"no\" ?>", headerNoEncoding.toString())
+    }
+
+    @Test
+    fun testNoStandaloneToString() {
+        val headerNoStandalone = XmlHeader(version = 1.0, encoding = Encoding.UTF_8)
+
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>", headerNoStandalone.toString())
+    }
+
+    @Test
     fun getVersion() {
         assertEquals(1.0, header.version)
     }
