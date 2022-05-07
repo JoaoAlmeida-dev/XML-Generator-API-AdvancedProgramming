@@ -12,7 +12,7 @@ import testbed.model.BookStore
 import testbed.model.Chapter
 import testbed.model.Library
 
-internal class FilterVisitorTest {
+internal class SearcherVisitorTest {
     lateinit var xmldoc: XMLDocument
 
     @BeforeEach
@@ -52,15 +52,10 @@ internal class FilterVisitorTest {
 
     @Test
     fun visit() {
-        val filterVisitor = FilterVisitor { entity: Entity -> entity.children.isEmpty() }
-        val originalDocString = xmldoc.toString()
-        xmldoc.accept(filterVisitor)
-
-        assertNotEquals(filterVisitor.document, originalDocString)
-
-
-        println(filterVisitor.document)
-        println(originalDocString)
+        val searcherVisitor = SearcherVisitor { entity: Entity -> entity.children.isEmpty() }
+        xmldoc.accept(searcherVisitor)
+        println(searcherVisitor.entities.joinToString(separator = "\n", prefix = "[\n", postfix = "\n]"))
+        assertTrue(searcherVisitor.entities.size == 4)
 
     }
 }

@@ -193,7 +193,9 @@ data class Entity(
 
     fun accept(v: Visitor) {
         if (v.visit(this)) {
-            this.children.forEach {
+            val childrenCopy = mutableListOf<Entity>()
+            childrenCopy.addAll(this.children)
+            childrenCopy.forEach {
                 it.accept(v)
             }
         }

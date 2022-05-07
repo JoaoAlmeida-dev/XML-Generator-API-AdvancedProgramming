@@ -5,10 +5,10 @@ import core.controller.visitors.SearcherVisitor
 import core.controller.visitors.Visitor
 
 data class XMLDocument(
-    private val header: XmlHeader, // TODO version e encoding separados sem ser string direto
-    private val entity: Entity,//TODO mudar para apenas 1 entity
+    private val header: XmlHeader,
+    private val entity: Entity,
 
-) {
+    ) {
     override fun toString(): String {
         return "$header\n$entity "
     }
