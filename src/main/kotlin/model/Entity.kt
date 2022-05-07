@@ -1,7 +1,6 @@
 package core.model
 
 import core.controller.visitors.Visitor
-import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.findAnnotation
@@ -9,12 +8,12 @@ import kotlin.reflect.full.hasAnnotation
 import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.jvm.isAccessible
 
-class Entity(
+data class Entity(
     private var depth: Int,
     val name: String,
     val parent: Entity? = null,
+    var contents: String? = null, //TODO apenas 1 string concatenada funcao para adicionar content
     val atributes: MutableCollection<Atribute> = mutableListOf<Atribute>(),
-    val contents: MutableCollection<String> = mutableListOf<String>(), //TODO apenas 1 string concatenada funcao para adicionar content
     val children: MutableCollection<Entity> = mutableListOf<Entity>(),
 ) {
     companion object {
@@ -26,45 +25,40 @@ class Entity(
 //TODO extrair reflection do model
 //TODO fazer test cases antes de mudar
 
-    constructor(obj: Map<*, *>, depth: Int, name: String? = null, parent: Entity? = null) : this(
-        depth = depth,
-        name = getObjName(obj, name),
-        parent = parent
-    ) {
+    private fun mapConstructor(obj: Map<*, *>) {
         obj.forEach { entry: Map.Entry<Any?, Any?> ->
-            val entity: Entity = Entity(depth = depth + 1, obj = entry, parent = this)
-            addChild(entity)
+            if (entry.value!!::class.isSubclassOf(String::class)) {
+                addAtribute(Atribute(name = entry.key.toString(), value = entry.value.toString()))
+            } else {
+                if (entry.value != null) {
+                    addChild(
+                        Entity(depth = depth + 1, name = entry.key.toString(), obj = entry.value!!, parent = this)
+                    )
+                }
+            }
         }
     }
 
-    constructor(obj: Array<*>, depth: Int, name: String? = null, parent: Entity? = null) : this(
-        depth = depth,
-        name = getObjName(obj, name),
-        parent = parent
-    ) {
+    private fun arrayConstructor(obj: Array<*>) {
         obj.forEach {
-            val entity: Entity = Entity(depth = depth + 1, obj = it!!, parent = this)
-            addChild(entity)
+            if (it != null) {
+                val entity: Entity = Entity(depth = depth + 1, obj = it, parent = this)
+                addChild(entity)
+            }
         }
     }
 
-    constructor(obj: Iterable<*>, depth: Int, name: String? = null, parent: Entity? = null) : this(
-        depth = depth,
-        name = getObjName(obj, name),
-        parent = parent
-    ) {
+    private fun iterableConstructor(obj: Iterable<*>) {
         obj.forEach {
-            val entity: Entity = Entity(depth = depth + 1, obj = it!!, parent = this)
-            addChild(entity)
+            if (it != null) {
+                val entity: Entity = Entity(depth = depth + 1, obj = it, parent = this)
+                addChild(entity)
+            }
         }
     }
 
-    constructor(obj: String, depth: Int, name: String? = null, parent: Entity? = null) : this(
-        depth = depth,
-        name = getObjName(obj, name),
-        parent = parent
-    ) {
-        extractProperties(initialDepth = depth, obj = obj)
+    private fun stringConstruction(obj: String) {
+        extractProperties(obj = obj, initialDepth = depth)
         addContent(obj)
     }
 
@@ -73,7 +67,18 @@ class Entity(
         name = getObjName(obj, name),
         parent = parent
     ) {
-        extractProperties(obj, depth)
+        if (obj::class.isSubclassOf(String::class)) {
+            stringConstruction(obj as String)
+        } else if (obj::class.isSubclassOf(Map::class)) {
+            mapConstructor(obj as Map<*, *>)
+        } else if (obj::class.isSubclassOf(Iterable::class)) {
+            iterableConstructor(obj as Iterable<*>)
+        } else if (obj::class.isSubclassOf(Array::class)) {
+            arrayConstructor(obj as Array<*>)
+        } else {
+            //println(obj::class)
+            extractProperties(obj = obj, initialDepth = depth)
+        }
     }
 
     private fun extractProperties(obj: Any, initialDepth: Int) {
@@ -83,28 +88,34 @@ class Entity(
             val shouldContent: Boolean = it.hasAnnotation<Annotations.XmlTagContent>()
             val xmlName: String? = it.findAnnotation<Annotations.XmlName>()?.name
             if (!shouldIgnore) {
-                if (!shouldContent) {
+                if (!shouldContent /*&& it.isAccessible*/) {
                     it.isAccessible = true
                     if (it.isPrimitiveType() || obj::class.isSubclassOf(Enum::class)) {
-                        addAtribute(Atribute(name = xmlName ?: it.getPropertyName(), value = it.call(obj)!!))
+                        it.call(obj)?.let { itCalled ->
+                            addAtribute(
+                                Atribute(name = xmlName ?: it.getPropertyName(), value = itCalled)
+                            )
+                        }
                     } else if (it.isAcceptableType(obj)) {
-                        val propertyInstanciatedValue: Any = it.call(obj)!!
-                        val element = Entity(
-                            depth = initialDepth + 1,
-                            obj = propertyInstanciatedValue,
-                            name = it.name,
-                            parent = this,
-                        )
-                        addChild(element)
-                        /*
-                            propertyInstanciatedValue as Iterable<*>
-                            propertyInstanciatedValue.forEach {
-                                val entity: Entity = Entity(depth = depth + 1, obj = it!!)
-                                children.add(entity)
-                            }
-                            */
+                        it.call(obj)?.let { itCalled ->
+                            val propertyInstanciatedValue: Any = itCalled
+                            val element = Entity(
+                                depth = initialDepth + 1,
+                                obj = propertyInstanciatedValue,
+                                name = it.name,
+                                parent = this,
+                            )
+                            addChild(element)
+                            /*
+                                propertyInstanciatedValue as Iterable<*>
+                                propertyInstanciatedValue.forEach {
+                                    val entity: Entity = Entity(depth = depth + 1, obj = it!!)
+                                    children.add(entity)
+                                }
+                                */
+                        }
                     } else {
-                        println(it)
+                        println("Entity::extractProperties::NOT::isAcceptableType: " + it)
                     }
                 }
             } else {
@@ -118,7 +129,11 @@ class Entity(
     }
 
     public fun addContent(content: String) {
-        contents.add(content)
+        if (contents != null) {
+            contents += " $content"
+        } else {
+            contents = content
+        }
     }
 
     public fun addAtribute(atribute: Atribute) {
@@ -140,7 +155,6 @@ class Entity(
 
     private fun KProperty1<out Any, *>.isAcceptableType(obj: Any): Boolean {
         val call: Any = this.call(obj)!!
-        val cklass = call::class
         val isPrimitive: Boolean = this.isPrimitiveType()
         val isIterable: Boolean = call::class.isSubclassOf(Iterable::class)
         val isMap: Boolean = call::class.isSubclassOf(Map::class)
@@ -157,13 +171,21 @@ class Entity(
 
     //}
     override fun toString(): String {
-        val stayOpenTag: String = if (children.isNotEmpty() || contents.isNotEmpty()) ">" else ""
-        val closingTag: String = if (children.isNotEmpty() || contents.isNotEmpty()) "\n$tab</$name>" else "/>"
+        val hasContent = contents != null
+        val hasChildren = children.isNotEmpty()
+
+        val stayOpenTag: String = if (hasChildren || hasContent) ">" else ""
+        val closingTag: String = if (hasChildren || hasContent) {
+            "${
+                if (hasChildren) "\n$tab" else ""
+            }</$name>"
+        } else "/>"
         val atributesString: String =
-            if (atributes.isNotEmpty()) atributes.joinToString(separator = " ", prefix = " ", postfix = " ") else ""
+            if (atributes.isNotEmpty()) atributes.joinToString(separator = " ", prefix = " ") else ""
+
         return "$tab<$name$atributesString$stayOpenTag" +
-                (if (contents.isNotEmpty()) "\n$tab" else "") + contents.joinToString(separator = "\n$tab") +
-                (if (children.isNotEmpty()) "\n" else "") + children.joinToString(separator = "\n") +
+                (if (hasContent) /*"\n$tab" + */ contents else "") +
+                (if (hasChildren) "\n" + children.joinToString(separator = "\n") else "") +
                 closingTag
     }
 

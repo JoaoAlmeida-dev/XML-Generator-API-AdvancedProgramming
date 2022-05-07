@@ -1,6 +1,6 @@
 package core.model
 
-class Atribute(
+data class Atribute(
     val name: String,
     val value: Any,
 ) {

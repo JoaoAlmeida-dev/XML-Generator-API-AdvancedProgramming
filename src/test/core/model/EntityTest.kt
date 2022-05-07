@@ -36,7 +36,7 @@ internal class EntityTest {
         )
 
         assertEquals(
-            "<Stilton book=\"Jeronimo em Belém\" author=\"Jeronimo Stilton\" pages=\"100\" />",
+            "<Stilton book=\"Jeronimo em Belém\" author=\"Jeronimo Stilton\" pages=\"100\"/>",
             testEntityNoChild.toString()
         )
     }
@@ -84,9 +84,9 @@ internal class EntityTest {
         )
         assertEquals(
             expected =
-            "<Map mapHeader=\"header\" >\n" +
+            "<LinkedHashMap mapHeader=\"header\" mapFooter=\"footer\">\n" +
                     "\t<mapBody title=\"O corpo do mapa\" description=\"descrição do mapa\"/>\n" +
-                    "</Map>",
+                    "</LinkedHashMap>",
             testMapEntity.toString()
         )
     }
@@ -96,9 +96,7 @@ internal class EntityTest {
         var testListEntity = Entity(obj = "one", depth = 0)
 
         assertEquals(
-            expected = "<String length=\"3\" >\n" +
-                    "one\n" +
-                    "</String>",
+            expected = "<String length=\"3\">one</String>",
             actual = testListEntity.toString()
         )
     }
@@ -109,8 +107,8 @@ internal class EntityTest {
 
         assertEquals(
             expected = "<ArrayList>\n" +
-                    "\t<String length=\"3\" />\n" +
-                    "\t<String length=\"3\" />\n" +
+                    "\t<String >one</String>\n" +
+                    "\t<String >two</String>\n" +
                     "</ArrayList>",
             actual = testListEntity.toString()
         )
@@ -136,8 +134,8 @@ internal class EntityTest {
 
         assertEquals(
             "<Book>\n" +
-                    "\t<Stilton book=\"Jeronimo em Belém\" author=\"Jeronimo Stilton\" pages=\"100\" />\n" +
-                    "\t<Stilton book=\"Jeronimo em Belém\" author=\"Jeronimo Stilton\" pages=\"100\" />\n" +
+                    "\t<Stilton book=\"Jeronimo em Belém\" author=\"Jeronimo Stilton\" pages=\"100\"/>\n" +
+                    "\t<Stilton book=\"Jeronimo em Belém\" author=\"Jeronimo Stilton\" pages=\"100\"/>\n" +
                     "</Book>",
             testEntityChild.toString()
         )
