@@ -1,14 +1,19 @@
 package core.model
 
-import core.controller.visitors.DepthFixerVisitor
-import core.controller.visitors.SearcherVisitor
+import core.controller.visitors.FilterVisitor
 import core.controller.visitors.Visitor
+import java.io.File
 
 data class XMLDocument(
     private val header: XmlHeader,
     private val entity: Entity,
 
     ) {
+
+    constructor(header: XmlHeader, obj: Any) : this(
+        header, Entity(obj = obj, depth = 0)
+    )
+
     override fun toString(): String {
         return "$header\n$entity "
     }
@@ -21,20 +26,14 @@ data class XMLDocument(
     }
 
     fun filter(decidingFunction: (Entity) -> Boolean): XMLDocument {
+        val filterVisitor = FilterVisitor(decidingFunction)
 
-        val entitySearcherVisitor: SearcherVisitor = SearcherVisitor(decidingFunction = decidingFunction)
-        val depthFixerVisitor: DepthFixerVisitor = DepthFixerVisitor()
+        this.accept(filterVisitor)
+        return filterVisitor.document
+    }
 
-        this.accept(entitySearcherVisitor)
-
-        val xmlDocument =
-            XMLDocument(
-                this.header,
-                entity = Entity(obj = listOf(entitySearcherVisitor.entities), depth = 1)
-            )
-
-        xmlDocument.accept(depthFixerVisitor)
-        return xmlDocument
+    fun dumpToFIle(filename: String) {
+        File(filename).writeText(this.toString())
     }
 
 }

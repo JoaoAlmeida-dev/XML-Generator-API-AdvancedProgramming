@@ -12,18 +12,38 @@ data class Entity(
     private var depth: Int,
     val name: String,
     val parent: Entity? = null,
-    var contents: String? = null, //TODO apenas 1 string concatenada funcao para adicionar content
+    var contents: String? = null,
     val atributes: MutableCollection<Atribute> = mutableListOf<Atribute>(),
     val children: MutableCollection<Entity> = mutableListOf<Entity>(),
 ) {
+    private val tab: String get() = "\t".repeat(depth)
+
+    //TODO extrair reflection do model
     companion object {
         private fun getObjName(obj: Any, name: String?) =
             obj::class.findAnnotation<Annotations.XmlName>()?.name ?: (name ?: (obj::class.simpleName
                 ?: "Default Name"))
     }
 
-//TODO extrair reflection do model
-//TODO fazer test cases antes de mudar
+    constructor(obj: Any, depth: Int, name: String? = null, parent: Entity? = null) : this(
+        depth = depth,
+        name = getObjName(obj, name),
+        parent = parent
+    ) {
+        if (obj::class.isSubclassOf(String::class)) {
+            stringConstruction(obj as String)
+        } else if (obj::class.isSubclassOf(Map::class)) {
+            mapConstructor(obj as Map<*, *>)
+        } else if (obj::class.isSubclassOf(Iterable::class)) {
+            iterableConstructor(obj as Iterable<*>)
+        } else if (obj::class.isSubclassOf(Array::class)) {
+            arrayConstructor(obj as Array<*>)
+        } else if (obj::class.isData || obj::class.isSubclassOf(Enum::class)) {
+            extractProperties(obj = obj, initialDepth = depth)
+        } else {
+            println("Entity::constructor::ln44 = Unsuported type : ${obj::class}")
+        }
+    }
 
     private fun mapConstructor(obj: Map<*, *>) {
         obj.forEach { entry: Map.Entry<Any?, Any?> ->
@@ -62,25 +82,6 @@ data class Entity(
         addContent(obj)
     }
 
-    constructor(obj: Any, depth: Int, name: String? = null, parent: Entity? = null) : this(
-        depth = depth,
-        name = getObjName(obj, name),
-        parent = parent
-    ) {
-        if (obj::class.isSubclassOf(String::class)) {
-            stringConstruction(obj as String)
-        } else if (obj::class.isSubclassOf(Map::class)) {
-            mapConstructor(obj as Map<*, *>)
-        } else if (obj::class.isSubclassOf(Iterable::class)) {
-            iterableConstructor(obj as Iterable<*>)
-        } else if (obj::class.isSubclassOf(Array::class)) {
-            arrayConstructor(obj as Array<*>)
-        } else {
-            //println(obj::class)
-            extractProperties(obj = obj, initialDepth = depth)
-        }
-    }
-
     private fun extractProperties(obj: Any, initialDepth: Int) {
         val declaredMemberProperties: Collection<KProperty1<out Any, *>> = obj::class.declaredMemberProperties
         declaredMemberProperties.forEach { it ->
@@ -90,7 +91,8 @@ data class Entity(
             if (!shouldIgnore) {
                 if (!shouldContent /*&& it.isAccessible*/) {
                     it.isAccessible = true
-                    if (it.isPrimitiveType() || obj::class.isSubclassOf(Enum::class)) {
+                    //TODO
+                    if (it.isPrimitiveType() || it::class.isSubclassOf(Enum::class)) {
                         it.call(obj)?.let { itCalled ->
                             addAtribute(
                                 Atribute(name = xmlName ?: it.getPropertyName(), value = itCalled)
@@ -189,7 +191,6 @@ data class Entity(
                 closingTag
     }
 
-    private val tab: String get() = "\t".repeat(depth)
 
     fun accept(v: Visitor) {
         if (v.visit(this)) {

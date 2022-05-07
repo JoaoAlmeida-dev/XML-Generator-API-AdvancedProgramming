@@ -42,6 +42,17 @@ internal class EntityTest {
     }
 
     @Test
+    fun testEnumToString() {
+        val testEntityEnum = Entity(obj = BookStore.BERTRAND, depth = 0)
+
+
+        assertEquals(
+            "<Stilton book=\"Jeronimo em Belém\" author=\"Jeronimo Stilton\" pages=\"100\"/>",
+            testEntityEnum.toString()
+        )
+    }
+
+    @Test
     fun testArrayEntityToString() {
         val book = Book(
             author = "Fernando Pessoa",

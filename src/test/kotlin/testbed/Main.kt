@@ -56,26 +56,21 @@ fun xmlInference(header: XmlHeader) {
         "mapFooter" to "footer"
     )
 
-    val xmlDocument: XMLDocument = XMLDocument(
-        header,
-        Entity(
-            obj = library,
-            depth = 0
-        )
-    )
+    val xmlDocument: XMLDocument = XMLDocument(header, obj = library)
+
+    xmlDocument.dumpToFIle("output.xml")
 
     println(xmlDocument)
-    File("output.xml").writeText(xmlDocument.toString())
 
-    val entitySearcherVisitor: SearcherVisitor =
-        SearcherVisitor(decidingFunction = { entity: Entity -> entity.name.contains("Book") })
+
+    val entitySearcherVisitor: SearcherVisitor = SearcherVisitor { entity: Entity -> entity.name.contains("Book") }
 
     xmlDocument.accept(entitySearcherVisitor)
 
     println(entitySearcherVisitor.entities)
 
     val filteredDocument: XMLDocument =
-        xmlDocument.filter(decidingFunction = { entity: Entity -> true })
+        xmlDocument.filter { true }
     println(filteredDocument)
 
 
