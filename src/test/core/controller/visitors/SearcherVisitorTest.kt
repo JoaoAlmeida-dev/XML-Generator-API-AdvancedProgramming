@@ -55,7 +55,7 @@ internal class SearcherVisitorTest {
         val searcherVisitor = SearcherVisitor { entity: Entity -> entity.children.isEmpty() }
         xmldoc.accept(searcherVisitor)
         println(searcherVisitor.entities.joinToString(separator = "\n", prefix = "[\n", postfix = "\n]"))
-        assertTrue(searcherVisitor.entities.size == 4)
 
+        assertTrue(searcherVisitor.entities.size == 4)
     }
 }
