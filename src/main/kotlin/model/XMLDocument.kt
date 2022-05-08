@@ -1,17 +1,26 @@
 package core.model
 
-import core.controller.visitors.FilterVisitor
+import controller.visitors.FilterVisitor
 import core.controller.visitors.Visitor
+import tornadofx.getProperty
+import tornadofx.*
 import java.io.File
 
-data class XMLDocument(
-    private val header: XmlHeader,
-    private val entity: Entity,
+class XMLDocument(
+    header: XmlHeader,
+    entity: Entity?,
 
     ) {
 
+    var header by property(header)
+    fun headerProperty() = getProperty(XMLDocument::header)
+
+    var entity by property(entity)
+    fun entityProperty() = getProperty(XMLDocument::entity)
+
+
     constructor(header: XmlHeader, obj: Any) : this(
-        header, Entity(obj = obj, depth = 0)
+        header = header, entity = Entity(obj = obj, depth = 0)
     )
 
     override fun toString(): String {

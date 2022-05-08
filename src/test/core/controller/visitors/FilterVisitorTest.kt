@@ -1,5 +1,6 @@
 package core.controller.visitors
 
+import controller.visitors.FilterVisitor
 import core.model.Entity
 import core.model.XMLDocument
 import core.model.XmlHeader

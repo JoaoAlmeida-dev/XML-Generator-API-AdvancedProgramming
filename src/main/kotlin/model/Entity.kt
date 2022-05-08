@@ -1,6 +1,7 @@
 package core.model
 
 import core.controller.visitors.Visitor
+import view.IObservable
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.findAnnotation
@@ -15,8 +16,20 @@ data class Entity(
     var contents: String? = null,
     val atributes: MutableCollection<Atribute> = mutableListOf<Atribute>(),
     val children: MutableCollection<Entity> = mutableListOf<Entity>(),
-) {
+) : IObservable<(Entity) -> Unit> {
+
+/*    enum class EventType {
+        ADDCHILD,
+        REMOVECHILD,
+        ADDATRIBUTE,
+        REMOVEATRIBUTE,
+        REPLACE
+    }*/
+
+    override val observers: MutableList<(Entity) -> Unit> = mutableListOf()
+
     private val tab: String get() = "\t".repeat(depth)
+
 
     //TODO extrair reflection do model
     companion object {
@@ -24,6 +37,7 @@ data class Entity(
             obj::class.findAnnotation<Annotations.XmlName>()?.name ?: (name ?: (obj::class.simpleName
                 ?: "Default Name"))
     }
+//region constructors
 
     constructor(obj: Any, depth: Int, name: String? = null, parent: Entity? = null) : this(
         depth = depth,
@@ -44,6 +58,7 @@ data class Entity(
             println("Entity::constructor::ln44 = Unsuported type : ${obj::class}")
         }
     }
+
 
     private fun mapConstructor(obj: Map<*, *>) {
         obj.forEach { entry: Map.Entry<Any?, Any?> ->
@@ -81,6 +96,8 @@ data class Entity(
         extractProperties(obj = obj, initialDepth = depth)
         addContent(obj)
     }
+
+//endregion constructors
 
     private fun extractProperties(obj: Any, initialDepth: Int) {
         val declaredMemberProperties: Collection<KProperty1<out Any, *>> = obj::class.declaredMemberProperties
@@ -126,8 +143,28 @@ data class Entity(
         }
     }
 
+
     public fun addChild(child: Entity) {
         children.add(child)
+        notifyObservers { it(this) }
+    }
+
+    public fun removeChild(child: Entity) {
+        if (children.contains(child)) {
+            println("removing child: Found")
+            children.remove(child)
+        } else {
+            println("removing child: NotFound")
+            children.forEach {
+                it.removeChild(child)
+            }
+        }
+        notifyObservers { it(this) }
+    }
+
+    public fun removeContent(content: String) {
+        contents?.replace(content, "")
+        notifyObservers { it(this) }
     }
 
     public fun addContent(content: String) {
@@ -136,14 +173,23 @@ data class Entity(
         } else {
             contents = content
         }
+        notifyObservers { it(this) }
     }
+
 
     public fun addAtribute(atribute: Atribute) {
         atributes.add(atribute)
+        notifyObservers { it(this) }
+    }
+
+    public fun removeAtribute(atribute: Atribute) {
+        atributes.remove(atribute)
+        notifyObservers { it(this) }
     }
 
     public fun setDepth(newDepth: Int) {
         this.depth = newDepth
+        notifyObservers { it(this) }
     }
 
     private fun KProperty1<out Any, *>.isPrimitiveType(): Boolean {
@@ -202,5 +248,34 @@ data class Entity(
         }
         v.endvisit(this)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Entity
+
+        if (depth != other.depth) return false
+        if (name != other.name) return false
+        if (parent != other.parent) return false
+        if (contents != other.contents) return false
+        if (atributes != other.atributes) return false
+        if (children != other.children) return false
+        if (observers != other.observers) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = depth
+        result = 31 * result + name.hashCode()
+        result = 31 * result + (parent?.hashCode() ?: 0)
+        result = 31 * result + (contents?.hashCode() ?: 0)
+        result = 31 * result + atributes.hashCode()
+        result = 31 * result + children.hashCode()
+        result = 31 * result + observers.hashCode()
+        return result
+    }
+
 
 }

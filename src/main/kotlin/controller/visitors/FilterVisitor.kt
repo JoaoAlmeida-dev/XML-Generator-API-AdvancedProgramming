@@ -1,8 +1,8 @@
-package core.controller.visitors
+package controller.visitors
 
+import core.controller.visitors.Visitor
 import core.model.Entity
 import core.model.XMLDocument
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Copy
 
 class FilterVisitor(
     val decidingFunction: (entity: Entity) -> Boolean
@@ -12,12 +12,16 @@ class FilterVisitor(
 
     override fun visit(e: Entity): Boolean {
         if (this::document.isInitialized) {
-            if (!decidingFunction(e)) {
+            if (decidingFunction(e)) {
+                if (e.parent != null) {
+                    e.parent.children.remove(e)
+                    return false
+                }
+            } else {
                 return true
-            } else if (e.parent != null) {
-                e.parent.children.remove(e)
-                return false
             }
+        } else {
+            return false
         }
         return super.visit(e)
     }
@@ -27,7 +31,7 @@ class FilterVisitor(
     }
 
     override fun visit(e: XMLDocument): Boolean {
-        document = e.copy()
+        document = e
         return super.visit(e)
     }
 

@@ -15,6 +15,7 @@ import java.io.File
 fun main() {
     val header: XmlHeader = XmlHeader(version = 1.0, encoding = Encoding.UTF_8, standalone = false)
     xmlInference(header)
+
 }
 
 fun xmlInference(header: XmlHeader) {
