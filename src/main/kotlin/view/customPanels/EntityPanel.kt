@@ -64,15 +64,26 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
 
         val b = JMenuItem("Add Atribute")
         b.addActionListener {
-            val keyLabel: String? = JOptionPane.showInputDialog("key")
-            add(JLabel(keyLabel))
-            val valueLabel: String? = JOptionPane.showInputDialog("value")
-            add(JLabel(valueLabel))
+            val field1 = JTextField()
+            val field1Label = JLabel("key")
+            val field2 = JTextField()
+            val field2Label = JLabel("value")
+            val panel = JPanel()
+            panel.layout = GridLayout(2, 2)
+            panel.add(field1Label)
+            panel.add(field1)
+            panel.add(field2Label)
+            panel.add(field2)
 
-            if (keyLabel != null &&
-                valueLabel != null
+            JOptionPane.showConfirmDialog(null, panel, "Insert the atribute data", JOptionPane.OK_CANCEL_OPTION)
+            //add(JLabel(keyLabel))
+            //val valueLabel: String? = JOptionPane.showInputDialog("value")
+            //add(JLabel(valueLabel))
+
+            if (field1.text != null && field1.text.isNotEmpty() &&
+                field2.text != null && field2.text.isNotEmpty()
             ) {
-                xmlController.addAtribute(entity, keyLabel, valueLabel)
+                xmlController.addAtribute(entity, field1.text, field2.text)
                 revalidate()
                 repaint()
             } else {
