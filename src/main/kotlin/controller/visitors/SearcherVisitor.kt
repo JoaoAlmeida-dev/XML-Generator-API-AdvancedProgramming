@@ -1,6 +1,6 @@
 package core.controller.visitors
 
-import core.model.Entity
+import model.Entity
 
 class SearcherVisitor(val decidingFunction: (entity: Entity) -> Boolean) : Visitor {
 

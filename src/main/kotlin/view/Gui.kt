@@ -2,7 +2,7 @@ package view
 
 /*
 
-import core.model.Entity
+import model.Entity
 import core.model.XMLDocument
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeView

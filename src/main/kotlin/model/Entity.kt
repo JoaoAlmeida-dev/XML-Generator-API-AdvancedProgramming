@@ -1,6 +1,8 @@
-package core.model
+package model
 
 import core.controller.visitors.Visitor
+import core.model.Annotations
+import core.model.Atribute
 import view.IObservable
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
@@ -9,15 +11,19 @@ import kotlin.reflect.full.hasAnnotation
 import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.jvm.isAccessible
 
-data class Entity(
-    private var depth: Int,
+class Entity(
+    inputDepth: Int? = null,
     val name: String,
     val parent: Entity? = null,
     var contents: String? = null,
     val atributes: MutableCollection<Atribute> = mutableListOf<Atribute>(),
     val children: MutableCollection<Entity> = mutableListOf<Entity>(),
 ) : IObservable<(Entity) -> Unit> {
+    private var depth: Int
 
+    init {
+        depth = getDepth(parent, inputDepth)
+    }
 /*    enum class EventType {
         ADDCHILD,
         REMOVECHILD,
@@ -36,11 +42,13 @@ data class Entity(
         private fun getObjName(obj: Any, name: String?) =
             obj::class.findAnnotation<Annotations.XmlName>()?.name ?: (name ?: (obj::class.simpleName
                 ?: "Default Name"))
+
+        private fun getDepth(parent: Entity?, depth: Int?): Int = if (parent?.depth == null) 0 else parent.depth + 1
     }
 //region constructors
 
-    constructor(obj: Any, depth: Int, name: String? = null, parent: Entity? = null) : this(
-        depth = depth,
+    constructor(obj: Any, depth: Int?, name: String? = null, parent: Entity? = null) : this(
+        inputDepth = getDepth(parent, depth),
         name = getObjName(obj, name),
         parent = parent
     ) {
@@ -53,7 +61,7 @@ data class Entity(
         } else if (obj::class.isSubclassOf(Array::class)) {
             arrayConstructor(obj as Array<*>)
         } else if (obj::class.isData || obj::class.isSubclassOf(Enum::class)) {
-            extractProperties(obj = obj, initialDepth = depth)
+            extractProperties(obj = obj, initialDepth = this.depth)
         } else {
             println("Entity::constructor::ln44 = Unsuported type : ${obj::class}")
         }
@@ -144,12 +152,12 @@ data class Entity(
     }
 
 
-    public fun addChild(child: Entity) {
+    fun addChild(child: Entity) {
         children.add(child)
         notifyObservers { it(this) }
     }
 
-    public fun removeChild(child: Entity) {
+    fun removeChild(child: Entity) {
         if (children.contains(child)) {
             println("removing child: Found")
             children.remove(child)
@@ -176,12 +184,12 @@ data class Entity(
     }*/
 
 
-    public fun removeContent(content: String) {
+    fun removeContent(content: String) {
         contents?.replace(content, "")
         notifyObservers { it(this) }
     }
 
-    public fun addContent(content: String) {
+    fun addContent(content: String) {
         if (contents != null) {
             contents += " $content"
         } else {
@@ -191,17 +199,17 @@ data class Entity(
     }
 
 
-    public fun addAtribute(atribute: Atribute) {
+    fun addAtribute(atribute: Atribute) {
         atributes.add(atribute)
         notifyObservers { it(this) }
     }
 
-    public fun removeAtribute(atribute: Atribute) {
+    fun removeAtribute(atribute: Atribute) {
         atributes.remove(atribute)
         notifyObservers { it(this) }
     }
 
-    public fun setDepth(newDepth: Int) {
+    fun setDepth(newDepth: Int) {
         this.depth = newDepth
         notifyObservers { it(this) }
     }

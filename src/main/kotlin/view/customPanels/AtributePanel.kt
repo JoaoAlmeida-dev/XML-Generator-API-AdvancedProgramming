@@ -1,7 +1,7 @@
 package view.customPanels
 
 import core.model.Atribute
-import core.model.Entity
+import model.Entity
 import view.XmlDocumentController
 import java.awt.GridLayout
 import java.awt.event.MouseAdapter

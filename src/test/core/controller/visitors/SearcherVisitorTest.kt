@@ -1,6 +1,6 @@
 package core.controller.visitors
 
-import core.model.Entity
+import model.Entity
 import core.model.XMLDocument
 import core.model.XmlHeader
 import org.junit.jupiter.api.Test

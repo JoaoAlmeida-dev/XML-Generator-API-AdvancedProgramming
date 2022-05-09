@@ -1,7 +1,7 @@
 package testbed
 
 import core.model.Atribute
-import core.model.Entity
+import model.Entity
 import core.model.XMLDocument
 import core.controller.visitors.SearcherVisitor
 import core.model.Encoding
@@ -79,7 +79,7 @@ fun xmlInference(header: XmlHeader) {
 private fun xmlDemoHardCoded(header: XmlHeader) {
     val libraryEntity: Entity =
         Entity(
-            name = "Stilton", depth = 1, atributes =
+            name = "Stilton", inputDepth = 1, atributes =
             mutableListOf(
                 Atribute(key = "book", value = "Jeronimo em Belém"),
                 Atribute(key = "author", value = "Jeronimo Stilton"),
@@ -92,7 +92,7 @@ private fun xmlDemoHardCoded(header: XmlHeader) {
 
     val entity = Entity(
         name = "Book",
-        depth = 0,
+        inputDepth = 0,
         atributes = bookAtributes,
         children = mutableListOf(libraryEntity, libraryEntity, libraryEntity)
     )

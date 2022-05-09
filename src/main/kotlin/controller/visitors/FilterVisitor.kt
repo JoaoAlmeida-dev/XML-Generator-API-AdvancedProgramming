@@ -1,7 +1,7 @@
 package controller.visitors
 
 import core.controller.visitors.Visitor
-import core.model.Entity
+import model.Entity
 import core.model.XMLDocument
 
 class FilterVisitor(

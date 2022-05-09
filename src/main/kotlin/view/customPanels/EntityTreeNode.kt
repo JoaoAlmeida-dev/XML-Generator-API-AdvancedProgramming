@@ -1,6 +1,6 @@
 package view.customPanels
 
-import core.model.Entity
+import model.Entity
 import javax.swing.tree.DefaultMutableTreeNode
 
 

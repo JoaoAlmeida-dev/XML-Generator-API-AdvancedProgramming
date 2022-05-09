@@ -1,7 +1,7 @@
 package view
 
 import core.model.Atribute
-import core.model.Entity
+import model.Entity
 import core.model.XMLDocument
 import java.io.File
 
@@ -59,6 +59,10 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
                 split[split.size - 1] = "xml"
             rootDoc.dumpToFIle(split.joinToString(separator = "."))
         }
+    }
+
+    fun addChild(parent: Entity, newEntity: Entity) {
+        parent.addChild(newEntity)
     }
 
 

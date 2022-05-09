@@ -2,6 +2,7 @@ package core.model
 
 import controller.visitors.FilterVisitor
 import core.controller.visitors.Visitor
+import model.Entity
 import tornadofx.getProperty
 import tornadofx.*
 import java.io.File

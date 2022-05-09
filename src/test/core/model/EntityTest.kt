@@ -1,5 +1,6 @@
 package core.model
 
+import model.Entity
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import testbed.model.Book
@@ -15,7 +16,7 @@ internal class EntityTest {
 
     @Test
     fun testNoAtributesToString() {
-        val testEntityNoAtributes = Entity(name = "Stilton", depth = 0)
+        val testEntityNoAtributes = Entity(name = "Stilton", inputDepth = 0)
         assertEquals(
             "<Stilton/>",
             testEntityNoAtributes.toString()
@@ -26,7 +27,7 @@ internal class EntityTest {
     fun testNoChildToString() {
         val testEntityNoChild = Entity(
             name = "Stilton",
-            depth = 0,
+            inputDepth = 0,
             atributes =
             mutableListOf(
                 Atribute(key = "book", value = "Jeronimo em Belém"),
@@ -129,7 +130,7 @@ internal class EntityTest {
     fun testWithChildToString() {
         val libraryEntity: Entity =
             Entity(
-                name = "Stilton", depth = 1, atributes =
+                name = "Stilton", inputDepth = 1, atributes =
                 mutableListOf(
                     Atribute(key = "book", value = "Jeronimo em Belém"),
                     Atribute(key = "author", value = "Jeronimo Stilton"),
@@ -139,7 +140,7 @@ internal class EntityTest {
 
         val testEntityChild = Entity(
             name = "Book",
-            depth = 0,
+            inputDepth = 0,
             children = mutableListOf(libraryEntity, libraryEntity)
         )
 
@@ -154,7 +155,7 @@ internal class EntityTest {
 
     @Test
     fun getName() {
-        val namedEntity: Entity = Entity(name = "Stilton", depth = 0)
+        val namedEntity: Entity = Entity(name = "Stilton", inputDepth = 0)
         assertEquals("Stilton", namedEntity.name)
     }
 

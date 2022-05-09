@@ -1,6 +1,6 @@
 package view.customPanels
 
-import core.model.Entity
+import model.Entity
 import view.XmlDocumentController
 import java.awt.*
 import java.awt.event.MouseAdapter
@@ -55,6 +55,7 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
         val popupmenu = JPopupMenu("Actions")
 
         popupmenu.add(removeChildMenuOption())
+        popupmenu.add(addChildMenuOption())
         popupmenu.add(addAtributeMenuOption())
         popupmenu.add(printMenuOption())
 
@@ -65,6 +66,8 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
             }
         })
     }
+
+    //region MenuItems
 
     private fun printMenuOption(): JMenuItem {
         val printMenuItem = JMenuItem("Print")
@@ -77,9 +80,30 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
         return printMenuItem
     }
 
+    private fun addChildMenuOption(): JMenuItem {
+        val addChildMenuItem = JMenuItem("Add Child")
+        addChildMenuItem.addActionListener {
+            val nameField = JTextField()
+            val nameFieldLabel = JLabel("name")
+            val panel = JPanel()
+            panel.layout = GridLayout(2, 2)
+            panel.add(nameFieldLabel)
+            panel.add(nameField)
+
+            JOptionPane.showConfirmDialog(null, panel, "Insert the child's name", JOptionPane.OK_CANCEL_OPTION)
+
+            val newEntity = Entity(name = nameField.text, parent = entity)
+            xmlController.addChild(entity, newEntity)
+            revalidate()
+            repaint()
+        }
+        return addChildMenuItem
+    }
+
+
     private fun addAtributeMenuOption(): JMenuItem {
-        val addAtributeMenuOption = JMenuItem("Add Atribute")
-        addAtributeMenuOption.addActionListener {
+        val addAtributeMenuItem = JMenuItem("Add Atribute")
+        addAtributeMenuItem.addActionListener {
             val field1 = JTextField()
             val field1Label = JLabel("key")
             val field2 = JTextField()
@@ -106,18 +130,19 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
                 println("User canceled addition of new atribute")
             }
         }
-        return addAtributeMenuOption
+        return addAtributeMenuItem
     }
 
     private fun removeChildMenuOption(): JMenuItem {
-        val removeChildMenuOptionItem = JMenuItem("Remove child")
-        removeChildMenuOptionItem.addActionListener {
+        val removeChildMenuItem = JMenuItem("Remove child")
+        removeChildMenuItem.addActionListener {
             xmlController.removeChild(entity)
             revalidate()
             repaint()
         }
-        return removeChildMenuOptionItem
+        return removeChildMenuItem
     }
+    //endregion
 
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
