@@ -15,12 +15,34 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
         println("---------------------------\n$rootDoc\n---------------------------")
     }
 
+    fun exportToFile(file: File?) {
+        if (file != null) {
+
+            val filename = file.absolutePath
+            val split = filename.split(".").toMutableList()
+            if (split.last() != "xml")
+                split[split.size - 1] = "xml"
+            rootDoc.dumpToFIle(split.joinToString(separator = "."))
+        }
+    }
+
+    //region UndoRedo
+
+    fun addUndo(command: Command) {
+        redoCommandsList.clear()
+        undoCommandsList.add(command)
+    }
+
+    fun addRedo(command: Command) {
+
+    }
+
     fun undo() {
         if (undoCommandsList.isNotEmpty()) {
             val pop = undoCommandsList.pop()
             pop.undo()
             redoCommandsList.add(pop)
-            println("XmlDocumentController::undo - Success")
+            println("XmlDocumentController::undo - size:\n${undoCommandsList.size}")
         } else {
             println("XmlDocumentController::undo - Empty list")
         }
@@ -31,41 +53,13 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
             val pop = redoCommandsList.pop()
             pop.execute()
             undoCommandsList.add(pop)
-            println("XmlDocumentController::redo - Success")
+            println("XmlDocumentController::redo - size:\n${redoCommandsList.size}")
         } else {
             println("XmlDocumentController::redo - Empty list")
         }
     }
 
-    fun removeChild(entity: Entity) {
-        val removeChildCommand: Command = object : Command {
-            override fun execute() {
-                entity.parent?.removeChild(entity)
-            }
-
-            override fun undo() {
-                entity.parent?.addChild(entity)
-            }
-        }
-
-        undoCommandsList.add(removeChildCommand)
-        removeChildCommand.execute()
-    }
-
-    fun removeAtribute(parentEntity: Entity, atribute: Atribute) {
-        val removeAtributeCommand: Command = object : Command {
-            override fun execute() {
-                parentEntity.removeAtribute(atribute)
-            }
-
-            override fun undo() {
-                parentEntity.addAtribute(atribute)
-            }
-        }
-        undoCommandsList.add(removeAtributeCommand)
-        removeAtributeCommand.execute()
-
-    }
+    //region Atributes
 
     fun addAtribute(parentEntity: Entity, key: String, value: String) {
 
@@ -79,57 +73,27 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
                 parentEntity.removeAtribute(atribute)
             }
         }
-        undoCommandsList.add(addAtributeCommand)
         addAtributeCommand.execute()
+        addUndo(addAtributeCommand)
     }
 
-
-    fun addChild(parent: Entity, newEntity: Entity) {
-        val addChildCommand: Command = object : Command {
-
+    fun removeAtribute(parentEntity: Entity, atribute: Atribute) {
+        val removeAtributeCommand: Command = object : Command {
             override fun execute() {
-                parent.addChild(newEntity)
+                parentEntity.removeAtribute(atribute)
             }
 
             override fun undo() {
-                parent.removeChild(newEntity)
+                parentEntity.addAtribute(atribute)
             }
         }
-        addChildCommand.execute()
-        undoCommandsList.add(addChildCommand)
-    }
-
-    fun addContent(entity: Entity, text: String) {
-        val addContentCommand: Command = object : Command {
-
-            override fun execute() {
-                entity.addContent(text)
-            }
-
-            override fun undo() {
-                entity.removeContent(text)
-            }
-        }
-        addContentCommand.execute()
-        undoCommandsList.add(addContentCommand)
-    }
-
-    fun overwriteContent(entity: Entity, text: String) {
-        val overwriteContentCommand: Command = object : Command {
-            val oldContent = entity.contents
-            val newContent = text
-            override fun execute() {
-                entity.replaceContent(text)
-            }
-
-            override fun undo() {
-                entity.replaceContent(oldContent ?: "")
-            }
-        }
-        overwriteContentCommand.execute()
-        undoCommandsList.add(overwriteContentCommand)
+        removeAtributeCommand.execute()
+        addUndo(removeAtributeCommand)
 
     }
+    //endregion
+
+    //region Child
 
     fun renameEntity(entity: Entity, text: String) {
         val renameEntityCommand: Command = object : Command {
@@ -144,18 +108,76 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
             }
         }
         renameEntityCommand.execute()
-        undoCommandsList.add(renameEntityCommand)
+        addUndo(renameEntityCommand)
     }
 
-    fun exportToFile(file: File?) {
-        if (file != null) {
+    fun addChild(parent: Entity, newEntity: Entity) {
+        val addChildCommand: Command = object : Command {
 
-            val filename = file.absolutePath
-            val split = filename.split(".").toMutableList()
-            if (split.last() != "xml")
-                split[split.size - 1] = "xml"
-            rootDoc.dumpToFIle(split.joinToString(separator = "."))
+            override fun execute() {
+                parent.addChild(newEntity)
+            }
+
+            override fun undo() {
+                parent.removeChild(newEntity)
+            }
         }
+        addChildCommand.execute()
+        addUndo(addChildCommand)
     }
+
+    fun removeChild(entity: Entity) {
+        val removeChildCommand: Command = object : Command {
+            override fun execute() {
+                entity.parent?.removeChild(entity)
+            }
+
+            override fun undo() {
+                entity.parent?.addChild(entity)
+            }
+        }
+
+        removeChildCommand.execute()
+        addUndo(removeChildCommand)
+    }
+    //endregion
+
+    //region Content
+
+    fun addContent(entity: Entity, text: String) {
+        val addContentCommand: Command = object : Command {
+
+            override fun execute() {
+                entity.addContent(text)
+            }
+
+            override fun undo() {
+                entity.removeContent(text)
+            }
+        }
+        addContentCommand.execute()
+        addUndo(addContentCommand)
+    }
+
+    fun overwriteContent(entity: Entity, text: String) {
+        val overwriteContentCommand: Command = object : Command {
+            val oldContent = entity.contents
+            val newContent = text
+            override fun execute() {
+                entity.replaceContent(newContent)
+            }
+
+            override fun undo() {
+                entity.replaceContent(oldContent ?: "")
+            }
+        }
+        overwriteContentCommand.execute()
+        addUndo(overwriteContentCommand)
+
+    }
+    //endregion
+
+    //endregion
+
 
 }

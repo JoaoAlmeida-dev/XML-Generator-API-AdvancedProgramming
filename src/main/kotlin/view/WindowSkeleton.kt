@@ -4,6 +4,7 @@ import view.customPanels.EntityTreeNode
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.GridLayout
+import java.awt.event.ActionEvent
 import java.awt.event.KeyEvent
 import java.io.File
 import javax.swing.*
@@ -41,7 +42,6 @@ class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) :
         eMenuItem.addActionListener { exitProcess(0) }
 
         val export = JMenuItem("Export")
-        export.mnemonic = KeyEvent.VK_E
         export.toolTipText = "Export to file"
         export.addActionListener {
             val j = JFileChooser()
@@ -53,14 +53,21 @@ class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) :
 
             xmlDocumentController.exportToFile(j.selectedFile)
         }
-        val undo = JMenuItem("Undo")
-        undo.addActionListener {
-            xmlDocumentController.undo()
+
+        val undo = JMenuItem()
+        val undoAction: Action = object : AbstractAction("Undo") {
+            override fun actionPerformed(e: ActionEvent?) = xmlDocumentController.undo()
         }
-        val redo = JMenuItem("Redo")
-        redo.addActionListener {
-            xmlDocumentController.redo()
+        undoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK))
+        undo.action = undoAction
+
+        val redo = JMenuItem()
+        val redoAction: Action = object : AbstractAction("Redo") {
+            override fun actionPerformed(e: ActionEvent?) = xmlDocumentController.redo()
         }
+        redoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK))
+        redo.action = redoAction
+
 
         fileMenu.add(export)
         fileMenu.add(undo)
