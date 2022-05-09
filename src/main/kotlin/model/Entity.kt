@@ -198,6 +198,11 @@ class Entity(
         notifyObservers { it(this) }
     }
 
+    fun replaceContent(content: String) {
+        contents = content
+        notifyObservers { it(this) }
+    }
+
 
     fun addAtribute(atribute: Atribute) {
         atributes.add(atribute)

@@ -3,6 +3,8 @@ package view.customPanels
 import model.Entity
 import view.XmlDocumentController
 import java.awt.*
+import java.awt.event.KeyEvent
+import java.awt.event.KeyListener
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.*
@@ -11,18 +13,24 @@ import javax.swing.border.CompoundBorder
 class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) : JPanel() {
     var northPanel = JPanel()
     var centerPanel = JPanel()
+    var southPanel = JPanel()
 
     init {
         layout = BorderLayout()
         border = CompoundBorder(
-            BorderFactory.createLineBorder(Color.BLACK, 2, true),
             BorderFactory.createEmptyBorder(30, 10, 10, 10),
+            BorderFactory.createLineBorder(Color.BLACK, 2, true),
         )
 
         northPanel.layout = GridLayout(0, 1)
-        centerPanel.layout = GridLayout()
+        centerPanel.layout = GridLayout(0, 1)
+        centerPanel.minimumSize = Dimension(10, 1000)
+        centerPanel.preferredSize = Dimension(10, 1000)
+        southPanel.layout = GridLayout(0, 1)
+
         add(northPanel, BorderLayout.NORTH)
         add(centerPanel, BorderLayout.CENTER)
+        add(southPanel, BorderLayout.SOUTH)
 
         addChildren(entity)
 
@@ -44,19 +52,50 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
         entity.children.forEach {
             centerPanel.add(EntityPanel(it, xmlController))
         }
+
+        if (entity.contents != null) {
+            val jTextArea =
+                JTextArea(entity.contents)
+            jTextArea.lineWrap = true
+
+            jTextArea.addKeyListener(object : KeyListener {
+                override fun keyTyped(e: KeyEvent?) {}
+
+                override fun keyPressed(e: KeyEvent?) {
+                    if (e != null) {
+                        println(e.keyCode)
+                        if (e.keyCode == KeyEvent.VK_ENTER && e.isControlDown) {
+                            println("Saving to instance")
+                            xmlController.overwriteContent(entity, jTextArea.text)
+                        }
+                    }
+
+                }
+
+                override fun keyReleased(e: KeyEvent?) {}
+            })
+
+            //val container = JPanel()
+            //container.add(jTextArea)
+            //container.maximumSize = Dimension(100, 20)
+            southPanel.add(jTextArea)
+        }
+
     }
 
     private fun resetPanels() {
         northPanel.removeAll()
         centerPanel.removeAll()
+        southPanel.removeAll()
     }
 
     private fun createPopupMenu() {
         val popupmenu = JPopupMenu("Actions")
 
-        popupmenu.add(removeChildMenuOption())
         popupmenu.add(addChildMenuOption())
         popupmenu.add(addAtributeMenuOption())
+        popupmenu.add(addContentMenuOption())
+        popupmenu.add(removeChildMenuOption())
         popupmenu.add(printMenuOption())
 
         addMouseListener(object : MouseAdapter() {
@@ -91,6 +130,7 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
             panel.add(nameField)
 
             JOptionPane.showConfirmDialog(null, panel, "Insert the child's name", JOptionPane.OK_CANCEL_OPTION)
+            nameField.requestFocus()
 
             val newEntity = Entity(name = nameField.text, parent = entity)
             xmlController.addChild(entity, newEntity)
@@ -131,6 +171,28 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
             }
         }
         return addAtributeMenuItem
+    }
+
+    private fun addContentMenuOption(): JMenuItem {
+        val addContentMenuItem = JMenuItem("Add Content")
+        addContentMenuItem.addActionListener {
+            val contentField = JTextField()
+            val nameFieldLabel = JLabel("Content")
+            val panel = JPanel()
+            panel.layout = GridLayout(2, 1)
+            panel.add(nameFieldLabel)
+            panel.add(contentField)
+
+            JOptionPane.showConfirmDialog(null, panel, "Insert the Content", JOptionPane.OK_CANCEL_OPTION)
+            contentField.requestFocus()
+
+            if (contentField.text != null && contentField.text.isNotEmpty()) {
+                xmlController.addContent(entity, contentField.text)
+            }
+            revalidate()
+            repaint()
+        }
+        return addContentMenuItem
     }
 
     private fun removeChildMenuOption(): JMenuItem {

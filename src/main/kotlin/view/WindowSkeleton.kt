@@ -3,6 +3,7 @@ import view.customPanels.EntityPanel
 import view.customPanels.EntityTreeNode
 import java.awt.BorderLayout
 import java.awt.Dimension
+import java.awt.GridLayout
 import java.awt.event.KeyEvent
 import java.io.File
 import javax.swing.*
@@ -85,21 +86,25 @@ class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) :
 
 
     private fun createBoxPane(xmlDocumentController: XmlDocumentController, parentComponent: JComponent) {
-        val boxPanel = JPanel(BorderLayout())
-        parentComponent.add("Boxes", boxPanel)
+        val rootboxPanel = JPanel(BorderLayout())
+        parentComponent.add("Boxes", rootboxPanel)
 
         val jButton = JButton("Print State")
-
         jButton.addActionListener {
             xmlDocumentController.printDoc()
         }
+        rootboxPanel.add(jButton, BorderLayout.NORTH)
 
 
-        boxPanel.add(jButton, BorderLayout.NORTH)
+        val jPanel = JPanel(GridLayout(0, 1))
+        val centerScrollPane: JScrollPane = JScrollPane(jPanel)
+        centerScrollPane.verticalScrollBar.unitIncrement = 16
+        centerScrollPane.horizontalScrollBar.unitIncrement = 16
+
+        rootboxPanel.add(centerScrollPane, BorderLayout.CENTER)
         xmlDocumentController.rootDoc.entity?.let {
-            boxPanel.add(
+            jPanel.add(
                 EntityPanel(it, xmlController = xmlDocumentController),
-                BorderLayout.CENTER
             )
         }
     }

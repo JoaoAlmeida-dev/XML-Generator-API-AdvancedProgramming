@@ -65,5 +65,14 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
         parent.addChild(newEntity)
     }
 
+    fun addContent(entity: Entity, text: String) {
+        entity.addContent(text)
+    }
+
+    fun overwriteContent(entity: Entity, text: String) {
+        entity.replaceContent(text)
+
+    }
+
 
 }
