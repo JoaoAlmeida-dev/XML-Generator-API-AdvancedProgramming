@@ -41,40 +41,50 @@ class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) :
         eMenuItem.toolTipText = "Exit application"
         eMenuItem.addActionListener { exitProcess(0) }
 
-        val export = JMenuItem("Export")
+        //region Export
+
+        val export = JMenuItem()
         export.toolTipText = "Export to file"
-        export.addActionListener {
-            val j = JFileChooser()
-            j.selectedFile =
-                File(FileSystemView.getFileSystemView().defaultDirectory.absolutePath + "/exported.xml")
-            //j.fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
-            j.fileSelectionMode = JFileChooser.FILES_ONLY
-            j.showSaveDialog(null)
+        val exportAction: Action = object : AbstractAction("Export") {
+            override fun actionPerformed(e: ActionEvent?) {
+                val j = JFileChooser()
+                j.selectedFile =
+                    File(FileSystemView.getFileSystemView().defaultDirectory.absolutePath + "/exported.xml")
+                //j.fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
+                j.fileSelectionMode = JFileChooser.FILES_ONLY
+                j.showSaveDialog(null)
 
-            xmlDocumentController.exportToFile(j.selectedFile)
+                xmlDocumentController.exportToFile(j.selectedFile)
+            }
         }
+        exportAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK))
+        export.action = exportAction
+        //endregion
 
+        //region Undo
         val undo = JMenuItem()
         val undoAction: Action = object : AbstractAction("Undo") {
             override fun actionPerformed(e: ActionEvent?) = xmlDocumentController.undo()
         }
         undoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK))
         undo.action = undoAction
+        //endregion
 
+        //region Redo
         val redo = JMenuItem()
         val redoAction: Action = object : AbstractAction("Redo") {
             override fun actionPerformed(e: ActionEvent?) = xmlDocumentController.redo()
         }
         redoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK))
         redo.action = redoAction
+        //endregion
 
 
-        fileMenu.add(export)
         fileMenu.add(undo)
         fileMenu.add(redo)
+        fileMenu.add(export)
         fileMenu.add(eMenuItem)
         menuBar.add(fileMenu)
-
         jMenuBar = menuBar
     }
 
@@ -129,58 +139,5 @@ class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) :
     }
 
 }
-
-/*
-class ComponentSkeleton(val text: String) : JPanel() {
-    var nothPanel = JPanel()
-    var centerPanel = JPanel()
-
-    override fun paintComponent(g: Graphics) {
-        super.paintComponent(g)
-        g.font = Font("Arial", Font.BOLD, 16)
-        g.drawString(text, 10, 20)
-    }
-
-    init {
-        layout = BorderLayout()
-        border = CompoundBorder(
-            BorderFactory.createEmptyBorder(30, 10, 10, 10),
-            BorderFactory.createLineBorder(Color.BLACK, 2, true)
-        )
-        createPopupMenu()
-        centerPanel.layout = GridLayout()
-        add(nothPanel, BorderLayout.NORTH)
-        add(centerPanel, BorderLayout.CENTER)
-
-    }
-
-    private fun createPopupMenu() {
-        val popupmenu = JPopupMenu("Actions")
-        val a = JMenuItem("Add component")
-        a.addActionListener {
-            val text = JOptionPane.showInputDialog("text")
-            add(ComponentSkeleton(text))
-            revalidate()
-        }
-        popupmenu.add(a)
-
-        val b = JMenuItem("Add child")
-        b.addActionListener {
-            val text = JOptionPane.showInputDialog("text")
-            add(JLabel(text))
-            revalidate()
-        }
-        popupmenu.add(b)
-
-
-        addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent) {
-                if (SwingUtilities.isRightMouseButton(e))
-                    popupmenu.show(this@ComponentSkeleton, e.x, e.y)
-            }
-        })
-    }
-}
-*/
 
 
