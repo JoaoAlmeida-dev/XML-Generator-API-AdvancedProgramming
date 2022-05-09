@@ -4,7 +4,6 @@ import core.model.Atribute
 import core.model.Entity
 import view.XmlDocumentController
 import java.awt.GridLayout
-import java.awt.event.ActionEvent
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.*
@@ -20,7 +19,7 @@ class AtributePanel(
         add(JLabel(atribute.key))
 
         val textField = JTextField(atribute.value)
-        textField.addActionListener { e: ActionEvent? ->
+        textField.addActionListener {
             println("text = ${textField.text}")
             atribute.value = textField.text
 

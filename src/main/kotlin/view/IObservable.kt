@@ -1,11 +1,5 @@
 package view
 
-import core.model.Entity
-import java.awt.Font
-import java.awt.Graphics
-import javax.swing.*
-
-
 /**
  * Interface for observable objects
  */

@@ -1,7 +1,6 @@
 package view.customPanels
 
 import core.model.Entity
-import javax.security.auth.callback.Callback
 import javax.swing.tree.DefaultMutableTreeNode
 
 
@@ -14,13 +13,13 @@ class EntityTreeNode(entity: Entity, reloadCallback: () -> Unit) : DefaultMutabl
             add(EntityTreeNode(it, reloadCallback))
         }
 
-        entity.addObserver { entity ->
+        entity.addObserver { it ->
             run {
                 this.removeAllChildren()
-                entity.atributes.forEach {
+                it.atributes.forEach {
                     add(DefaultMutableTreeNode(it.toString()))
                 }
-                entity.children.forEach {
+                it.children.forEach {
                     add(EntityTreeNode(it, reloadCallback))
                 }
                 reloadCallback()

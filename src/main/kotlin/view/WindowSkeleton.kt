@@ -1,28 +1,66 @@
-import view.customPanels.EntityPanel
 import view.XmlDocumentController
+import view.customPanels.EntityPanel
 import view.customPanels.EntityTreeNode
-import java.awt.*
+import java.awt.BorderLayout
+import java.awt.Dimension
 import java.awt.event.ActionListener
+import java.awt.event.KeyEvent
+import java.io.File
 import javax.swing.*
+import javax.swing.filechooser.FileSystemView
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 import javax.swing.tree.TreeNode
+import kotlin.system.exitProcess
 
-class WindowSkeleton() : JFrame("title") {
+
+class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) : JFrame("title") {
 
     init {
         defaultCloseOperation = JFrame.EXIT_ON_CLOSE
         size = Dimension(300, 300)
-
-    }
-
-    constructor(xmlDocumentController: XmlDocumentController) : this() {
         val rootPanel = JTabbedPane()
         add(rootPanel)
 
         createBoxPane(xmlDocumentController, rootPanel)
+        createMenuBar()
+
         // createTreePane(xmlDocumentController, rootPanel)
 
+    }
+
+
+    private fun createMenuBar() {
+        val menuBar = JMenuBar()
+        val fileMenu = JMenu("File");
+        fileMenu.mnemonic = KeyEvent.VK_F;
+
+        val eMenuItem = JMenuItem("Exit")
+        eMenuItem.mnemonic = KeyEvent.VK_E
+        eMenuItem.toolTipText = "Exit application"
+        eMenuItem.addActionListener { exitProcess(0) }
+
+        val export = JMenuItem("Export")
+        export.mnemonic = KeyEvent.VK_E
+        export.toolTipText = "Export to file"
+        export.addActionListener {
+            val j = JFileChooser()
+            j.selectedFile =
+                File(FileSystemView.getFileSystemView().defaultDirectory.absolutePath + "/exported.xml")
+            //j.fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
+            j.fileSelectionMode = JFileChooser.FILES_ONLY
+            j.showSaveDialog(null)
+
+
+            xmlDocumentController.exportToFile(j.selectedFile)
+
+        }
+
+        fileMenu.add(export)
+        fileMenu.add(eMenuItem)
+        menuBar.add(fileMenu)
+
+        jMenuBar = menuBar
     }
 
     private fun createTreePane(xmlDocumentController: XmlDocumentController, parentComponent: JComponent) {

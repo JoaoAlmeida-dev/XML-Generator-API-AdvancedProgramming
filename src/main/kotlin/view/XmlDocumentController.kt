@@ -3,6 +3,7 @@ package view
 import core.model.Atribute
 import core.model.Entity
 import core.model.XMLDocument
+import java.io.File
 
 class XmlDocumentController(val rootDoc: XMLDocument) {
 
@@ -47,6 +48,17 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
     fun addAtribute(parentEntity: Entity, key: String, value: String) {
         val atribute = Atribute(key, value)
         parentEntity.addAtribute(atribute)
+    }
+
+    fun exportToFile(file: File?) {
+        if (file != null) {
+
+            val filename = file.absolutePath
+            val split = filename.split(".").toMutableList()
+            if (split.last() != "xml")
+                split[split.size - 1] = "xml"
+            rootDoc.dumpToFIle(split.joinToString(separator = "."))
+        }
     }
 
 
