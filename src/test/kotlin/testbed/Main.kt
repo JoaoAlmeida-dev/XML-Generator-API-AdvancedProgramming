@@ -10,7 +10,6 @@ import testbed.model.Book
 import testbed.model.Library
 import testbed.model.BookStore
 import testbed.model.Chapter
-import java.io.File
 
 fun main() {
     val header: XmlHeader = XmlHeader(version = 1.0, encoding = Encoding.UTF_8, standalone = false)
@@ -82,14 +81,14 @@ private fun xmlDemoHardCoded(header: XmlHeader) {
         Entity(
             name = "Stilton", depth = 1, atributes =
             mutableListOf(
-                Atribute(name = "book", value = "Jeronimo em Belém"),
-                Atribute(name = "author", value = "Jeronimo Stilton"),
+                Atribute(key = "book", value = "Jeronimo em Belém"),
+                Atribute(key = "author", value = "Jeronimo Stilton"),
                 Atribute(name = "pages", value = 100),
             )
         )
 
     val bookAtributes: MutableCollection<Atribute> =
-        mutableListOf(Atribute(name = "serialN", value = 3425), Atribute(name = "Library", value = "Lisboa"))
+        mutableListOf(Atribute(name = "serialN", value = 3425), Atribute(key = "Library", value = "Lisboa"))
 
     val entity = Entity(
         name = "Book",

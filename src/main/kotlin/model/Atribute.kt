@@ -1,10 +1,13 @@
 package core.model
 
 data class Atribute(
-    val name: String,
-    val value: Any,
+    var key: String,
+    var value: String,
 ) {
+
+    constructor(name: String, value: Any) : this(name, value.toString())
+
     override fun toString(): String {
-        return "$name=\"$value\""
+        return "$key=\"$value\""
     }
 }

@@ -12,6 +12,16 @@ import view.XmlDocumentController
 
 
 fun main() {
+    val xmlDocument = generate()
+    
+    println(xmlDocument.toString())
+    val xmlController: XmlDocumentController = XmlDocumentController(xmlDocument)
+    val w = WindowSkeleton(xmlController)
+    w.open()
+
+}
+
+fun generate(): XMLDocument {
 
     val book: Book =
         Book(
@@ -54,9 +64,6 @@ fun main() {
 
 
     val xmlDocument: XMLDocument = XMLDocument(header, obj = library)
-    println(xmlDocument.toString())
-    val xmlController: XmlDocumentController = XmlDocumentController(xmlDocument)
-    val w = WindowSkeleton(xmlController)
-    w.open()
+    return xmlDocument
 
 }

@@ -63,7 +63,7 @@ data class Entity(
     private fun mapConstructor(obj: Map<*, *>) {
         obj.forEach { entry: Map.Entry<Any?, Any?> ->
             if (entry.value!!::class.isSubclassOf(String::class)) {
-                addAtribute(Atribute(name = entry.key.toString(), value = entry.value.toString()))
+                addAtribute(Atribute(key = entry.key.toString(), value = entry.value.toString()))
             } else {
                 if (entry.value != null) {
                     addChild(
@@ -161,6 +161,20 @@ data class Entity(
         }
         notifyObservers { it(this) }
     }
+
+
+/*    fun findEntity(entity: Entity): Entity? {
+        if (children.contains(entity)) {
+            println("finding child: Found")
+            return children.find { entityInList: Entity -> entityInList == entity }
+        } else {
+            println("finding child: NotFound")
+            children.forEach {
+                it.findEntity(entity)
+            }
+        }
+    }*/
+
 
     public fun removeContent(content: String) {
         contents?.replace(content, "")
