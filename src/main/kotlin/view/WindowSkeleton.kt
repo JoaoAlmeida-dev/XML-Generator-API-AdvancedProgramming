@@ -3,7 +3,6 @@ import view.customPanels.EntityPanel
 import view.customPanels.EntityTreeNode
 import java.awt.BorderLayout
 import java.awt.Dimension
-import java.awt.event.ActionListener
 import java.awt.event.KeyEvent
 import java.io.File
 import javax.swing.*
@@ -17,7 +16,7 @@ import kotlin.system.exitProcess
 class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) : JFrame("title") {
 
     init {
-        defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+        defaultCloseOperation = EXIT_ON_CLOSE
         size = Dimension(300, 300)
         val rootPanel = JTabbedPane()
         add(rootPanel)
@@ -32,8 +31,8 @@ class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) :
 
     private fun createMenuBar() {
         val menuBar = JMenuBar()
-        val fileMenu = JMenu("File");
-        fileMenu.mnemonic = KeyEvent.VK_F;
+        val fileMenu = JMenu("File")
+        fileMenu.mnemonic = KeyEvent.VK_F
 
         val eMenuItem = JMenuItem("Exit")
         eMenuItem.mnemonic = KeyEvent.VK_E
@@ -68,11 +67,11 @@ class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) :
         val rootNode = DefaultMutableTreeNode(xmlDocumentController.rootDoc.header)
         val treePanel = JTree(rootNode)
         parentComponent.add("Tree", JScrollPane(treePanel))
-        treePanel.isEditable = true;
+        treePanel.isEditable = true
 
 
         val model = DefaultTreeModel(rootNode)
-        val entityNode = EntityTreeNode(xmlDocumentController.rootDoc.entity, updateTreeModel(model))
+        val entityNode = xmlDocumentController.rootDoc.entity?.let { EntityTreeNode(it, updateTreeModel(model)) }
         rootNode.add(entityNode)
 
     }
@@ -91,16 +90,18 @@ class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) :
 
         val jButton = JButton("Print State")
 
-        jButton.addActionListener(ActionListener {
+        jButton.addActionListener {
             xmlDocumentController.printDoc()
-        })
+        }
 
 
         boxPanel.add(jButton, BorderLayout.NORTH)
-        boxPanel.add(
-            EntityPanel(xmlDocumentController.rootDoc.entity, xmlController = xmlDocumentController),
-            BorderLayout.CENTER
-        )
+        xmlDocumentController.rootDoc.entity?.let {
+            boxPanel.add(
+                EntityPanel(it, xmlController = xmlDocumentController),
+                BorderLayout.CENTER
+            )
+        }
     }
 
     fun open() {

@@ -1,7 +1,7 @@
 package core.controller.visitors
 
 import model.Entity
-import core.model.XMLDocument
+import model.XMLDocument
 
 interface Visitor {
 

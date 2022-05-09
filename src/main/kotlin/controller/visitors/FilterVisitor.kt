@@ -2,7 +2,7 @@ package controller.visitors
 
 import core.controller.visitors.Visitor
 import model.Entity
-import core.model.XMLDocument
+import model.XMLDocument
 
 class FilterVisitor(
     val decidingFunction: (entity: Entity) -> Boolean

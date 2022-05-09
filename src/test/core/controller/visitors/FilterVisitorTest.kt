@@ -2,7 +2,7 @@ package core.controller.visitors
 
 import controller.visitors.FilterVisitor
 import model.Entity
-import core.model.XMLDocument
+import model.XMLDocument
 import core.model.XmlHeader
 import org.junit.jupiter.api.Test
 

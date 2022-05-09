@@ -1,24 +1,15 @@
-package core.model
+package model
 
 import controller.visitors.FilterVisitor
 import core.controller.visitors.Visitor
-import model.Entity
-import tornadofx.getProperty
-import tornadofx.*
+import core.model.XmlHeader
 import java.io.File
 
 class XMLDocument(
-    header: XmlHeader,
-    entity: Entity?,
+    val header: XmlHeader,
+    val entity: Entity?,
 
     ) {
-
-    var header by property(header)
-    fun headerProperty() = getProperty(XMLDocument::header)
-
-    var entity by property(entity)
-    fun entityProperty() = getProperty(XMLDocument::entity)
-
 
     constructor(header: XmlHeader, obj: Any) : this(
         header = header, entity = Entity(obj = obj, depth = 0)
@@ -30,7 +21,7 @@ class XMLDocument(
 
     fun accept(v: Visitor) {
         if (v.visit(this)) {
-            this.entity.accept(v)
+            this.entity?.accept(v)
         }
         v.endvisit(this)
     }

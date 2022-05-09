@@ -2,7 +2,7 @@ package testbed
 
 import core.model.Atribute
 import model.Entity
-import core.model.XMLDocument
+import model.XMLDocument
 import core.controller.visitors.SearcherVisitor
 import core.model.Encoding
 import core.model.XmlHeader

@@ -2,7 +2,7 @@ package testbed
 
 import WindowSkeleton
 import core.model.Encoding
-import core.model.XMLDocument
+import model.XMLDocument
 import core.model.XmlHeader
 import testbed.model.Book
 import testbed.model.BookStore
@@ -13,7 +13,7 @@ import view.XmlDocumentController
 
 fun main() {
     val xmlDocument = generate()
-    
+
     println(xmlDocument.toString())
     val xmlController: XmlDocumentController = XmlDocumentController(xmlDocument)
     val w = WindowSkeleton(xmlController)

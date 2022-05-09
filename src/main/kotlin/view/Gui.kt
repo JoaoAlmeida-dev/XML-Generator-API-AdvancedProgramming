@@ -3,7 +3,7 @@ package view
 /*
 
 import model.Entity
-import core.model.XMLDocument
+import model.XMLDocument
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeView
 import javafx.scene.text.FontWeight

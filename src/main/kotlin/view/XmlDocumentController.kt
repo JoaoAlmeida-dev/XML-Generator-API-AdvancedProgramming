@@ -2,7 +2,7 @@ package view
 
 import core.model.Atribute
 import model.Entity
-import core.model.XMLDocument
+import model.XMLDocument
 import java.io.File
 
 class XmlDocumentController(val rootDoc: XMLDocument) {
