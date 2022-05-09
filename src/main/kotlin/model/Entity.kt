@@ -171,19 +171,6 @@ class Entity(
     }
 
 
-/*    fun findEntity(entity: Entity): Entity? {
-        if (children.contains(entity)) {
-            println("finding child: Found")
-            return children.find { entityInList: Entity -> entityInList == entity }
-        } else {
-            println("finding child: NotFound")
-            children.forEach {
-                it.findEntity(entity)
-            }
-        }
-    }*/
-
-
     fun removeContent(content: String) {
         contents?.replace(content, "")
         notifyObservers { it(this) }

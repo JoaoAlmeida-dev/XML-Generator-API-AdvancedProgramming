@@ -33,9 +33,6 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
         undoCommandsList.add(command)
     }
 
-    fun addRedo(command: Command) {
-
-    }
 
     fun undo() {
         if (undoCommandsList.isNotEmpty()) {
