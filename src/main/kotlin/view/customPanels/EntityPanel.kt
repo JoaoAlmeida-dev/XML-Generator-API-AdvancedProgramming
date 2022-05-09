@@ -54,16 +54,32 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
     private fun createPopupMenu() {
         val popupmenu = JPopupMenu("Actions")
 
-        val a = JMenuItem("Remove child")
-        a.addActionListener {
-            xmlController.removeChild(entity)
-            revalidate()
-            repaint()
-        }
-        popupmenu.add(a)
+        popupmenu.add(removeChildMenuOption())
+        popupmenu.add(addAtributeMenuOption())
+        popupmenu.add(printMenuOption())
 
-        val b = JMenuItem("Add Atribute")
-        b.addActionListener {
+        addMouseListener(object : MouseAdapter() {
+            override fun mouseClicked(e: MouseEvent) {
+                if (SwingUtilities.isRightMouseButton(e))
+                    popupmenu.show(this@EntityPanel, e.x, e.y)
+            }
+        })
+    }
+
+    private fun printMenuOption(): JMenuItem {
+        val printMenuItem = JMenuItem("Print")
+        printMenuItem.addActionListener {
+            println("-----------------------------------------")
+            println(entity)
+            println("-----------------------------------------")
+
+        }
+        return printMenuItem
+    }
+
+    private fun addAtributeMenuOption(): JMenuItem {
+        val addAtributeMenuOption = JMenuItem("Add Atribute")
+        addAtributeMenuOption.addActionListener {
             val field1 = JTextField()
             val field1Label = JLabel("key")
             val field2 = JTextField()
@@ -90,23 +106,17 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
                 println("User canceled addition of new atribute")
             }
         }
-        popupmenu.add(b)
+        return addAtributeMenuOption
+    }
 
-        val printMenuItem = JMenuItem("Print")
-        printMenuItem.addActionListener {
-            println("-----------------------------------------")
-            println(entity)
-            println("-----------------------------------------")
-
+    private fun removeChildMenuOption(): JMenuItem {
+        val removeChildMenuOptionItem = JMenuItem("Remove child")
+        removeChildMenuOptionItem.addActionListener {
+            xmlController.removeChild(entity)
+            revalidate()
+            repaint()
         }
-        popupmenu.add(printMenuItem)
-
-        addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent) {
-                if (SwingUtilities.isRightMouseButton(e))
-                    popupmenu.show(this@EntityPanel, e.x, e.y)
-            }
-        })
+        return removeChildMenuOptionItem
     }
 
     override fun paintComponent(g: Graphics) {
