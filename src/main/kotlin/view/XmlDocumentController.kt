@@ -74,5 +74,9 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
 
     }
 
+    fun renameEntity(entity: Entity, text: String) {
+        entity.rename(text)
+    }
+
 
 }

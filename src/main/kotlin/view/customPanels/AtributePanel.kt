@@ -16,7 +16,7 @@ class AtributePanel(
 
     init {
         layout = GridLayout(1, 2)
-        add(JLabel(atribute.key))
+        add(JLabel(atribute.key, SwingConstants.RIGHT))
 
         val textField = JTextField(atribute.value)
         textField.addActionListener {

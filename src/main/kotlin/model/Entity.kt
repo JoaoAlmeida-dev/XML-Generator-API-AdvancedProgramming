@@ -13,7 +13,7 @@ import kotlin.reflect.jvm.isAccessible
 
 class Entity(
     inputDepth: Int? = null,
-    val name: String,
+    var name: String,
     val parent: Entity? = null,
     var contents: String? = null,
     val atributes: MutableCollection<Atribute> = mutableListOf<Atribute>(),
@@ -216,6 +216,11 @@ class Entity(
 
     fun setDepth(newDepth: Int) {
         this.depth = newDepth
+        notifyObservers { it(this) }
+    }
+
+    fun rename(text: String) {
+        name = text
         notifyObservers { it(this) }
     }
 

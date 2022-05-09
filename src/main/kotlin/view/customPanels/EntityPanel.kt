@@ -11,9 +11,9 @@ import javax.swing.*
 import javax.swing.border.CompoundBorder
 
 class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) : JPanel() {
-    var northPanel = JPanel()
-    var centerPanel = JPanel()
-    var southPanel = JPanel()
+    private var northPanel = JPanel()
+    private var centerPanel = JPanel()
+    private var southPanel = JPanel()
 
     init {
         layout = BorderLayout()
@@ -92,6 +92,7 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
     private fun createPopupMenu() {
         val popupmenu = JPopupMenu("Actions")
 
+        popupmenu.add(renameMenuOption())
         popupmenu.add(addChildMenuOption())
         popupmenu.add(addAtributeMenuOption())
         popupmenu.add(addContentMenuOption())
@@ -119,13 +120,34 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
         return printMenuItem
     }
 
+    private fun renameMenuOption(): JMenuItem {
+        val addChildMenuItem = JMenuItem("Rename")
+        addChildMenuItem.addActionListener {
+            val nameField = JTextField(entity.name)
+            val nameFieldLabel = JLabel("New name")
+            val panel = JPanel()
+            panel.layout = GridLayout(1, 2)
+            panel.add(nameFieldLabel)
+            panel.add(nameField)
+
+            JOptionPane.showConfirmDialog(null, panel, "Insert the new child's name", JOptionPane.OK_CANCEL_OPTION)
+            nameField.requestFocus()
+            if (nameField.text.isNotEmpty()) {
+                xmlController.renameEntity(entity, nameField.text)
+            }
+            revalidate()
+            repaint()
+        }
+        return addChildMenuItem
+    }
+
     private fun addChildMenuOption(): JMenuItem {
         val addChildMenuItem = JMenuItem("Add Child")
         addChildMenuItem.addActionListener {
             val nameField = JTextField()
             val nameFieldLabel = JLabel("name")
             val panel = JPanel()
-            panel.layout = GridLayout(2, 2)
+            panel.layout = GridLayout(1, 2)
             panel.add(nameFieldLabel)
             panel.add(nameField)
 
