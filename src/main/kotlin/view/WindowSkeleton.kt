@@ -51,12 +51,20 @@ class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) :
             j.fileSelectionMode = JFileChooser.FILES_ONLY
             j.showSaveDialog(null)
 
-
             xmlDocumentController.exportToFile(j.selectedFile)
-
+        }
+        val undo = JMenuItem("Undo")
+        undo.addActionListener {
+            xmlDocumentController.undo()
+        }
+        val redo = JMenuItem("Redo")
+        redo.addActionListener {
+            xmlDocumentController.redo()
         }
 
         fileMenu.add(export)
+        fileMenu.add(undo)
+        fileMenu.add(redo)
         fileMenu.add(eMenuItem)
         menuBar.add(fileMenu)
 
