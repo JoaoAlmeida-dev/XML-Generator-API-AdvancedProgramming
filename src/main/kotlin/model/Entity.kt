@@ -173,7 +173,7 @@ class Entity(
 
 
     fun removeContent(content: String) {
-        contents?.replace(content, "")
+        contents = contents?.replace(content, "")
         notifyObservers { it(this) }
     }
 
