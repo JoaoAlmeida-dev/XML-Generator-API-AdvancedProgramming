@@ -1,7 +1,6 @@
 package view
 
-interface Command {
+interface ICommand {
     fun execute()
     fun undo()
-
 }

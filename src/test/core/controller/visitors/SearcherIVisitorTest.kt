@@ -1,5 +1,6 @@
 package core.controller.visitors
 
+import controller.visitors.SearcherIVisitor
 import model.Entity
 import model.XMLDocument
 import core.model.XmlHeader
@@ -12,7 +13,7 @@ import testbed.model.BookStore
 import testbed.model.Chapter
 import testbed.model.Library
 
-internal class SearcherVisitorTest {
+internal class SearcherIVisitorTest {
     lateinit var xmldoc: XMLDocument
 
     @BeforeEach
@@ -52,7 +53,7 @@ internal class SearcherVisitorTest {
 
     @Test
     fun visit() {
-        val searcherVisitor = SearcherVisitor { entity: Entity -> entity.children.isEmpty() }
+        val searcherVisitor = SearcherIVisitor { entity: Entity -> entity.children.isEmpty() }
         xmldoc.accept(searcherVisitor)
         println(searcherVisitor.entities.joinToString(separator = "\n", prefix = "[\n", postfix = "\n]"))
 

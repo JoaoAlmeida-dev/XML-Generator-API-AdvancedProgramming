@@ -1,6 +1,6 @@
 package model
 
-import core.controller.visitors.Visitor
+import controller.visitors.IVisitor
 import core.model.Annotations
 import core.model.Atribute
 import view.IObservable
@@ -24,6 +24,8 @@ class Entity(
     init {
         depth = getDepth(parent, inputDepth)
     }
+
+    override val observers: MutableList<(Entity) -> Unit> = mutableListOf()
 /*    enum class EventType {
         ADDCHILD,
         REMOVECHILD,
@@ -32,7 +34,6 @@ class Entity(
         REPLACE
     }*/
 
-    override val observers: MutableList<(Entity) -> Unit> = mutableListOf()
 
     private val tab: String get() = "\t".repeat(depth)
 
@@ -154,7 +155,7 @@ class Entity(
 
     fun addChild(child: Entity) {
         children.add(child)
-        notifyObservers { it(this) }
+        notifyObservers { it: (Entity) -> Unit -> it(this) }
     }
 
     fun removeChild(child: Entity) {
@@ -257,7 +258,7 @@ class Entity(
     }
 
 
-    fun accept(v: Visitor) {
+    fun accept(v: IVisitor) {
         if (v.visit(this)) {
             val childrenCopy = mutableListOf<Entity>()
             childrenCopy.addAll(this.children)

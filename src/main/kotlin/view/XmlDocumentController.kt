@@ -8,8 +8,8 @@ import java.io.File
 
 class XmlDocumentController(val rootDoc: XMLDocument) {
 
-    private val undoCommandsList = mutableListOf<Command>()
-    private val redoCommandsList = mutableListOf<Command>()
+    private val undoCommandsList = mutableListOf<ICommand>()
+    private val redoCommandsList = mutableListOf<ICommand>()
 
     fun printDoc() {
         println("---------------------------\n$rootDoc\n---------------------------")
@@ -28,7 +28,7 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
 
     //region UndoRedo
 
-    fun addUndo(command: Command) {
+    fun addUndo(command: ICommand) {
         redoCommandsList.clear()
         undoCommandsList.add(command)
     }
@@ -60,7 +60,7 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
 
     fun addAtribute(parentEntity: Entity, key: String, value: String) {
 
-        val addAtributeCommand: Command = object : Command {
+        val addAtributeCommand: ICommand = object : ICommand {
             val atribute = Atribute(key, value)
             override fun execute() {
                 parentEntity.addAtribute(atribute)
@@ -75,7 +75,7 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
     }
 
     fun removeAtribute(parentEntity: Entity, atribute: Atribute) {
-        val removeAtributeCommand: Command = object : Command {
+        val removeAtributeCommand: ICommand = object : ICommand {
             override fun execute() {
                 parentEntity.removeAtribute(atribute)
             }
@@ -93,7 +93,7 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
     //region Child
 
     fun renameEntity(entity: Entity, text: String) {
-        val renameEntityCommand: Command = object : Command {
+        val renameEntityCommand: ICommand = object : ICommand {
             val oldName = entity.name
             val newName = text
             override fun execute() {
@@ -109,7 +109,7 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
     }
 
     fun addChild(parent: Entity, newEntity: Entity) {
-        val addChildCommand: Command = object : Command {
+        val addChildCommand: ICommand = object : ICommand {
 
             override fun execute() {
                 parent.addChild(newEntity)
@@ -124,7 +124,7 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
     }
 
     fun removeChild(entity: Entity) {
-        val removeChildCommand: Command = object : Command {
+        val removeChildCommand: ICommand = object : ICommand {
             override fun execute() {
                 entity.parent?.removeChild(entity)
             }
@@ -142,7 +142,7 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
     //region Content
 
     fun addContent(entity: Entity, text: String) {
-        val addContentCommand: Command = object : Command {
+        val addContentCommand: ICommand = object : ICommand {
 
             override fun execute() {
                 entity.addContent(text)
@@ -157,7 +157,7 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
     }
 
     fun overwriteContent(entity: Entity, text: String) {
-        val overwriteContentCommand: Command = object : Command {
+        val overwriteContentCommand: ICommand = object : ICommand {
             val oldContent = entity.contents
             val newContent = text
             override fun execute() {

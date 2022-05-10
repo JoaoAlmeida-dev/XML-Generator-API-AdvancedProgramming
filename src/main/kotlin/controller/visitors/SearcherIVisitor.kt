@@ -1,8 +1,8 @@
-package core.controller.visitors
+package controller.visitors
 
 import model.Entity
 
-class SearcherVisitor(val decidingFunction: (entity: Entity) -> Boolean) : Visitor {
+class SearcherIVisitor(val decidingFunction: (entity: Entity) -> Boolean) : IVisitor {
 
     val entities: MutableList<Entity> = mutableListOf()
 

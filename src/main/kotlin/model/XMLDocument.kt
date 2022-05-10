@@ -1,7 +1,7 @@
 package model
 
 import controller.visitors.FilterVisitor
-import core.controller.visitors.Visitor
+import controller.visitors.IVisitor
 import core.model.XmlHeader
 import java.io.File
 
@@ -19,7 +19,7 @@ class XMLDocument(
         return "$header\n$entity "
     }
 
-    fun accept(v: Visitor) {
+    fun accept(v: IVisitor) {
         if (v.visit(this)) {
             this.entity?.accept(v)
         }

@@ -3,7 +3,7 @@ package testbed
 import core.model.Atribute
 import model.Entity
 import model.XMLDocument
-import core.controller.visitors.SearcherVisitor
+import controller.visitors.SearcherIVisitor
 import core.model.Encoding
 import core.model.XmlHeader
 import testbed.model.Book
@@ -63,7 +63,7 @@ fun xmlInference(header: XmlHeader) {
     println(xmlDocument)
 
 
-    val entitySearcherVisitor: SearcherVisitor = SearcherVisitor { entity: Entity -> entity.name.contains("Book") }
+    val entitySearcherVisitor: SearcherIVisitor = SearcherIVisitor { entity: Entity -> entity.name.contains("Book") }
 
     xmlDocument.accept(entitySearcherVisitor)
 

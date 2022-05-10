@@ -1,9 +1,9 @@
-package core.controller.visitors
+package controller.visitors
 
 import model.Entity
 import model.XMLDocument
 
-class DepthFixerVisitor : Visitor {
+class DepthFixerVisitor : IVisitor {
 
     var currentDepth: Int = 0
 
