@@ -24,6 +24,7 @@ class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) :
         add(rootPanel)
 
         createBoxPane(xmlDocumentController, rootPanel)
+        //createTreePane(xmlDocumentController, rootPanel)
         createMenuBar()
 
         // createTreePane(xmlDocumentController, rootPanel)

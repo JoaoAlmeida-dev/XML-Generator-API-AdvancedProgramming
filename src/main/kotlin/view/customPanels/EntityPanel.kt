@@ -33,7 +33,7 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
         add(southPanel, BorderLayout.SOUTH)
 
         addChildren(entity)
-
+//TODO adicionar tipo de notificiação - lesspriority
         entity.addObserver { entity ->
             run {
                 resetPanels()
