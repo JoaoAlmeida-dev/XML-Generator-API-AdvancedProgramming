@@ -5,7 +5,7 @@ import model.Entity
 import model.XMLDocument
 import controller.visitors.SearcherIVisitor
 import core.model.Encoding
-import core.model.XmlHeader
+import model.XmlHeader
 import testbed.model.Book
 import testbed.model.Library
 import testbed.model.BookStore

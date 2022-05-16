@@ -2,7 +2,6 @@ package model
 
 import controller.visitors.FilterVisitor
 import controller.visitors.IVisitor
-import core.model.XmlHeader
 import java.io.File
 
 class XMLDocument(

@@ -1,4 +1,6 @@
-package core.model
+package model
+
+import core.model.Encoding
 
 data class XmlHeader(
     val version: Double? = null,

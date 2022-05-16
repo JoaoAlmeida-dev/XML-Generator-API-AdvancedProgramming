@@ -2,7 +2,7 @@ package controller.visitors
 
 import model.Entity
 import model.XMLDocument
-import core.model.XmlHeader
+import model.XmlHeader
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import testbed.model.Book

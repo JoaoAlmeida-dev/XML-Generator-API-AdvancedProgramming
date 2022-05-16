@@ -1,6 +1,6 @@
-package core.model
+package model
 
-import model.Entity
+import core.model.Atribute
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import testbed.model.Book

@@ -3,7 +3,7 @@ package testbed
 import WindowSkeleton
 import core.model.Encoding
 import model.XMLDocument
-import core.model.XmlHeader
+import model.XmlHeader
 import testbed.model.Book
 import testbed.model.BookStore
 import testbed.model.Chapter
