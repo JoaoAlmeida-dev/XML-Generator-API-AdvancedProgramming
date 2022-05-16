@@ -8,7 +8,8 @@ import java.io.File
 
 class XmlDocumentController(val rootDoc: XMLDocument) {
 
-    private val undoCommandsList = mutableListOf<ICommand>()
+    val undoCommandsList = mutableListOf<ICommand>()
+
     private val redoCommandsList = mutableListOf<ICommand>()
 
     fun printDoc() {
@@ -69,6 +70,8 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
             override fun undo() {
                 parentEntity.removeAtribute(atribute)
             }
+
+            override fun toString() = "Add Atribute $atribute"
         }
         addAtributeCommand.execute()
         addUndo(addAtributeCommand)
@@ -83,6 +86,9 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
             override fun undo() {
                 parentEntity.addAtribute(atribute)
             }
+
+            override fun toString() = "Remove Atribute $atribute"
+
         }
         removeAtributeCommand.execute()
         addUndo(removeAtributeCommand)
@@ -103,6 +109,8 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
             override fun undo() {
                 entity.rename(oldName)
             }
+
+            override fun toString() = "Rename Entity $newName"
         }
         renameEntityCommand.execute()
         addUndo(renameEntityCommand)
@@ -118,6 +126,8 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
             override fun undo() {
                 parent.removeChild(newEntity)
             }
+
+            override fun toString() = "Add child ${newEntity.name}"
         }
         addChildCommand.execute()
         addUndo(addChildCommand)
@@ -132,6 +142,8 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
             override fun undo() {
                 entity.parent?.addChild(entity)
             }
+
+            override fun toString() = "Remove child ${entity.name}"
         }
 
         removeChildCommand.execute()
@@ -151,6 +163,8 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
             override fun undo() {
                 entity.removeContent(text)
             }
+
+            override fun toString() = "Add Content $text"
         }
         addContentCommand.execute()
         addUndo(addContentCommand)
@@ -167,6 +181,8 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
             override fun undo() {
                 entity.replaceContent(oldContent ?: "")
             }
+
+            override fun toString() = "Overwrite Content $text"
         }
         overwriteContentCommand.execute()
         addUndo(overwriteContentCommand)

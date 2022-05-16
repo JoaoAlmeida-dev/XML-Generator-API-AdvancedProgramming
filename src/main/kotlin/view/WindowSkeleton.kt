@@ -6,6 +6,8 @@ import java.awt.Dimension
 import java.awt.GridLayout
 import java.awt.event.ActionEvent
 import java.awt.event.KeyEvent
+import java.awt.event.MouseEvent
+import java.awt.event.MouseListener
 import java.io.File
 import javax.swing.*
 import javax.swing.filechooser.FileSystemView
@@ -35,6 +37,7 @@ class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) :
     private fun createMenuBar() {
         val menuBar = JMenuBar()
         val fileMenu = JMenu("File")
+        val editMenu = JMenu("Edit")
         fileMenu.mnemonic = KeyEvent.VK_F
 
         val eMenuItem = JMenuItem("Exit")
@@ -80,12 +83,46 @@ class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) :
         redo.action = redoAction
         //endregion
 
+        //region History
 
-        fileMenu.add(undo)
-        fileMenu.add(redo)
+
+        val historyMenu = JMenu("History")
+        historyMenu.addMouseListener(object : MouseListener {
+            override fun mouseClicked(e: MouseEvent?) {}
+            override fun mousePressed(e: MouseEvent?) {}
+            override fun mouseReleased(e: MouseEvent?) {}
+            override fun mouseEntered(e: MouseEvent?) {
+                historyMenu.removeAll()
+                println(xmlDocumentController.undoCommandsList)
+                xmlDocumentController.undoCommandsList.forEach {
+                    historyMenu.add(JLabel(it.toString()))
+                }
+                historyMenu.doClick()
+            }
+
+            override fun mouseExited(e: MouseEvent?) {}
+
+        })
+/*
+        //val history = JMenuItem()
+        val historyAction: Action = object : AbstractAction("History") {
+            override fun actionPerformed(e: ActionEvent?) {
+            }
+        }
+        historyMenu.action = historyAction
+*/
+
+        //endregion
+
+
+        editMenu.add(undo)
+        editMenu.add(redo)
+        //editMenu.add(history)
+        editMenu.add(historyMenu)
         fileMenu.add(export)
         fileMenu.add(eMenuItem)
         menuBar.add(fileMenu)
+        menuBar.add(editMenu)
         jMenuBar = menuBar
     }
 
