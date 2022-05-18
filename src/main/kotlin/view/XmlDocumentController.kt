@@ -8,9 +8,12 @@ import java.io.File
 
 class XmlDocumentController(val rootDoc: XMLDocument) {
 
-    val undoCommandsList = mutableListOf<ICommand>()
+    val undoCommandsList: MutableList<ICommand> = mutableListOf<ICommand>()
 
-    private val redoCommandsList = mutableListOf<ICommand>()
+    private val redoCommandsList: MutableList<ICommand> = mutableListOf<ICommand>()
+
+    private val possibleCommands: MutableList<ICommand> = mutableListOf<ICommand>()
+
 
     fun printDoc() {
         println("---------------------------\n$rootDoc\n---------------------------")
@@ -63,6 +66,9 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
 
         val addAtributeCommand: ICommand = object : ICommand {
             val atribute = Atribute(key, value)
+            override val displayName: String
+                get() = TODO("Not yet implemented")
+
             override fun execute() {
                 parentEntity.addAtribute(atribute)
             }
@@ -79,6 +85,9 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
 
     fun removeAtribute(parentEntity: Entity, atribute: Atribute) {
         val removeAtributeCommand: ICommand = object : ICommand {
+            override val displayName: String
+                get() = TODO("Not yet implemented")
+
             override fun execute() {
                 parentEntity.removeAtribute(atribute)
             }
@@ -92,7 +101,27 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
         }
         removeAtributeCommand.execute()
         addUndo(removeAtributeCommand)
+    }
 
+    fun setAtribute(oldAtribute: Atribute, newValue: String) {
+        val removeAtributeCommand: ICommand = object : ICommand {
+            var oldAtributeValue: String = "" + oldAtribute.value
+            override val displayName: String
+                get() = TODO("Not yet implemented")
+
+            override fun execute() {
+                oldAtribute.value = newValue
+            }
+
+            override fun undo() {
+                oldAtribute.value = oldAtributeValue
+            }
+
+            override fun toString() = "replaced [$oldAtributeValue] with [$newValue]"
+
+        }
+        removeAtributeCommand.execute()
+        addUndo(removeAtributeCommand)
     }
     //endregion
 
@@ -102,6 +131,9 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
         val renameEntityCommand: ICommand = object : ICommand {
             val oldName = entity.name
             val newName = text
+            override val displayName: String
+                get() = TODO("Not yet implemented")
+
             override fun execute() {
                 entity.rename(newName)
             }
@@ -118,6 +150,8 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
 
     fun addChild(parent: Entity, newEntity: Entity) {
         val addChildCommand: ICommand = object : ICommand {
+            override val displayName: String
+                get() = TODO("Not yet implemented")
 
             override fun execute() {
                 parent.addChild(newEntity)
@@ -135,6 +169,9 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
 
     fun removeChild(entity: Entity) {
         val removeChildCommand: ICommand = object : ICommand {
+            override val displayName: String
+                get() = TODO("Not yet implemented")
+
             override fun execute() {
                 entity.parent?.removeChild(entity)
             }
@@ -155,6 +192,8 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
 
     fun addContent(entity: Entity, text: String) {
         val addContentCommand: ICommand = object : ICommand {
+            override val displayName: String
+                get() = TODO("Not yet implemented")
 
             override fun execute() {
                 entity.addContent(text)
@@ -174,6 +213,9 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
         val overwriteContentCommand: ICommand = object : ICommand {
             val oldContent = entity.contents
             val newContent = text
+            override val displayName: String
+                get() = TODO("Not yet implemented")
+
             override fun execute() {
                 entity.replaceContent(newContent)
             }

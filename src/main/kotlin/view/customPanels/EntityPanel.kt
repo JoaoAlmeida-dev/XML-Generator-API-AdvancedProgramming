@@ -135,8 +135,8 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
             if (nameField.text.isNotEmpty()) {
                 xmlController.renameEntity(entity, nameField.text)
             }
-            revalidate()
-            repaint()
+            //revalidate()
+            //repaint()
         }
         return addChildMenuItem
     }
@@ -156,8 +156,8 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
 
             val newEntity = Entity(name = nameField.text, parent = entity)
             xmlController.addChild(entity, newEntity)
-            revalidate()
-            repaint()
+            //revalidate()
+            //repaint()
         }
         return addChildMenuItem
     }
@@ -186,8 +186,8 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
                 field2.text != null && field2.text.isNotEmpty()
             ) {
                 xmlController.addAtribute(entity, field1.text, field2.text)
-                revalidate()
-                repaint()
+                //  revalidate()
+                //  repaint()
             } else {
                 println("User canceled addition of new atribute")
             }
@@ -211,8 +211,8 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
             if (contentField.text != null && contentField.text.isNotEmpty()) {
                 xmlController.addContent(entity, contentField.text)
             }
-            revalidate()
-            repaint()
+            // revalidate()
+            // repaint()
         }
         return addContentMenuItem
     }
@@ -221,8 +221,8 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
         val removeChildMenuItem = JMenuItem("Remove child")
         removeChildMenuItem.addActionListener {
             xmlController.removeChild(entity)
-            revalidate()
-            repaint()
+            //revalidate()
+            //repaint()
         }
         return removeChildMenuItem
     }

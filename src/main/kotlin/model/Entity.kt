@@ -21,6 +21,13 @@ class Entity(
 ) : IObservable<(Entity) -> Unit> {
     private var depth: Int
 
+    fun setDepth(newDepth: Int) {
+        this.depth = newDepth
+        notifyObservers { it(this) }
+    }
+
+    fun getDepth(): Int = depth
+
     init {
         depth = getDepth(parent, inputDepth)
     }
@@ -32,12 +39,11 @@ class Entity(
         ADDATRIBUTE,
         REMOVEATRIBUTE,
         REPLACE
-    }*/
-
+    }
+*/
 
     private val tab: String get() = "\t".repeat(depth)
-
-
+    
     //TODO extrair reflection do model
     companion object {
         private fun getObjName(obj: Any, name: String?) =
@@ -199,11 +205,6 @@ class Entity(
 
     fun removeAtribute(atribute: Atribute) {
         atributes.remove(atribute)
-        notifyObservers { it(this) }
-    }
-
-    fun setDepth(newDepth: Int) {
-        this.depth = newDepth
         notifyObservers { it(this) }
     }
 

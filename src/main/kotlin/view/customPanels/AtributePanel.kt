@@ -3,6 +3,7 @@ package view.customPanels
 import core.model.Atribute
 import model.Entity
 import view.XmlDocumentController
+import java.awt.Color
 import java.awt.GridLayout
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
@@ -18,11 +19,15 @@ class AtributePanel(
         layout = GridLayout(1, 2)
         add(JLabel(atribute.key, SwingConstants.RIGHT))
 
+        background = Color.CYAN
         val textField = JTextField(atribute.value)
         textField.addActionListener {
             println("text = ${textField.text}")
-            atribute.value = textField.text
-
+            //atribute.value = textField.text
+            xmlController.setAtribute(
+                oldAtribute = atribute,
+                newValue = textField.text
+            )
         }
         add(textField)
         createPopupMenu()
