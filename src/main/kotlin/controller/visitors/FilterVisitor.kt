@@ -13,7 +13,7 @@ class FilterVisitor(
         if (this::document.isInitialized) {
             if (decidingFunction(e)) {
                 if (e.parent != null) {
-                    e.parent.children.remove(e)
+                    e.parent!!.removeChild(e)
                     return false
                 }
             } else {

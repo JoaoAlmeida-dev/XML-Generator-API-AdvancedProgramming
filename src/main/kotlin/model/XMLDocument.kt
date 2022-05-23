@@ -2,17 +2,43 @@ package model
 
 import controller.visitors.FilterVisitor
 import controller.visitors.IVisitor
+import view.IObservable
 import java.io.File
 
 class XMLDocument(
     val header: XmlHeader,
-    val entity: Entity?,
+    var entity: Entity?,
 
-    ) {
+    ) : XMLContainer, IObservable<(XMLDocument) -> Unit> {
 
     constructor(header: XmlHeader, obj: Any) : this(
         header = header, entity = Entity(obj = obj, depth = 0)
     )
+
+    init {
+        if (entity != null) {
+            entity!!.parent = this
+        }
+    }
+
+    override val observers: MutableList<(XMLDocument) -> Unit> = mutableListOf()
+
+
+    override fun removeChild(entity: Entity) {
+        if (entity == this.entity) {
+            this.entity = null
+        }
+        notifyObservers { it(this) }
+    }
+
+    override fun addChild(entity: Entity) {
+        if (this.entity == null) {
+            this.entity = entity
+        }
+        notifyObservers { it(this) }
+    }
+
+    override fun getDepth(): Int = 0
 
     override fun toString(): String {
         return "$header\n$entity "
@@ -35,5 +61,6 @@ class XMLDocument(
     fun dumpToFIle(filename: String) {
         File(filename).writeText(this.toString())
     }
+
 
 }

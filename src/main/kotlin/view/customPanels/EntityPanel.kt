@@ -33,6 +33,7 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
         add(southPanel, BorderLayout.SOUTH)
 
         addChildren(entity)
+
 //TODO adicionar tipo de notificiação - lesspriority
         entity.addObserver { entity ->
             run {
@@ -60,6 +61,7 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
 
             jTextArea.addKeyListener(object : KeyListener {
                 override fun keyTyped(e: KeyEvent?) {}
+                override fun keyReleased(e: KeyEvent?) {}
 
                 override fun keyPressed(e: KeyEvent?) {
                     if (e != null) {
@@ -72,7 +74,6 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
 
                 }
 
-                override fun keyReleased(e: KeyEvent?) {}
             })
 
             //val container = JPanel()

@@ -14,11 +14,11 @@ import kotlin.reflect.jvm.isAccessible
 class Entity(
     inputDepth: Int? = null,
     var name: String,
-    val parent: Entity? = null,
+    var parent: XMLContainer? = null,
     var contents: String? = null,
     val atributes: MutableCollection<Atribute> = mutableListOf<Atribute>(),
     val children: MutableCollection<Entity> = mutableListOf<Entity>(),
-) : IObservable<(Entity) -> Unit> {
+) : XMLContainer, IObservable<(Entity) -> Unit> {
     private var depth: Int
 
     fun setDepth(newDepth: Int) {
@@ -26,10 +26,10 @@ class Entity(
         notifyObservers { it(this) }
     }
 
-    fun getDepth(): Int = depth
+    override fun getDepth(): Int = depth
 
     init {
-        depth = getDepth(parent, inputDepth)
+        depth = getDepth(parent)
     }
 
     override val observers: MutableList<(Entity) -> Unit> = mutableListOf()
@@ -43,19 +43,19 @@ class Entity(
 */
 
     private val tab: String get() = "\t".repeat(depth)
-    
+
     //TODO extrair reflection do model
     companion object {
         private fun getObjName(obj: Any, name: String?) =
             obj::class.findAnnotation<Annotations.XmlName>()?.name ?: (name ?: (obj::class.simpleName
                 ?: "Default Name"))
 
-        private fun getDepth(parent: Entity?, depth: Int?): Int = if (parent?.depth == null) 0 else parent.depth + 1
+        private fun getDepth(parent: XMLContainer?): Int = if (parent == null) 0 else parent.getDepth() + 1
     }
 //region constructors
 
-    constructor(obj: Any, depth: Int?, name: String? = null, parent: Entity? = null) : this(
-        inputDepth = getDepth(parent, depth),
+    constructor(obj: Any, depth: Int?, name: String? = null, parent: XMLContainer? = null) : this(
+        inputDepth = getDepth(parent),
         name = getObjName(obj, name),
         parent = parent
     ) {
@@ -159,12 +159,13 @@ class Entity(
     }
 
 
-    fun addChild(child: Entity) {
-        children.add(child)
+    override fun addChild(entity: Entity) {
+        children.add(entity)
         notifyObservers { it: (Entity) -> Unit -> it(this) }
     }
 
-    fun removeChild(child: Entity) {
+
+    override fun removeChild(child: Entity) {
         if (children.contains(child)) {
             println("removing child: Found")
             children.remove(child)

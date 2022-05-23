@@ -1,6 +1,7 @@
 import view.XmlDocumentController
 import view.customPanels.EntityPanel
 import view.customPanels.EntityTreeNode
+import view.customPanels.XMLDocumentPanel
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.GridLayout
@@ -165,11 +166,8 @@ class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) :
         centerScrollPane.horizontalScrollBar.unitIncrement = 16
 
         rootboxPanel.add(centerScrollPane, BorderLayout.CENTER)
-        xmlDocumentController.rootDoc.entity?.let {
-            jPanel.add(
-                EntityPanel(it, xmlController = xmlDocumentController),
-            )
-        }
+        jPanel.add(XMLDocumentPanel(xmlDocumentController.rootDoc, xmlDocumentController))
+
     }
 
     fun open() {
