@@ -166,6 +166,7 @@ class Entity(
 
 
     override fun removeChild(child: Entity) {
+        child.parent = null
         if (children.contains(child)) {
             println("removing child: Found")
             children.remove(child)

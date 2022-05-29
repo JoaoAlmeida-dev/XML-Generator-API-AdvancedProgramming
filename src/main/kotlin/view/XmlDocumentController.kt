@@ -4,16 +4,26 @@ import core.model.Atribute
 import model.Entity
 import model.XMLDocument
 import org.jetbrains.kotlin.backend.common.pop
+import view.custom.commands.*
+import view.custom.commands.atributepanel.RemoveAtributeCommand
+import view.custom.commands.atributepanel.SetAtributeCommand
+import view.custom.commands.entitypanel.*
+import view.injection.InjectAdd
 import java.io.File
 
-class XmlDocumentController(val rootDoc: XMLDocument) {
+open class XmlDocumentController(val rootDoc: XMLDocument) {
 
-    val undoCommandsList: MutableList<ICommand> = mutableListOf<ICommand>()
-
+    public val undoCommandsList: MutableList<ICommand> = mutableListOf<ICommand>()
     private val redoCommandsList: MutableList<ICommand> = mutableListOf<ICommand>()
 
-    private val possibleCommands: MutableList<ICommand> = mutableListOf<ICommand>()
+    @InjectAdd
+    public val entityCommands: MutableList<InterfaceCommand> = mutableListOf<InterfaceCommand>()
 
+    @InjectAdd
+    public val atributeCommands: MutableList<InterfaceCommand> = mutableListOf<InterfaceCommand>()
+
+    @InjectAdd
+    public val xmldocumentCommands: MutableList<InterfaceCommand> = mutableListOf<InterfaceCommand>()
 
     fun printDoc() {
         println("---------------------------\n$rootDoc\n---------------------------")
@@ -21,22 +31,18 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
 
     fun exportToFile(file: File?) {
         if (file != null) {
-
-            val filename = file.absolutePath
-            val split = filename.split(".").toMutableList()
+            val split = file.absolutePath.split(".").toMutableList()
             if (split.last() != "xml")
                 split[split.size - 1] = "xml"
-            rootDoc.dumpToFIle(split.joinToString(separator = "."))
+            rootDoc.dumpToFile(split.joinToString(separator = "."))
         }
     }
-
     //region UndoRedo
 
     fun addUndo(command: ICommand) {
         redoCommandsList.clear()
         undoCommandsList.add(command)
     }
-
 
     fun undo() {
         if (undoCommandsList.isNotEmpty()) {
@@ -64,62 +70,19 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
 
     fun addAtribute(parentEntity: Entity, key: String, value: String) {
 
-        val addAtributeCommand: ICommand = object : ICommand {
-            val atribute = Atribute(key, value)
-            override val displayName: String
-                get() = TODO("Not yet implemented")
-
-            override fun execute() {
-                parentEntity.addAtribute(atribute)
-            }
-
-            override fun undo() {
-                parentEntity.removeAtribute(atribute)
-            }
-
-            override fun toString() = "Add Atribute $atribute"
-        }
+        val addAtributeCommand: ICommand = AddAtributeCommand(parentEntity, key, value)
         addAtributeCommand.execute()
         addUndo(addAtributeCommand)
     }
 
     fun removeAtribute(parentEntity: Entity, atribute: Atribute) {
-        val removeAtributeCommand: ICommand = object : ICommand {
-            override val displayName: String
-                get() = TODO("Not yet implemented")
-
-            override fun execute() {
-                parentEntity.removeAtribute(atribute)
-            }
-
-            override fun undo() {
-                parentEntity.addAtribute(atribute)
-            }
-
-            override fun toString() = "Remove Atribute $atribute"
-
-        }
+        val removeAtributeCommand: ICommand = RemoveAtributeCommand(parentEntity, atribute)
         removeAtributeCommand.execute()
         addUndo(removeAtributeCommand)
     }
 
     fun setAtribute(oldAtribute: Atribute, newValue: String) {
-        val removeAtributeCommand: ICommand = object : ICommand {
-            var oldAtributeValue: String = "" + oldAtribute.value
-            override val displayName: String
-                get() = TODO("Not yet implemented")
-
-            override fun execute() {
-                oldAtribute.value = newValue
-            }
-
-            override fun undo() {
-                oldAtribute.value = oldAtributeValue
-            }
-
-            override fun toString() = "replaced [$oldAtributeValue] with [$newValue]"
-
-        }
+        val removeAtributeCommand: ICommand = SetAtributeCommand(oldAtribute, newValue)
         removeAtributeCommand.execute()
         addUndo(removeAtributeCommand)
     }
@@ -128,61 +91,19 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
     //region Child
 
     fun renameEntity(entity: Entity, text: String) {
-        val renameEntityCommand: ICommand = object : ICommand {
-            val oldName = entity.name
-            val newName = text
-            override val displayName: String
-                get() = TODO("Not yet implemented")
-
-            override fun execute() {
-                entity.rename(newName)
-            }
-
-            override fun undo() {
-                entity.rename(oldName)
-            }
-
-            override fun toString() = "Rename Entity $newName"
-        }
+        val renameEntityCommand: ICommand = RenameEntity(entity, text)
         renameEntityCommand.execute()
         addUndo(renameEntityCommand)
     }
 
     fun addChild(parent: Entity, newEntity: Entity) {
-        val addChildCommand: ICommand = object : ICommand {
-            override val displayName: String
-                get() = TODO("Not yet implemented")
-
-            override fun execute() {
-                parent.addChild(newEntity)
-            }
-
-            override fun undo() {
-                parent.removeChild(newEntity)
-            }
-
-            override fun toString() = "Add child ${newEntity.name}"
-        }
+        val addChildCommand: ICommand = AddChildCommand(parent, newEntity)
         addChildCommand.execute()
         addUndo(addChildCommand)
     }
 
     fun removeChild(entity: Entity) {
-        val removeChildCommand: ICommand = object : ICommand {
-            override val displayName: String
-                get() = TODO("Not yet implemented")
-
-            override fun execute() {
-                entity.parent?.removeChild(entity)
-            }
-
-            override fun undo() {
-                entity.parent?.addChild(entity)
-            }
-
-            override fun toString() = "Remove child ${entity.name}"
-        }
-
+        val removeChildCommand: ICommand = RemoveChildCommand(entity)
         removeChildCommand.execute()
         addUndo(removeChildCommand)
     }
@@ -191,41 +112,13 @@ class XmlDocumentController(val rootDoc: XMLDocument) {
     //region Content
 
     fun addContent(entity: Entity, text: String) {
-        val addContentCommand: ICommand = object : ICommand {
-            override val displayName: String
-                get() = TODO("Not yet implemented")
-
-            override fun execute() {
-                entity.addContent(text)
-            }
-
-            override fun undo() {
-                entity.removeContent(text)
-            }
-
-            override fun toString() = "Add Content $text"
-        }
+        val addContentCommand: ICommand = AddContentCommand(entity, text)
         addContentCommand.execute()
         addUndo(addContentCommand)
     }
 
     fun overwriteContent(entity: Entity, text: String) {
-        val overwriteContentCommand: ICommand = object : ICommand {
-            val oldContent = entity.contents
-            val newContent = text
-            override val displayName: String
-                get() = TODO("Not yet implemented")
-
-            override fun execute() {
-                entity.replaceContent(newContent)
-            }
-
-            override fun undo() {
-                entity.replaceContent(oldContent ?: "")
-            }
-
-            override fun toString() = "Overwrite Content $text"
-        }
+        val overwriteContentCommand = OverwriteContentCommand(entity, text)
         overwriteContentCommand.execute()
         addUndo(overwriteContentCommand)
 

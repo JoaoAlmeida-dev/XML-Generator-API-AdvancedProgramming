@@ -58,7 +58,7 @@ fun xmlInference(header: XmlHeader) {
 
     val xmlDocument: XMLDocument = XMLDocument(header, obj = library)
 
-    xmlDocument.dumpToFIle("output.xml")
+    xmlDocument.dumpToFile("output.xml")
 
     println(xmlDocument)
 

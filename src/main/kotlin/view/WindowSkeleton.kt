@@ -1,7 +1,8 @@
+import model.XMLDocument
 import view.XmlDocumentController
-import view.customPanels.EntityPanel
-import view.customPanels.EntityTreeNode
-import view.customPanels.XMLDocumentPanel
+import view.custom.panels.EntityTreeNode
+import view.custom.panels.XMLDocumentPanel
+import view.injection.Inject
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.GridLayout
@@ -18,22 +19,28 @@ import javax.swing.tree.TreeNode
 import kotlin.system.exitProcess
 
 
-class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) : JFrame("title") {
+class WindowSkeleton() : JFrame("title") {
+
+    @Inject
+    lateinit var rootDocument: XMLDocument
+    lateinit var xmlDocumentController: XmlDocumentController
 
     init {
         defaultCloseOperation = EXIT_ON_CLOSE
         size = Dimension(300, 300)
-        val rootPanel = JTabbedPane()
-        add(rootPanel)
-
-        createBoxPane(xmlDocumentController, rootPanel)
-        //createTreePane(xmlDocumentController, rootPanel)
-        createMenuBar()
-
-        // createTreePane(xmlDocumentController, rootPanel)
 
     }
 
+    fun open() {
+
+        xmlDocumentController = XmlDocumentController(rootDocument)
+        val rootPanel = JTabbedPane()
+        add(rootPanel)
+        createBoxPane(xmlDocumentController, rootPanel)
+        //createTreePane(xmlDocumentController, rootPanel)
+        createMenuBar()
+        isVisible = true
+    }
 
     private fun createMenuBar() {
         val menuBar = JMenuBar()
@@ -170,9 +177,6 @@ class WindowSkeleton(private val xmlDocumentController: XmlDocumentController) :
 
     }
 
-    fun open() {
-        isVisible = true
-    }
 
 }
 

@@ -1,4 +1,4 @@
-package view.customPanels
+package view.custom.panels
 
 import model.Entity
 import javax.swing.tree.DefaultMutableTreeNode

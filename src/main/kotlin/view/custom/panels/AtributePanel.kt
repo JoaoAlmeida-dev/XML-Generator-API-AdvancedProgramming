@@ -1,4 +1,4 @@
-package view.customPanels
+package view.custom.panels
 
 import core.model.Atribute
 import model.Entity
@@ -35,14 +35,16 @@ class AtributePanel(
 
     private fun createPopupMenu() {
         val popupmenu = JPopupMenu("Actions")
-
         val a = JMenuItem("Remove Atribute")
+
         a.addActionListener {
             xmlController.removeAtribute(parentEntity, atribute)
-            revalidate()
-            repaint()
         }
         popupmenu.add(a)
+
+        xmlController.atributeCommands.forEach {
+            popupmenu.add(it.getJMenuItem())
+        }
 
         addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {

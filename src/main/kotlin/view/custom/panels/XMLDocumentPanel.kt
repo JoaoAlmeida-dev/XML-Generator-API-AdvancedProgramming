@@ -1,7 +1,6 @@
-package view.customPanels
+package view.custom.panels
 
 import model.XMLDocument
-import org.jetbrains.kotlin.types.expressions.typeInfoFactory.noTypeInfo
 import view.XmlDocumentController
 import java.awt.*
 import javax.swing.BorderFactory

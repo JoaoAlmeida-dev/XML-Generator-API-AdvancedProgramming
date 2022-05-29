@@ -5,7 +5,7 @@ import controller.visitors.IVisitor
 import view.IObservable
 import java.io.File
 
-class XMLDocument(
+open class XMLDocument(
     val header: XmlHeader,
     var entity: Entity?,
 
@@ -58,7 +58,7 @@ class XMLDocument(
         return filterVisitor.document
     }
 
-    fun dumpToFIle(filename: String) {
+    fun dumpToFile(filename: String) {
         File(filename).writeText(this.toString())
     }
 
