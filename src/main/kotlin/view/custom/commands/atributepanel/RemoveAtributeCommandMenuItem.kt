@@ -1,6 +1,6 @@
 package view.custom.commands.atributepanel
 
-import core.model.Atribute
+import model.Atribute
 import model.Entity
 import view.custom.commands.ICommand
 import view.custom.commands.CommandMenuItem
@@ -10,12 +10,16 @@ import javax.swing.JMenuItem
 class RemoveAtributeCommandMenuItem : CommandMenuItem<AtributePanel> {
 
     override fun getJMenuItem(panel: AtributePanel): JMenuItem {
-        return JMenuItem("Remove Atribute")
+
+        val jMenuItem = JMenuItem("Remove Atribute")
+        jMenuItem.addActionListener {
+            panel.xmlController.addExecuteCommand(
+                RemoveAtributeCommand(panel.parentEntity, panel.atribute)
+            )
+        }
+        return jMenuItem
     }
 
-    override fun getCommand(panel: AtributePanel): ICommand {
-        return RemoveAtributeCommand(panel.parentEntity, panel.atribute)
-    }
 
     class RemoveAtributeCommand(private val parentEntity: Entity, private val atribute: Atribute) : ICommand {
         override val displayName: String

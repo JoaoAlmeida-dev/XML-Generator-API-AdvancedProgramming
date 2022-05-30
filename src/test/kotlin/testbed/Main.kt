@@ -1,6 +1,6 @@
 package testbed
 
-import core.model.Atribute
+import model.Atribute
 import model.Entity
 import model.XMLDocument
 import controller.visitors.SearcherIVisitor
@@ -81,14 +81,17 @@ private fun xmlDemoHardCoded(header: XmlHeader) {
         Entity(
             name = "Stilton", inputDepth = 1, atributes =
             mutableListOf(
-                Atribute(key = "book", value = "Jeronimo em Belém"),
-                Atribute(key = "author", value = "Jeronimo Stilton"),
+                Atribute(key = "book", value = "Jeronimo em Belém", value1 = ""),
+                Atribute(key = "author", value = "Jeronimo Stilton", value1 = ""),
                 Atribute(name = "pages", value = 100),
             )
         )
 
     val bookAtributes: MutableCollection<Atribute> =
-        mutableListOf(Atribute(name = "serialN", value = 3425), Atribute(key = "Library", value = "Lisboa"))
+        mutableListOf(
+            Atribute(name = "serialN", value = 3425),
+            Atribute(key = "Library", value = "Lisboa", value1 = "")
+        )
 
     val entity = Entity(
         name = "Book",

@@ -2,7 +2,6 @@ package model
 
 import controller.visitors.IVisitor
 import core.model.Annotations
-import core.model.Atribute
 import view.IObservable
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
@@ -21,6 +20,10 @@ class Entity(
 ) : XMLContainer, IObservable<(Entity) -> Unit> {
     private var depth: Int
 
+    init {
+        depth = getDepth(parent)
+    }
+
     fun setDepth(newDepth: Int) {
         this.depth = newDepth
         notifyObservers { it(this) }
@@ -28,9 +31,6 @@ class Entity(
 
     override fun getDepth(): Int = depth
 
-    init {
-        depth = getDepth(parent)
-    }
 
     override val observers: MutableList<(Entity) -> Unit> = mutableListOf()
 /*    enum class EventType {
@@ -78,7 +78,7 @@ class Entity(
     private fun mapConstructor(obj: Map<*, *>) {
         obj.forEach { entry: Map.Entry<Any?, Any?> ->
             if (entry.value!!::class.isSubclassOf(String::class)) {
-                addAtribute(Atribute(key = entry.key.toString(), value = entry.value.toString()))
+                addAtribute(Atribute(key = entry.key.toString(), value = entry.value.toString(), value1 = ""))
             } else {
                 if (entry.value != null) {
                     addChild(

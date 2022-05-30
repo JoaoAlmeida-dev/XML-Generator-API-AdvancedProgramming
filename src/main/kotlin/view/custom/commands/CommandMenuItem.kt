@@ -7,5 +7,4 @@ import javax.swing.JMenuItem
  */
 interface CommandMenuItem<T> {
     fun getJMenuItem(panel: T): JMenuItem
-    fun getCommand(panel: T): ICommand
 }

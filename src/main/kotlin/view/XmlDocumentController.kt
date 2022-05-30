@@ -1,10 +1,10 @@
 package view
 
-import core.model.Atribute
 import model.Entity
 import model.XMLDocument
 import org.jetbrains.kotlin.backend.common.pop
 import view.custom.commands.*
+import view.custom.commands.atributepanel.RemoveAtributeCommandMenuItem
 import view.custom.commands.atributepanel.SetAtributeCommandMenuItem
 import view.custom.commands.entitypanel.*
 import view.custom.panels.AtributePanel
@@ -19,13 +19,17 @@ open class XmlDocumentController(val rootDoc: XMLDocument) {
     private val redoCommandsList: MutableList<ICommand> = mutableListOf<ICommand>()
 
     @InjectAdd
+    public val entityPluginCommands: MutableList<CommandMenuItem<EntityPanel>> = mutableListOf()
+
+    @InjectAdd
+    public val atributePluginCommands: MutableList<CommandMenuItem<AtributePanel>> = mutableListOf()
+
+    @InjectAdd
+    public val xmldocumentPluginCommands: MutableList<CommandMenuItem<XMLDocumentPanel>> = mutableListOf()
+
     public val entityCommands: MutableList<CommandMenuItem<EntityPanel>> = mutableListOf()
-
-    @InjectAdd
     public val atributeCommands: MutableList<CommandMenuItem<AtributePanel>> =
-        mutableListOf()
-
-    @InjectAdd
+        mutableListOf(SetAtributeCommandMenuItem(), RemoveAtributeCommandMenuItem())
     public val xmldocumentCommands: MutableList<CommandMenuItem<XMLDocumentPanel>> = mutableListOf()
 
     fun printDoc() {
@@ -91,11 +95,11 @@ open class XmlDocumentController(val rootDoc: XMLDocument) {
         addUndo(removeAtributeCommand)
     }*/
 
-    fun setAtribute(oldAtribute: Atribute, newValue: String) {
-        val removeAtributeCommand: ICommand = SetAtributeCommandMenuItem(oldAtribute, newValue)
+/*    fun setAtribute(oldAtribute: Atribute, newValue: String) {
+        val removeAtributeCommand: ICommand = SetAtributeCommand(oldAtribute, newValue)
         removeAtributeCommand.execute()
         addUndo(removeAtributeCommand)
-    }
+    }*/
     //endregion
 
     //region Child

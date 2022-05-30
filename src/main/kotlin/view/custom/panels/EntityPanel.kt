@@ -37,7 +37,12 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
                 jPanel.add(nameFieldLabel)
                 jPanel.add(nameField)
 
-                JOptionPane.showConfirmDialog(null, panel, "Insert the new child's name", JOptionPane.OK_CANCEL_OPTION)
+                JOptionPane.showConfirmDialog(
+                    panel,
+                    jPanel,
+                    "Insert the new child's name",
+                    JOptionPane.OK_CANCEL_OPTION
+                )
                 nameField.requestFocus()
                 if (nameField.text.isNotEmpty()) {
                     panel.xmlController.renameEntity(panel.entity, nameField.text)
@@ -136,7 +141,6 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
 
     }
 
-
     private var northPanel = JPanel()
     private var centerPanel = JPanel()
     private var southPanel = JPanel()
@@ -232,6 +236,23 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
                     popupmenu.show(this@EntityPanel, e.x, e.y)
             }
         })
+
+        xmlController.entityCommands.forEach {
+            popupmenu.add(
+                it.getJMenuItem(this)
+            )
+        }
+        popupmenu.addSeparator()
+        xmlController.entityPluginCommands.forEach {/*
+            val menuItem = it.getJMenuItem(this)
+            menuItem.addActionListener(fun(_: ActionEvent) {
+                xmlController.addExecuteCommand(it.getCommand(this))
+            })*/
+            popupmenu.add(
+                it.getJMenuItem(this)
+            )
+        }
+
     }
 
     override fun paintComponent(g: Graphics) {

@@ -3,8 +3,12 @@ package view.custom.panels
 import model.XMLDocument
 import view.XmlDocumentController
 import java.awt.*
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
 import javax.swing.BorderFactory
 import javax.swing.JPanel
+import javax.swing.JPopupMenu
+import javax.swing.SwingUtilities
 import javax.swing.border.CompoundBorder
 
 class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: XmlDocumentController) : JPanel() {
@@ -33,6 +37,7 @@ class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: 
                 println("repainted xmldocpanel")
             }
         }
+        createPopupMenu()
     }
 
     private fun addChildren(newDoc: XMLDocument) {
@@ -41,6 +46,35 @@ class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: 
         }
 
     }
+
+    private fun createPopupMenu() {
+        val popupmenu = JPopupMenu("Actions")
+
+        addMouseListener(object : MouseAdapter() {
+            override fun mouseClicked(e: MouseEvent) {
+                if (SwingUtilities.isRightMouseButton(e))
+                    popupmenu.show(this@XMLDocumentPanel, e.x, e.y)
+            }
+        })
+
+        xmlController.xmldocumentCommands.forEach {
+            popupmenu.add(
+                it.getJMenuItem(this)
+            )
+        }
+        popupmenu.addSeparator()
+        xmlController.xmldocumentPluginCommands.forEach {/*
+            val menuItem = it.getJMenuItem(this)
+            menuItem.addActionListener(fun(_: ActionEvent) {
+                xmlController.addExecuteCommand(it.getCommand(this))
+            })*/
+            popupmenu.add(
+                it.getJMenuItem(this)
+            )
+        }
+
+    }
+
 
     private fun resetPanels() {
         centerPanel.removeAll()
