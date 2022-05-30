@@ -5,9 +5,11 @@ import model.Entity
 import model.XMLDocument
 import org.jetbrains.kotlin.backend.common.pop
 import view.custom.commands.*
-import view.custom.commands.atributepanel.RemoveAtributeCommand
-import view.custom.commands.atributepanel.SetAtributeCommand
+import view.custom.commands.atributepanel.SetAtributeCommandMenuItem
 import view.custom.commands.entitypanel.*
+import view.custom.panels.AtributePanel
+import view.custom.panels.EntityPanel
+import view.custom.panels.XMLDocumentPanel
 import view.injection.InjectAdd
 import java.io.File
 
@@ -17,13 +19,14 @@ open class XmlDocumentController(val rootDoc: XMLDocument) {
     private val redoCommandsList: MutableList<ICommand> = mutableListOf<ICommand>()
 
     @InjectAdd
-    public val entityCommands: MutableList<InterfaceCommand> = mutableListOf<InterfaceCommand>()
+    public val entityCommands: MutableList<CommandMenuItem<EntityPanel>> = mutableListOf()
 
     @InjectAdd
-    public val atributeCommands: MutableList<InterfaceCommand> = mutableListOf<InterfaceCommand>()
+    public val atributeCommands: MutableList<CommandMenuItem<AtributePanel>> =
+        mutableListOf()
 
     @InjectAdd
-    public val xmldocumentCommands: MutableList<InterfaceCommand> = mutableListOf<InterfaceCommand>()
+    public val xmldocumentCommands: MutableList<CommandMenuItem<XMLDocumentPanel>> = mutableListOf()
 
     fun printDoc() {
         println("---------------------------\n$rootDoc\n---------------------------")
@@ -66,6 +69,12 @@ open class XmlDocumentController(val rootDoc: XMLDocument) {
         }
     }
 
+    fun addExecuteCommand(command: ICommand) {
+        command.execute()
+        addUndo(command)
+    }
+
+
     //region Atributes
 
     fun addAtribute(parentEntity: Entity, key: String, value: String) {
@@ -74,15 +83,16 @@ open class XmlDocumentController(val rootDoc: XMLDocument) {
         addAtributeCommand.execute()
         addUndo(addAtributeCommand)
     }
-
+/*
     fun removeAtribute(parentEntity: Entity, atribute: Atribute) {
-        val removeAtributeCommand: ICommand = RemoveAtributeCommand(parentEntity, atribute)
+        val removeAtributeCommand: ICommand =
+            RemoveAtributeCommandMenuItem.RemoveAtributeCommand(parentEntity, atribute)
         removeAtributeCommand.execute()
         addUndo(removeAtributeCommand)
-    }
+    }*/
 
     fun setAtribute(oldAtribute: Atribute, newValue: String) {
-        val removeAtributeCommand: ICommand = SetAtributeCommand(oldAtribute, newValue)
+        val removeAtributeCommand: ICommand = SetAtributeCommandMenuItem(oldAtribute, newValue)
         removeAtributeCommand.execute()
         addUndo(removeAtributeCommand)
     }

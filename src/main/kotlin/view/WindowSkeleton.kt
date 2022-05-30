@@ -3,6 +3,7 @@ import view.XmlDocumentController
 import view.custom.panels.EntityTreeNode
 import view.custom.panels.XMLDocumentPanel
 import view.injection.Inject
+import view.injection.Injector
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.GridLayout
@@ -23,6 +24,7 @@ class WindowSkeleton() : JFrame("title") {
 
     @Inject
     lateinit var rootDocument: XMLDocument
+
     lateinit var xmlDocumentController: XmlDocumentController
 
     init {
@@ -34,6 +36,7 @@ class WindowSkeleton() : JFrame("title") {
     fun open() {
 
         xmlDocumentController = XmlDocumentController(rootDocument)
+        Injector.inject(xmlDocumentController)
         val rootPanel = JTabbedPane()
         add(rootPanel)
         createBoxPane(xmlDocumentController, rootPanel)

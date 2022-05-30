@@ -1,6 +1,8 @@
 package view.injection
 
 import controller.services.FileReader
+import java.net.URL
+import java.net.URLClassLoader
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KProperty1
@@ -9,15 +11,27 @@ import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.hasAnnotation
 
 object Injector {
-    fun create(c: KClass<*>): Any {
-        val propertiesMap: Map<String, String> = FileReader.readFileAsMap("di.properties")
+
+    val propertiesMap: Map<String, String> = FileReader.readFileAsMap("di.properties")
+
+    public final fun create(c: KClass<*>): Any {
         val createdInstance = c.createInstance()
+        return inject(createdInstance)
+    }
+
+    public final fun inject(
+        createdInstance: Any,
+    ): Any {
+        val dirUrl: URL = URL("file:/XML-Generator-API-AdvancedProgramming")
+        val cl = URLClassLoader(mutableListOf(dirUrl).toTypedArray())
+
+        val c = createdInstance::class
         c.declaredMemberProperties.filter {
             it.hasAnnotation<Inject>()
         }.forEach {
-            println(it)
-            println("${c.simpleName}.${it.name}")
-            println(Class.forName(propertiesMap["${c.simpleName}.${it.name}"]))
+            val classNameInMap = propertiesMap["${c.simpleName}.${it.name}"]
+            println("INJECTOR::ADD::${c.simpleName}.${it.name}")
+            println("INJECTOR::ADD::" + Class.forName(propertiesMap["${c.simpleName}.${it.name}"]))
             val injectedProperty =
                 (Class.forName(propertiesMap["${c.simpleName}.${it.name}"]).kotlin).createInstance()
             //(it as KMutableProperty<*>).setter.call(createdInstance, DefaultSetup())
@@ -27,17 +41,22 @@ object Injector {
         c.declaredMemberProperties.filter {
             it.hasAnnotation<InjectAdd>()
         }.forEach { it: KProperty1<out Any, *> ->
-            println(it)
             val prop = it.call(createdInstance) as MutableCollection<Any>
+            val classFilePathFromFile: String? = propertiesMap["${c.simpleName}.${it.name}"]
 
-            val injectedPropertiesStrings: String? = propertiesMap["${c.simpleName}.${it.name}"]
-            injectedPropertiesStrings?.split(",")?.forEach { it2: String ->
-                println("Injector::InjectADD::$it2")
-                prop.add((Class.forName(it2).kotlin).createInstance())
-            }                    //(it as KMutableProperty<*>).setter.call(createdInstance, DefaultSetup())
+            if (classFilePathFromFile != null) {
+                println("INJECTOR::ADD::${c.simpleName}.${it.name}")
+                println("INJECTOR::ADD::$classFilePathFromFile")
+
+                classFilePathFromFile.split(",").forEach(fun(innerIt: String) {
+                    val instance = cl.loadClass(innerIt).kotlin.createInstance()
+                    prop.add(instance)
+                })
+                //(it as KMutableProperty<*>).setter.call(createdInstance, DefaultSetup())}
+            }
+
         }
-
-
         return createdInstance
+
     }
 }

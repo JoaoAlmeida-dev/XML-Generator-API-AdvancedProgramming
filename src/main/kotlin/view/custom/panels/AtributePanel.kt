@@ -5,6 +5,7 @@ import model.Entity
 import view.XmlDocumentController
 import java.awt.Color
 import java.awt.GridLayout
+import java.awt.event.ActionEvent
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.*
@@ -35,15 +36,16 @@ class AtributePanel(
 
     private fun createPopupMenu() {
         val popupmenu = JPopupMenu("Actions")
-        val a = JMenuItem("Remove Atribute")
-
-        a.addActionListener {
-            xmlController.removeAtribute(parentEntity, atribute)
-        }
-        popupmenu.add(a)
 
         xmlController.atributeCommands.forEach {
-            popupmenu.add(it.getJMenuItem())
+            val menuItem = it.getJMenuItem(this)
+            menuItem.addActionListener(fun(_: ActionEvent) {
+                xmlController.addExecuteCommand(it.getCommand(this))
+            })
+            popupmenu.add(
+                menuItem
+            )
+
         }
 
         addMouseListener(object : MouseAdapter() {
