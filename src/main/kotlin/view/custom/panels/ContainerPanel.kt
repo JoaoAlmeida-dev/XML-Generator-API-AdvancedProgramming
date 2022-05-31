@@ -1,8 +1,6 @@
 package view.custom.panels
 
-import model.XMLContainer
-import view.XmlDocumentController
-import view.custom.commands.CommandMenuItem
+import view.custom.commands.ICommandMenuItem
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.JPanel
@@ -13,8 +11,8 @@ abstract class ContainerPanel : JPanel() {
 
 
     protected open fun <T : ContainerPanel> createPopupMenu(
-        commands: Collection<CommandMenuItem<T>>,
-        pluginCommands: Collection<CommandMenuItem<T>>
+        commands: Collection<ICommandMenuItem<T>>,
+        pluginCommands: Collection<ICommandMenuItem<T>>
     ) {
         val popupmenu = JPopupMenu("Actions")
 

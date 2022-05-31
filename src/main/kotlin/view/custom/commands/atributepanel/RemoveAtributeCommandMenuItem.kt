@@ -3,11 +3,11 @@ package view.custom.commands.atributepanel
 import model.Atribute
 import model.Entity
 import view.custom.commands.ICommand
-import view.custom.commands.CommandMenuItem
+import view.custom.commands.ICommandMenuItem
 import view.custom.panels.AtributePanel
 import javax.swing.JMenuItem
 
-class RemoveAtributeCommandMenuItem : CommandMenuItem<AtributePanel> {
+class RemoveAtributeCommandMenuItem : ICommandMenuItem<AtributePanel> {
 
     override fun getJMenuItem(panel: AtributePanel): JMenuItem {
 
@@ -23,8 +23,6 @@ class RemoveAtributeCommandMenuItem : CommandMenuItem<AtributePanel> {
 
 
 class RemoveAtributeCommand(private val parentEntity: Entity, private val atribute: Atribute) : ICommand {
-    override val displayName: String
-        get() = TODO("Not yet implemented")
 
     override fun execute() {
         parentEntity.removeAtribute(atribute)

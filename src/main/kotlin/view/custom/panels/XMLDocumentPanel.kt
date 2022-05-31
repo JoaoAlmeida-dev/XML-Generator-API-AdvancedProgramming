@@ -3,14 +3,9 @@ package view.custom.panels
 import model.Entity
 import model.XMLDocument
 import view.XmlDocumentController
-import view.custom.commands.CommandMenuItem
 import java.awt.*
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
 import javax.swing.BorderFactory
 import javax.swing.JPanel
-import javax.swing.JPopupMenu
-import javax.swing.SwingUtilities
 import javax.swing.border.CompoundBorder
 
 class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: XmlDocumentController) :

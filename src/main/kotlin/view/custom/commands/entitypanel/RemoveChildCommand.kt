@@ -2,12 +2,23 @@ package view.custom.commands.entitypanel
 
 import model.Entity
 import view.custom.commands.ICommand
+import view.custom.commands.ICommandMenuItem
+import view.custom.panels.EntityPanel
 import javax.swing.JMenuItem
 
-class RemoveChildCommand(private val entity: Entity) : ICommand {
-    override val displayName: String
-        get() = TODO("Not yet implemented")
 
+class RemoveChildCommandMenuItem() : ICommandMenuItem<EntityPanel> {
+    override fun getJMenuItem(panel: EntityPanel): JMenuItem {
+        val removeChildMenuItem = JMenuItem("Remove child")
+        removeChildMenuItem.addActionListener {
+            panel.xmlController.addExecuteCommand(RemoveChildCommand(panel.entity))
+        }
+        return removeChildMenuItem
+    }
+
+}
+
+class RemoveChildCommand(private val entity: Entity) : ICommand {
 
     override fun execute() {
         entity.parent?.removeChild(entity)

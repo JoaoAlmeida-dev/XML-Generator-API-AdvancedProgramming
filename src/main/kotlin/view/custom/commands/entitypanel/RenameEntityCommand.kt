@@ -1,18 +1,18 @@
 package view.custom.commands.entitypanel
 
 import model.Entity
-import view.custom.commands.ICommandMenuItem
 import view.custom.commands.ICommand
+import view.custom.commands.ICommandMenuItem
 import view.custom.panels.EntityPanel
 import java.awt.GridLayout
 import javax.swing.*
 
-class AddChildCommandMenuItem() : ICommandMenuItem<EntityPanel> {
+class RenameEntityCommandMenuItem() : ICommandMenuItem<EntityPanel> {
     override fun getJMenuItem(panel: EntityPanel): JMenuItem {
-        val addChildMenuItem = JMenuItem("Add Child")
+        val addChildMenuItem = JMenuItem("Rename")
         addChildMenuItem.addActionListener {
-            val nameField = JTextField()
-            val nameFieldLabel = JLabel("name")
+            val nameField = JTextField(panel.entity.name)
+            val nameFieldLabel = JLabel("New name")
             val jPanel = JPanel()
             jPanel.layout = GridLayout(1, 2)
             jPanel.add(nameFieldLabel)
@@ -21,31 +21,31 @@ class AddChildCommandMenuItem() : ICommandMenuItem<EntityPanel> {
             JOptionPane.showConfirmDialog(
                 null,
                 jPanel,
-                "Insert the child's name",
+                "Insert the new child's name",
                 JOptionPane.OK_CANCEL_OPTION
             )
             nameField.requestFocus()
+            if (nameField.text.isNotEmpty()) {
+                panel.xmlController.addExecuteCommand(RenameEntityCommand(panel.entity, nameField.text))
+            }
 
-            val newEntity = Entity(name = nameField.text, parent = panel.entity)
-            panel.xmlController.addUndo(AddChildCommand(panel.entity, newEntity))
-            //revalidate()
-            //repaint()
         }
         return addChildMenuItem
     }
 
 }
 
-class AddChildCommand(private val parent: Entity, private val newEntity: Entity) : ICommand {
-
+class RenameEntityCommand(private val entity: Entity, private val text: String) : ICommand {
+    val oldName = entity.name
+    val newName = text
 
     override fun execute() {
-        parent.addChild(newEntity)
+        entity.rename(newName)
     }
 
     override fun undo() {
-        parent.removeChild(newEntity)
+        entity.rename(oldName)
     }
 
-    override fun toString() = "Add child ${newEntity.name}"
+    override fun toString() = "Rename Entity $newName"
 }

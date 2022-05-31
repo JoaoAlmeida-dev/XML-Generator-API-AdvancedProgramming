@@ -2,145 +2,15 @@ package view.custom.panels
 
 import model.Entity
 import view.XmlDocumentController
-import view.custom.commands.entitypanel.OverwriteContentCommand
+import view.custom.commands.entitypanel.*
 import java.awt.*
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
 import javax.swing.*
 import javax.swing.border.CompoundBorder
 
 class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) : ContainerPanel() {
 
-    companion object {
-
-
-        //region MenuItems
-
-        private fun printMenuOption(panel: EntityPanel): JMenuItem {
-            val printMenuItem = JMenuItem("Print")
-            printMenuItem.addActionListener {
-                println("-----------------------------------------")
-                println(panel.entity)
-                println("-----------------------------------------")
-            }
-            return printMenuItem
-        }
-
-        private fun renameMenuOption(panel: EntityPanel): JMenuItem {
-            val addChildMenuItem = JMenuItem("Rename")
-            addChildMenuItem.addActionListener {
-                val nameField = JTextField(panel.entity.name)
-                val nameFieldLabel = JLabel("New name")
-                val jPanel = JPanel()
-                jPanel.layout = GridLayout(1, 2)
-                jPanel.add(nameFieldLabel)
-                jPanel.add(nameField)
-
-                JOptionPane.showConfirmDialog(
-                    panel,
-                    jPanel,
-                    "Insert the new child's name",
-                    JOptionPane.OK_CANCEL_OPTION
-                )
-                nameField.requestFocus()
-                if (nameField.text.isNotEmpty()) {
-                    panel.xmlController.renameEntity(panel.entity, nameField.text)
-                }
-
-            }
-            return addChildMenuItem
-        }
-
-        private fun addChildMenuOption(panel: EntityPanel): JMenuItem {
-            val addChildMenuItem = JMenuItem("Add Child")
-            addChildMenuItem.addActionListener {
-                val nameField = JTextField()
-                val nameFieldLabel = JLabel("name")
-                val jPanel = JPanel()
-                jPanel.layout = GridLayout(1, 2)
-                jPanel.add(nameFieldLabel)
-                jPanel.add(nameField)
-
-                JOptionPane.showConfirmDialog(null, panel, "Insert the child's name", JOptionPane.OK_CANCEL_OPTION)
-                nameField.requestFocus()
-
-                val newEntity = Entity(name = nameField.text, parent = panel.entity)
-                panel.xmlController.addChild(panel.entity, newEntity)
-                //revalidate()
-                //repaint()
-            }
-            return addChildMenuItem
-        }
-
-
-        private fun addAtributeMenuOption(panel: EntityPanel): JMenuItem {
-            val addAtributeMenuItem = JMenuItem("Add Atribute")
-            addAtributeMenuItem.addActionListener {
-                val field1 = JTextField()
-                val field1Label = JLabel("key")
-                val field2 = JTextField()
-                val field2Label = JLabel("value")
-                val jPanel = JPanel()
-                jPanel.layout = GridLayout(2, 2)
-                jPanel.add(field1Label)
-                jPanel.add(field1)
-                jPanel.add(field2Label)
-                jPanel.add(field2)
-
-                JOptionPane.showConfirmDialog(null, panel, "Insert the atribute data", JOptionPane.OK_CANCEL_OPTION)
-                //add(JLabel(keyLabel))
-                //val valueLabel: String? = JOptionPane.showInputDialog("value")
-                //add(JLabel(valueLabel))
-
-                if (field1.text != null && field1.text.isNotEmpty() &&
-                    field2.text != null && field2.text.isNotEmpty()
-                ) {
-                    panel.xmlController.addAtribute(panel.entity, field1.text, field2.text)
-                    //  revalidate()
-                    //  repaint()
-                } else {
-                    println("User canceled addition of new atribute")
-                }
-            }
-            return addAtributeMenuItem
-        }
-
-        private fun addContentMenuOption(panel: EntityPanel): JMenuItem {
-            val addContentMenuItem = JMenuItem("Add Content")
-            addContentMenuItem.addActionListener {
-                val contentField = JTextField()
-                val nameFieldLabel = JLabel("Content")
-                val jPanel = JPanel()
-                jPanel.layout = GridLayout(2, 1)
-                jPanel.add(nameFieldLabel)
-                jPanel.add(contentField)
-
-                JOptionPane.showConfirmDialog(null, panel, "Insert the Content", JOptionPane.OK_CANCEL_OPTION)
-                contentField.requestFocus()
-
-                if (contentField.text != null && contentField.text.isNotEmpty()) {
-                    panel.xmlController.addContent(panel.entity, contentField.text)
-                }
-                // revalidate()
-                // repaint()
-            }
-            return addContentMenuItem
-        }
-
-        private fun removeChildMenuOption(panel: EntityPanel): JMenuItem {
-            val removeChildMenuItem = JMenuItem("Remove child")
-            removeChildMenuItem.addActionListener {
-                panel.xmlController.removeChild(panel.entity)
-                //revalidate()
-                //repaint()
-            }
-            return removeChildMenuItem
-        }
-        //endregion
-
-    }
 
     private var northPanel = JPanel()
     private var centerPanel = JPanel()
@@ -201,7 +71,7 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
                         println(e.keyCode)
                         if (e.keyCode == KeyEvent.VK_ENTER && e.isControlDown) {
                             println("Saving to instance")
-                            xmlController.overwriteContent(entity, jTextArea.text)
+                            xmlController.addExecuteCommand(OverwriteContentCommand(entity, jTextArea.text))
                         }
                     }
 

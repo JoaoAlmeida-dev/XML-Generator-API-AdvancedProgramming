@@ -1,6 +1,5 @@
 package view
 
-import model.Entity
 import model.XMLDocument
 import org.jetbrains.kotlin.backend.common.pop
 import view.custom.commands.*
@@ -19,18 +18,29 @@ open class XmlDocumentController(val rootDoc: XMLDocument) {
     private val redoCommandsList: MutableList<ICommand> = mutableListOf<ICommand>()
 
     @InjectAdd
-    public val entityPluginCommands: MutableList<CommandMenuItem<EntityPanel>> = mutableListOf()
+    public val entityPluginCommands: MutableList<ICommandMenuItem<EntityPanel>> = mutableListOf()
 
     @InjectAdd
-    public val atributePluginCommands: MutableList<CommandMenuItem<AtributePanel>> = mutableListOf()
+    public val atributePluginCommands: MutableList<ICommandMenuItem<AtributePanel>> = mutableListOf()
 
     @InjectAdd
-    public val xmldocumentPluginCommands: MutableList<CommandMenuItem<XMLDocumentPanel>> = mutableListOf()
+    public val xmldocumentPluginCommands: MutableList<ICommandMenuItem<XMLDocumentPanel>> = mutableListOf()
 
-    public val entityCommands: MutableList<CommandMenuItem<EntityPanel>> = mutableListOf()
-    public val atributeCommands: MutableList<CommandMenuItem<AtributePanel>> =
-        mutableListOf(SetAtributeCommandMenuItem(), RemoveAtributeCommandMenuItem())
-    public val xmldocumentCommands: MutableList<CommandMenuItem<XMLDocumentPanel>> = mutableListOf()
+    public val entityCommands: MutableList<ICommandMenuItem<EntityPanel>> = mutableListOf(
+        AddAtributeCommandMenuItem(),
+        AddChildCommandMenuItem(),
+        AddContentCommandMenuItem(),
+        RemoveChildCommandMenuItem(),
+        RenameEntityCommandMenuItem(),
+        PrintCommandMenuItem(),
+    )
+    public val atributeCommands: MutableList<ICommandMenuItem<AtributePanel>> = mutableListOf(
+        SetAtributeCommandMenuItem(),
+        RemoveAtributeCommandMenuItem()
+    )
+    public val xmldocumentCommands: MutableList<ICommandMenuItem<XMLDocumentPanel>> = mutableListOf(
+
+    )
 
     fun printDoc() {
         println("---------------------------\n$rootDoc\n---------------------------")
@@ -81,12 +91,12 @@ open class XmlDocumentController(val rootDoc: XMLDocument) {
 
     //region Atributes
 
-    fun addAtribute(parentEntity: Entity, key: String, value: String) {
+/*    fun addAtribute(parentEntity: Entity, key: String, value: String) {
 
         val addAtributeCommand: ICommand = AddAtributeCommand(parentEntity, key, value)
         addAtributeCommand.execute()
         addUndo(addAtributeCommand)
-    }
+    }*/
 /*
     fun removeAtribute(parentEntity: Entity, atribute: Atribute) {
         val removeAtributeCommand: ICommand =
@@ -103,6 +113,7 @@ open class XmlDocumentController(val rootDoc: XMLDocument) {
     //endregion
 
     //region Child
+/*
 
     fun renameEntity(entity: Entity, text: String) {
         val renameEntityCommand: ICommand = RenameEntity(entity, text)
@@ -121,10 +132,11 @@ open class XmlDocumentController(val rootDoc: XMLDocument) {
         removeChildCommand.execute()
         addUndo(removeChildCommand)
     }
+*/
     //endregion
 
     //region Content
-
+/*
     fun addContent(entity: Entity, text: String) {
         val addContentCommand: ICommand = AddContentCommand(entity, text)
         addContentCommand.execute()
@@ -136,7 +148,7 @@ open class XmlDocumentController(val rootDoc: XMLDocument) {
         overwriteContentCommand.execute()
         addUndo(overwriteContentCommand)
 
-    }
+    }*/
     //endregion
 
     //endregion

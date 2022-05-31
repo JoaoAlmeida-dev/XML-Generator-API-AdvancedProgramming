@@ -1,19 +1,15 @@
 package testbed.plugins
 
-import model.Atribute
 import model.XMLContainer
-import view.IObservable
-import view.custom.commands.CommandMenuItem
+import view.custom.commands.ICommandMenuItem
 import view.custom.panels.EntityPanel
 import java.awt.Color
 import java.awt.GridLayout
 import java.util.*
-import javax.swing.JLabel
 import javax.swing.JMenuItem
 import javax.swing.JPanel
-import javax.swing.SwingConstants
 
-class EventCommand : CommandMenuItem<EntityPanel> {
+class EventCommand : ICommandMenuItem<EntityPanel> {
     override fun getJMenuItem(panel: EntityPanel): JMenuItem {
         return JMenuItem("Add Calendar")
     }
@@ -54,6 +50,8 @@ class EventPanel(
 class Event(
     val date: Date
 ) : XMLContainer() {
-
+    init {
+        
+    }
 
 }

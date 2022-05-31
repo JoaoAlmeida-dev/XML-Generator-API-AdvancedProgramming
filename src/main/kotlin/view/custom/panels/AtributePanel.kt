@@ -3,11 +3,12 @@ package view.custom.panels
 import model.Atribute
 import model.Entity
 import view.XmlDocumentController
+import view.custom.commands.atributepanel.SetAtributeCommand
 import java.awt.Color
 import java.awt.GridLayout
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
-import javax.swing.*
+import javax.swing.JLabel
+import javax.swing.JTextField
+import javax.swing.SwingConstants
 
 class AtributePanel(
     var parentEntity: Entity,
@@ -37,7 +38,11 @@ class AtributePanel(
     private fun addLabels(atribute: Atribute) {
 
         add(JLabel(atribute.key, SwingConstants.RIGHT))
-        add(JLabel(atribute.value, SwingConstants.RIGHT))
+        val valueTextField = JTextField(atribute.value, SwingConstants.RIGHT)
+        valueTextField.addActionListener {
+            xmlController.addExecuteCommand(SetAtributeCommand(atribute, valueTextField.text))
+        }
+        add(valueTextField)
     }
 
 }

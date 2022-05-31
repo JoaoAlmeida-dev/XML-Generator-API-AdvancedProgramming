@@ -5,11 +5,8 @@ import view.custom.commands.ICommand
 import javax.swing.JMenuItem
 
 class OverwriteContentCommand(private val entity: Entity, private val text: String) : ICommand {
-    val oldContent = entity.contents
-    val newContent = text
-    override val displayName: String
-        get() = TODO("Not yet implemented")
-
+    private val oldContent = entity.contents
+    private val newContent = text
 
     override fun execute() {
         entity.replaceContent(newContent)
