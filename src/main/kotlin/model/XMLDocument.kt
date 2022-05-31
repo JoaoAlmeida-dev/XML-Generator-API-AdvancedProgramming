@@ -7,9 +7,11 @@ import java.io.File
 
 open class XMLDocument(
     val header: XmlHeader,
-    var entity: Entity?,
+    entity: XMLContainer?,
 
-    ) : XMLContainer, IObservable<(XMLDocument) -> Unit> {
+    ) : XMLContainer(
+    depth = 0, children = if (entity != null) mutableListOf(entity) else mutableListOf()
+) {
 
     constructor(header: XmlHeader, obj: Any) : this(
         header = header, entity = Entity(obj = obj, depth = 0)
@@ -17,39 +19,33 @@ open class XMLDocument(
 
     init {
         if (entity != null) {
-            entity!!.parent = this
+            entity.parent = this
         }
     }
 
-    override val observers: MutableList<(XMLDocument) -> Unit> = mutableListOf()
+    var entity: XMLContainer = children.first()
 
 
-    override fun removeChild(entity: Entity) {
-        if (entity == this.entity) {
-            this.entity = null
+    override fun removeChild(child: XMLContainer) {
+        super.removeChild(child)
+        notifyObservers { it(this) }
+    }
+
+    override fun addChild(child: XMLContainer) {
+        if (this.children.isEmpty()) {
+            this.children.add(child)
+        } else {
+            this.children.clear()
+            this.children.add(child)
         }
         notifyObservers { it(this) }
     }
 
-    override fun addChild(entity: Entity) {
-        if (this.entity == null) {
-            this.entity = entity
-        }
-        notifyObservers { it(this) }
-    }
-
-    override fun getDepth(): Int = 0
 
     override fun toString(): String {
-        return "$header\n$entity "
+        return "$header\n${children.first()} "
     }
 
-    fun accept(v: IVisitor) {
-        if (v.visit(this)) {
-            this.entity?.accept(v)
-        }
-        v.endvisit(this)
-    }
 
     fun filter(decidingFunction: (Entity) -> Boolean): XMLDocument {
         val filterVisitor = FilterVisitor(decidingFunction)

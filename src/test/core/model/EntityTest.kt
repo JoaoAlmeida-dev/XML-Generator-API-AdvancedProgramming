@@ -29,9 +29,9 @@ internal class EntityTest {
             inputDepth = 0,
             atributes =
             mutableListOf(
-                Atribute(key = "book", value = "Jeronimo em Belém", value1 = ""),
-                Atribute(key = "author", value = "Jeronimo Stilton", value1 = ""),
-                Atribute(key = "pages", value = 100.toString(), value1 = ""),
+                Atribute(key = "book", value = "Jeronimo em Belém"),
+                Atribute(key = "author", value = "Jeronimo Stilton"),
+                Atribute(key = "pages", value = 100.toString()),
             )
         )
 
@@ -131,8 +131,8 @@ internal class EntityTest {
             Entity(
                 name = "Stilton", inputDepth = 1, atributes =
                 mutableListOf(
-                    Atribute(key = "book", value = "Jeronimo em Belém", value1 = ""),
-                    Atribute(key = "author", value = "Jeronimo Stilton", value1 = ""),
+                    Atribute(key = "book", value = "Jeronimo em Belém"),
+                    Atribute(key = "author", value = "Jeronimo Stilton"),
                     Atribute(name = "pages", value = 100),
                 )
             )

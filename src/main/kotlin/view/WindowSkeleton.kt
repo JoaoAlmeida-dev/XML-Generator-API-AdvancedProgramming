@@ -1,6 +1,5 @@
 import model.XMLDocument
 import view.XmlDocumentController
-import view.custom.panels.EntityTreeNode
 import view.custom.panels.XMLDocumentPanel
 import view.injection.Inject
 import view.injection.Injector
@@ -14,7 +13,6 @@ import java.awt.event.MouseListener
 import java.io.File
 import javax.swing.*
 import javax.swing.filechooser.FileSystemView
-import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 import javax.swing.tree.TreeNode
 import kotlin.system.exitProcess
@@ -137,7 +135,7 @@ class WindowSkeleton() : JFrame("title") {
         jMenuBar = menuBar
     }
 
-    private fun createTreePane(xmlDocumentController: XmlDocumentController, parentComponent: JComponent) {
+/*    private fun createTreePane(xmlDocumentController: XmlDocumentController, parentComponent: JComponent) {
 
         val rootNode = DefaultMutableTreeNode(xmlDocumentController.rootDoc.header)
         val treePanel = JTree(rootNode)
@@ -146,10 +144,12 @@ class WindowSkeleton() : JFrame("title") {
 
 
         val model = DefaultTreeModel(rootNode)
-        val entityNode = xmlDocumentController.rootDoc.entity?.let { EntityTreeNode(it, updateTreeModel(model)) }
+        val entityNode =
+            xmlDocumentController.rootDoc.children.first()
+        EntityTreeNode(entityNode, updateTreeModel(model))
         rootNode.add(entityNode)
 
-    }
+    }*/
 
     private fun updateTreeModel(model: DefaultTreeModel): () -> Unit =
         fun() = this.run {

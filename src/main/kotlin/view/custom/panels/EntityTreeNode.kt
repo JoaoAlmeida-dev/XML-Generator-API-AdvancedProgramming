@@ -1,10 +1,12 @@
 package view.custom.panels
 
 import model.Entity
+import model.XMLContainer
 import javax.swing.tree.DefaultMutableTreeNode
 
+/*
 
-class EntityTreeNode(entity: Entity, reloadCallback: () -> Unit) : DefaultMutableTreeNode(entity.name) {
+class EntityTreeNode(entity: XMLContainer, reloadCallback: () -> Unit) : DefaultMutableTreeNode(entity.name) {
     init {
         entity.atributes.forEach {
             add(DefaultMutableTreeNode(it.toString()))
@@ -30,4 +32,4 @@ class EntityTreeNode(entity: Entity, reloadCallback: () -> Unit) : DefaultMutabl
 
     }
 
-}
+}*/

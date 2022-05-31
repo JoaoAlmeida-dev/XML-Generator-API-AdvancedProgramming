@@ -6,7 +6,7 @@ import view.custom.commands.ICommand
 
 class AddAtributeCommand(private val parentEntity: Entity, private val key: String, private val value: String) :
     ICommand {
-    val atribute = Atribute(key, value, "")
+    val atribute = Atribute(key, value)
     override val displayName: String
         get() = "Add Atribute"
 /*

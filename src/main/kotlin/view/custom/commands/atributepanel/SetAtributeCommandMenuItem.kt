@@ -4,6 +4,7 @@ import model.Atribute
 import view.custom.commands.CommandMenuItem
 import view.custom.commands.ICommand
 import view.custom.panels.AtributePanel
+import view.custom.panels.ContainerPanel
 import java.awt.GridLayout
 import javax.swing.*
 
@@ -28,22 +29,21 @@ class SetAtributeCommandMenuItem : CommandMenuItem<AtributePanel> {
         }
         return jMenuItem
     }
+}
 
-    class SetAtributeCommand(private val oldAtribute: Atribute, private val newValue: String) : ICommand {
-        var oldAtributeValue: String = "" + oldAtribute.value
-        override val displayName: String
-            get() = TODO("Not yet implemented")
+class SetAtributeCommand(private val oldAtribute: Atribute, private val newValue: String) : ICommand {
+    var oldAtributeValue: String = "" + oldAtribute.value
+    override val displayName: String
+        get() = TODO("Not yet implemented")
 
-        override fun execute() {
-            oldAtribute.rename(newValue)
-        }
-
-        override fun undo() {
-            oldAtribute.rename(oldAtributeValue)
-        }
-
-        override fun toString() = "replaced [$oldAtributeValue] with [$newValue]"
-
+    override fun execute() {
+        oldAtribute.rename(newValue)
     }
+
+    override fun undo() {
+        oldAtribute.rename(oldAtributeValue)
+    }
+
+    override fun toString() = "replaced [$oldAtributeValue] with [$newValue]"
 
 }

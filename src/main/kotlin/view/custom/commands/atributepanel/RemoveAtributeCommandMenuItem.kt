@@ -19,21 +19,21 @@ class RemoveAtributeCommandMenuItem : CommandMenuItem<AtributePanel> {
         }
         return jMenuItem
     }
+}
 
 
-    class RemoveAtributeCommand(private val parentEntity: Entity, private val atribute: Atribute) : ICommand {
-        override val displayName: String
-            get() = TODO("Not yet implemented")
+class RemoveAtributeCommand(private val parentEntity: Entity, private val atribute: Atribute) : ICommand {
+    override val displayName: String
+        get() = TODO("Not yet implemented")
 
-        override fun execute() {
-            parentEntity.removeAtribute(atribute)
-        }
-
-        override fun undo() {
-            parentEntity.addAtribute(atribute)
-        }
-
-        override fun toString() = "Remove Atribute $atribute"
+    override fun execute() {
+        parentEntity.removeAtribute(atribute)
     }
 
+    override fun undo() {
+        parentEntity.addAtribute(atribute)
+    }
+
+    override fun toString() = "Remove Atribute $atribute"
 }
+

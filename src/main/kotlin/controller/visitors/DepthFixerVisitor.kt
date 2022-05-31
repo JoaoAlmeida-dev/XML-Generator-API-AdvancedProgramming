@@ -9,7 +9,7 @@ class DepthFixerVisitor : IVisitor {
 
     override fun visit(e: Entity): Boolean {
         currentDepth++
-        e.setDepth(currentDepth)
+        e.depth = currentDepth
         return super.visit(e)
     }
 

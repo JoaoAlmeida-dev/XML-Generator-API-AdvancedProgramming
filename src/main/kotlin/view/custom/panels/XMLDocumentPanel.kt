@@ -1,7 +1,9 @@
 package view.custom.panels
 
+import model.Entity
 import model.XMLDocument
 import view.XmlDocumentController
+import view.custom.commands.CommandMenuItem
 import java.awt.*
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
@@ -11,7 +13,8 @@ import javax.swing.JPopupMenu
 import javax.swing.SwingUtilities
 import javax.swing.border.CompoundBorder
 
-class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: XmlDocumentController) : JPanel() {
+class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: XmlDocumentController) :
+    ContainerPanel() {
     private var northPanel = JPanel()
     private var centerPanel = JPanel()
 
@@ -26,10 +29,11 @@ class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: 
         add(northPanel, BorderLayout.NORTH)
         add(centerPanel, BorderLayout.CENTER)
 
-        centerPanel.add(doc.entity?.let { EntityPanel(it, xmlController) })
+        addChildren(doc)
 
         doc.addObserver { doc ->
             run {
+                doc as XMLDocument
                 resetPanels()
                 addChildren(doc)
                 revalidate()
@@ -37,44 +41,16 @@ class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: 
                 println("repainted xmldocpanel")
             }
         }
-        createPopupMenu()
+        createPopupMenu(xmlController.xmldocumentCommands, xmlController.xmldocumentPluginCommands)
     }
 
     private fun addChildren(newDoc: XMLDocument) {
-        if (newDoc.entity != null) {
-            centerPanel.add(EntityPanel(newDoc.entity!!, xmlController))
+        val entity = newDoc.entity
+        if (entity is Entity) {
+            centerPanel.add(EntityPanel(entity, xmlController))
         }
 
     }
-
-    private fun createPopupMenu() {
-        val popupmenu = JPopupMenu("Actions")
-
-        addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent) {
-                if (SwingUtilities.isRightMouseButton(e))
-                    popupmenu.show(this@XMLDocumentPanel, e.x, e.y)
-            }
-        })
-
-        xmlController.xmldocumentCommands.forEach {
-            popupmenu.add(
-                it.getJMenuItem(this)
-            )
-        }
-        popupmenu.addSeparator()
-        xmlController.xmldocumentPluginCommands.forEach {/*
-            val menuItem = it.getJMenuItem(this)
-            menuItem.addActionListener(fun(_: ActionEvent) {
-                xmlController.addExecuteCommand(it.getCommand(this))
-            })*/
-            popupmenu.add(
-                it.getJMenuItem(this)
-            )
-        }
-
-    }
-
 
     private fun resetPanels() {
         centerPanel.removeAll()

@@ -2,6 +2,7 @@ package view.custom.panels
 
 import model.Entity
 import view.XmlDocumentController
+import view.custom.commands.entitypanel.OverwriteContentCommand
 import java.awt.*
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
@@ -10,7 +11,7 @@ import java.awt.event.MouseEvent
 import javax.swing.*
 import javax.swing.border.CompoundBorder
 
-class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) : JPanel() {
+class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) : ContainerPanel() {
 
     companion object {
 
@@ -167,20 +168,22 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
 //TODO adicionar tipo de notificiação - lesspriority
         entity.addObserver { entity ->
             run {
+                entity as Entity
                 resetPanels()
                 addChildren(entity)
                 revalidate()
                 repaint()
             }
         }
-        createPopupMenu()
+        createPopupMenu(xmlController.entityCommands, xmlController.entityPluginCommands)
     }
 
     private fun addChildren(entity: Entity) {
         entity.atributes.forEach {
             northPanel.add(AtributePanel(entity, it, xmlController))
         }
-        entity.children.forEach {
+        entity.children.filterIsInstance<Entity>().forEach {
+            it as Entity
             centerPanel.add(EntityPanel(it, xmlController))
         }
 
@@ -218,41 +221,6 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
         northPanel.removeAll()
         centerPanel.removeAll()
         southPanel.removeAll()
-    }
-
-    private fun createPopupMenu() {
-        val popupmenu = JPopupMenu("Actions")
-
-        popupmenu.add(renameMenuOption(this))
-        popupmenu.add(addChildMenuOption(this))
-        popupmenu.add(addAtributeMenuOption(this))
-        popupmenu.add(addContentMenuOption(this))
-        popupmenu.add(removeChildMenuOption(this))
-        popupmenu.add(printMenuOption(this))
-
-        addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent) {
-                if (SwingUtilities.isRightMouseButton(e))
-                    popupmenu.show(this@EntityPanel, e.x, e.y)
-            }
-        })
-
-        xmlController.entityCommands.forEach {
-            popupmenu.add(
-                it.getJMenuItem(this)
-            )
-        }
-        popupmenu.addSeparator()
-        xmlController.entityPluginCommands.forEach {/*
-            val menuItem = it.getJMenuItem(this)
-            menuItem.addActionListener(fun(_: ActionEvent) {
-                xmlController.addExecuteCommand(it.getCommand(this))
-            })*/
-            popupmenu.add(
-                it.getJMenuItem(this)
-            )
-        }
-
     }
 
     override fun paintComponent(g: Graphics) {

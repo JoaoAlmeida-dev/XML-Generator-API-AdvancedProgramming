@@ -13,7 +13,7 @@ class AtributePanel(
     var parentEntity: Entity,
     var atribute: Atribute,
     var xmlController: XmlDocumentController
-) : JPanel() {
+) : ContainerPanel() {
 
     init {
         layout = GridLayout(1, 2)
@@ -21,44 +21,23 @@ class AtributePanel(
         addLabels(atribute)
         atribute.addObserver { atribute ->
             run {
+                removeLabels()
                 addLabels(atribute)
                 revalidate()
                 repaint()
             }
         }
-        createPopupMenu()
+        createPopupMenu(xmlController.atributeCommands, xmlController.atributePluginCommands)
+    }
+
+    private fun removeLabels() {
+        removeAll()
     }
 
     private fun addLabels(atribute: Atribute) {
 
         add(JLabel(atribute.key, SwingConstants.RIGHT))
         add(JLabel(atribute.value, SwingConstants.RIGHT))
-    }
-
-    private fun createPopupMenu() {
-        val popupmenu = JPopupMenu("Actions")
-        xmlController.atributeCommands.forEach {
-            popupmenu.add(
-                it.getJMenuItem(this)
-            )
-        }
-        popupmenu.addSeparator()
-        xmlController.atributePluginCommands.forEach {/*
-            val menuItem = it.getJMenuItem(this)
-            menuItem.addActionListener(fun(_: ActionEvent) {
-                xmlController.addExecuteCommand(it.getCommand(this))
-            })*/
-            popupmenu.add(
-                it.getJMenuItem(this)
-            )
-        }
-
-        addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent) {
-                if (SwingUtilities.isRightMouseButton(e))
-                    popupmenu.show(this@AtributePanel, e.x, e.y)
-            }
-        })
     }
 
 }

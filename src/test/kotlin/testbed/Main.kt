@@ -81,8 +81,8 @@ private fun xmlDemoHardCoded(header: XmlHeader) {
         Entity(
             name = "Stilton", inputDepth = 1, atributes =
             mutableListOf(
-                Atribute(key = "book", value = "Jeronimo em Belém", value1 = ""),
-                Atribute(key = "author", value = "Jeronimo Stilton", value1 = ""),
+                Atribute(key = "book", value = "Jeronimo em Belém"),
+                Atribute(key = "author", value = "Jeronimo Stilton"),
                 Atribute(name = "pages", value = 100),
             )
         )
@@ -90,7 +90,7 @@ private fun xmlDemoHardCoded(header: XmlHeader) {
     val bookAtributes: MutableCollection<Atribute> =
         mutableListOf(
             Atribute(name = "serialN", value = 3425),
-            Atribute(key = "Library", value = "Lisboa", value1 = "")
+            Atribute(key = "Library", value = "Lisboa")
         )
 
     val entity = Entity(

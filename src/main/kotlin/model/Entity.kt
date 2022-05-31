@@ -13,26 +13,27 @@ import kotlin.reflect.jvm.isAccessible
 class Entity(
     inputDepth: Int? = null,
     var name: String,
-    var parent: XMLContainer? = null,
     var contents: String? = null,
-    val atributes: MutableCollection<Atribute> = mutableListOf<Atribute>(),
-    val children: MutableCollection<Entity> = mutableListOf<Entity>(),
-) : XMLContainer, IObservable<(Entity) -> Unit> {
-    private var depth: Int
+    val atributes: MutableCollection<Atribute> = mutableListOf(),
+    children: MutableCollection<XMLContainer> = mutableListOf(),
+    parent: XMLContainer? = null,
+) : XMLContainer(
+    parent = parent,
+    children = children,
+) {
+
+    override var depth: Int
+        get() = super.depth
+        set(value) {
+            super.depth = value
+            notifyObservers { it(this) }
+        }
 
     init {
-        depth = getDepth(parent)
+        depth = getParentOrDefaultDepth(parent)
     }
 
-    fun setDepth(newDepth: Int) {
-        this.depth = newDepth
-        notifyObservers { it(this) }
-    }
 
-    override fun getDepth(): Int = depth
-
-
-    override val observers: MutableList<(Entity) -> Unit> = mutableListOf()
 /*    enum class EventType {
         ADDCHILD,
         REMOVECHILD,
@@ -50,12 +51,13 @@ class Entity(
             obj::class.findAnnotation<Annotations.XmlName>()?.name ?: (name ?: (obj::class.simpleName
                 ?: "Default Name"))
 
-        private fun getDepth(parent: XMLContainer?): Int = if (parent == null) 0 else parent.getDepth() + 1
+        private fun getParentOrDefaultDepth(parent: XMLContainer?): Int =
+            if (parent == null) 0 else parent.depth + 1
     }
 //region constructors
 
     constructor(obj: Any, depth: Int?, name: String? = null, parent: XMLContainer? = null) : this(
-        inputDepth = getDepth(parent),
+        inputDepth = getParentOrDefaultDepth(parent),
         name = getObjName(obj, name),
         parent = parent
     ) {
@@ -78,7 +80,7 @@ class Entity(
     private fun mapConstructor(obj: Map<*, *>) {
         obj.forEach { entry: Map.Entry<Any?, Any?> ->
             if (entry.value!!::class.isSubclassOf(String::class)) {
-                addAtribute(Atribute(key = entry.key.toString(), value = entry.value.toString(), value1 = ""))
+                addAtribute(Atribute(key = entry.key.toString(), value = entry.value.toString()))
             } else {
                 if (entry.value != null) {
                     addChild(
@@ -159,23 +161,14 @@ class Entity(
     }
 
 
-    override fun addChild(entity: Entity) {
-        children.add(entity)
+    override fun addChild(child: XMLContainer) {
+        super.addChild(child)
         notifyObservers { it: (Entity) -> Unit -> it(this) }
     }
 
 
-    override fun removeChild(child: Entity) {
-        child.parent = null
-        if (children.contains(child)) {
-            println("removing child: Found")
-            children.remove(child)
-        } else {
-            println("removing child: NotFound")
-            children.forEach {
-                it.removeChild(child)
-            }
-        }
+    override fun removeChild(child: XMLContainer) {
+        super.removeChild(child)
         notifyObservers { it(this) }
     }
 
@@ -261,9 +254,9 @@ class Entity(
     }
 
 
-    fun accept(v: IVisitor) {
+    override fun accept(v: IVisitor) {
         if (v.visit(this)) {
-            val childrenCopy = mutableListOf<Entity>()
+            val childrenCopy = mutableListOf<XMLContainer>()
             childrenCopy.addAll(this.children)
             childrenCopy.forEach {
                 it.accept(v)
