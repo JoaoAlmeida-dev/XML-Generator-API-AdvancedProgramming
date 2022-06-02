@@ -53,7 +53,6 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
             northPanel.add(AtributePanel(entity, it, xmlController))
         }
         entity.children.filterIsInstance<Entity>().forEach {
-            it as Entity
             centerPanel.add(EntityPanel(it, xmlController))
         }
 

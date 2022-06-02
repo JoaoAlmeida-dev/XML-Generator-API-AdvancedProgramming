@@ -27,7 +27,7 @@ class AddChildCommandMenuItem() : ICommandMenuItem<EntityPanel> {
             nameField.requestFocus()
 
             val newEntity = Entity(name = nameField.text, parent = panel.entity)
-            panel.xmlController.addUndo(AddChildCommand(panel.entity, newEntity))
+            panel.xmlController.addExecuteCommand(AddChildCommand(panel.entity, newEntity))
             //revalidate()
             //repaint()
         }

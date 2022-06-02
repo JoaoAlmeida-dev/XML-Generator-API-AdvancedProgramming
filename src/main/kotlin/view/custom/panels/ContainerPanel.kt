@@ -9,10 +9,9 @@ import javax.swing.SwingUtilities
 
 abstract class ContainerPanel : JPanel() {
 
-
     protected open fun <T : ContainerPanel> createPopupMenu(
-        commands: Collection<ICommandMenuItem<T>>,
-        pluginCommands: Collection<ICommandMenuItem<T>>
+        commands: Collection<ICommandMenuItem<T>>? = null,
+        pluginCommands: Collection<ICommandMenuItem<T>>? = null
     ) {
         val popupmenu = JPopupMenu("Actions")
 
@@ -23,13 +22,13 @@ abstract class ContainerPanel : JPanel() {
             }
         })
 
-        commands.forEach {
+        commands?.forEach {
             popupmenu.add(
                 it.getJMenuItem(this as T)
             )
         }
         popupmenu.addSeparator()
-        pluginCommands.forEach {
+        pluginCommands?.forEach {
             popupmenu.add(
                 it.getJMenuItem(this as T)
             )

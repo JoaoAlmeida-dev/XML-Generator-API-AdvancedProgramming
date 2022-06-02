@@ -10,6 +10,8 @@ abstract class XMLContainer(
     final val children: MutableCollection<XMLContainer> = mutableListOf<XMLContainer>(),
 ) : Visitable, IObservable<(XMLContainer) -> Unit> {
 
+    override val observers: MutableList<(XMLContainer) -> Unit> = mutableListOf()
+
     open fun removeChild(child: XMLContainer) {
         child.parent = null
         if (children.contains(child)) {
@@ -38,9 +40,6 @@ abstract class XMLContainer(
         v.endvisit(this)
 
     }
-
-
-    override val observers: MutableList<(XMLContainer) -> Unit> = mutableListOf()
 
 
 }
