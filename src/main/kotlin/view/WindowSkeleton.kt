@@ -171,11 +171,12 @@ class WindowSkeleton() : JFrame("title") {
 
 
         val jPanel = JPanel(GridLayout(0, 1))
-        val centerScrollPane: JScrollPane = JScrollPane(jPanel)
-        centerScrollPane.verticalScrollBar.unitIncrement = 16
-        centerScrollPane.horizontalScrollBar.unitIncrement = 16
-
-        rootboxPanel.add(centerScrollPane, BorderLayout.CENTER)
+        val centerScrollPane: JScrollPane =
+            JScrollPane(jPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER)
+        //centerScrollPane.verticalScrollBar.unitIncrement = 16
+        //centerScrollPane.horizontalScrollBar.unitIncrement = 16
+        //rootboxPanel.add(centerScrollPane, BorderLayout.CENTER)
+        rootboxPanel.add(jPanel, BorderLayout.CENTER)
         jPanel.add(XMLDocumentPanel(xmlDocumentController.rootDoc, xmlDocumentController))
 
     }

@@ -9,6 +9,28 @@ import javax.swing.SwingUtilities
 
 abstract class ContainerPanel : JPanel() {
 
+    public open fun addChild(child: JPanel) {
+        add(child)
+        redraw()
+    }
+
+    public open fun removeChild(child: JPanel) {
+        remove(child)
+        redraw()
+    }
+
+    public fun redraw() {
+        updateUI()
+        revalidate()
+        repaint()
+        println("repainted: ${this::class.simpleName}")
+    }
+
+    public open fun clear() {
+        removeAll()
+    }
+
+
     protected open fun <T : ContainerPanel> createPopupMenu(
         commands: Collection<ICommandMenuItem<T>>? = null,
         pluginCommands: Collection<ICommandMenuItem<T>>? = null

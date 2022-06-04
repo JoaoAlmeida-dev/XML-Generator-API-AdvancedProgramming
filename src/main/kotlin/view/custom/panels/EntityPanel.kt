@@ -17,38 +17,46 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
     private var southPanel = JPanel()
 
     init {
-        layout = BorderLayout()
+        this.layout = BorderLayout()
         border = CompoundBorder(
             BorderFactory.createEmptyBorder(30, 10, 10, 10),
             BorderFactory.createLineBorder(Color.BLACK, 2, true),
         )
 
         northPanel.layout = GridLayout(0, 1)
+        //centerPanel.layout = BoxLayout(centerPanel, BoxLayout.Y_AXIS)
         centerPanel.layout = GridLayout(0, 1)
-        centerPanel.minimumSize = Dimension(10, 1000)
-        centerPanel.preferredSize = Dimension(10, 1000)
+        //centerPanel.minimumSize = Dimension(1, 100)
+        //centerPanel.preferredSize = Dimension(1000, 1000)
         southPanel.layout = GridLayout(0, 1)
 
         add(northPanel, BorderLayout.NORTH)
         add(centerPanel, BorderLayout.CENTER)
         add(southPanel, BorderLayout.SOUTH)
-
         addChildren(entity)
 
 //TODO adicionar tipo de notificiação - lesspriority
         entity.addObserver { entity ->
             run {
                 entity as Entity
-                resetPanels()
+                clear()
                 addChildren(entity)
-                revalidate()
-                repaint()
+                redraw()
             }
         }
         createPopupMenu(xmlController.entityCommands, xmlController.entityPluginCommands)
     }
 
+    override fun addChild(child: JPanel) {
+        centerPanel.add(child)
+    }
+
+    override fun removeChild(child: JPanel) {
+        centerPanel.remove(child)
+    }
+
     private fun addChildren(entity: Entity) {
+
         entity.atributes.forEach {
             northPanel.add(AtributePanel(entity, it, xmlController))
         }
@@ -86,7 +94,7 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
 
     }
 
-    private fun resetPanels() {
+    override fun clear() {
         northPanel.removeAll()
         centerPanel.removeAll()
         southPanel.removeAll()

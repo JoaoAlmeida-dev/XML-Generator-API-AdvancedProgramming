@@ -15,7 +15,7 @@ class EventCommandMenuItem : ICommandMenuItem<EntityPanel> {
     override fun getJMenuItem(panel: EntityPanel): JMenuItem {
         val addChildMenuItem = JMenuItem("Add Event")
         addChildMenuItem.addActionListener {
-            val nameField = JTextField()
+/*            val nameField = JTextField()
             val nameFieldLabel = JLabel("name")
             val jPanel = JPanel()
             jPanel.layout = GridLayout(1, 2)
@@ -28,9 +28,9 @@ class EventCommandMenuItem : ICommandMenuItem<EntityPanel> {
                 "Insert the Event's name",
                 JOptionPane.OK_CANCEL_OPTION
             )
-            nameField.requestFocus()
+            nameField.requestFocus()*/
 
-            panel.xmlController.addExecuteCommand(AddEventCommand(panel.entity))
+            panel.xmlController.addExecuteCommand(AddEventCommand(panel))
             //revalidate()
             //repaint()
         }
@@ -38,7 +38,7 @@ class EventCommandMenuItem : ICommandMenuItem<EntityPanel> {
     }
 }
 
-class AddEventCommand(final val entity: Entity) : ICommand {
+class AddEventCommand(final val panel: ContainerPanel) : ICommand {
     val event = Event(date = Date())
     val eventpanel = EventPanel(event)
 
@@ -47,37 +47,33 @@ class AddEventCommand(final val entity: Entity) : ICommand {
     }
 
     override fun execute() {
-        entity.addChild(eventpanel)
+        panel.addChild(eventpanel)
+        panel.redraw()
     }
 
     override fun undo() {
-        entity.removeChild(eventpanel)
+        panel.removeChild(eventpanel)
+        panel.redraw()
     }
 
 }
 
 class EventPanel(
-    val event: Event
+    event: Event
 ) : ContainerPanel() {
 
     init {
-        layout = GridLayout(1, 2)
+        layout = GridLayout(0, 1)
         background = Color.GREEN
         addLabels(event)
         event.addObserver { event ->
             run {
                 event as Event
-                removeLabels()
+                clear()
                 addLabels(event)
-                revalidate()
-                repaint()
+                redraw()
             }
         }
-    }
-
-
-    private fun removeLabels() {
-        removeAll()
     }
 
     private fun addLabels(event: Event) {

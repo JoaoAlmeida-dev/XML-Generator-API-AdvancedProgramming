@@ -29,11 +29,9 @@ class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: 
         doc.addObserver { doc ->
             run {
                 doc as XMLDocument
-                resetPanels()
+                clear()
                 addChildren(doc)
-                revalidate()
-                repaint()
-                println("repainted xmldocpanel")
+                redraw()
             }
         }
         createPopupMenu(xmlController.xmldocumentCommands, xmlController.xmldocumentPluginCommands)
@@ -44,13 +42,11 @@ class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: 
         if (entity is Entity) {
             centerPanel.add(EntityPanel(entity, xmlController))
         }
-
     }
 
-    private fun resetPanels() {
+    override fun clear() {
         centerPanel.removeAll()
         northPanel.removeAll()
-
     }
 
     override fun paintComponent(g: Graphics) {

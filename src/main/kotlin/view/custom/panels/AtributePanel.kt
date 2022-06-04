@@ -22,17 +22,12 @@ class AtributePanel(
         addLabels(atribute)
         atribute.addObserver { atribute ->
             run {
-                removeLabels()
+                clear()
                 addLabels(atribute)
-                revalidate()
-                repaint()
+                redraw()
             }
         }
         createPopupMenu(xmlController.atributeCommands, xmlController.atributePluginCommands)
-    }
-
-    private fun removeLabels() {
-        removeAll()
     }
 
     private fun addLabels(atribute: Atribute) {
