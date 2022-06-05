@@ -1,6 +1,6 @@
 package view.custom.commands.atributepanel
 
-import model.Atribute
+import core.model.XMLAtribute
 import view.custom.commands.ICommandMenuItem
 import view.custom.commands.ICommand
 import view.custom.panels.AtributePanel
@@ -12,7 +12,7 @@ class SetAtributeCommandMenuItem : ICommandMenuItem<AtributePanel> {
         val jMenuItem = JMenuItem("Set Atribute")
         jMenuItem.addActionListener {
 
-            val textField = JTextField(panel.atribute.value)
+            val textField = JTextField(panel.XMLAtribute.value)
             val jPanel = JPanel()
             jPanel.layout = GridLayout(1, 2)
             jPanel.add(textField)
@@ -26,7 +26,7 @@ class SetAtributeCommandMenuItem : ICommandMenuItem<AtributePanel> {
             //atribute.value = textField.text
             panel.xmlController.addExecuteCommand(
                 SetAtributeCommand(
-                    oldAtribute = panel.atribute,
+                    oldAtribute = panel.XMLAtribute,
                     newValue = textField.text
                 )
             )
@@ -35,15 +35,15 @@ class SetAtributeCommandMenuItem : ICommandMenuItem<AtributePanel> {
     }
 }
 
-class SetAtributeCommand(private val oldAtribute: Atribute, private val newValue: String) : ICommand {
-    var oldAtributeValue: String = "" + oldAtribute.value
+class SetAtributeCommand(private val oldXMLAtribute: XMLAtribute, private val newValue: String) : ICommand {
+    var oldAtributeValue: String = "" + oldXMLAtribute.value
 
     override fun execute() {
-        oldAtribute.rename(newValue)
+        oldXMLAtribute.rename(newValue)
     }
 
     override fun undo() {
-        oldAtribute.rename(oldAtributeValue)
+        oldXMLAtribute.rename(oldAtributeValue)
     }
 
     override fun toString() = "replaced [$oldAtributeValue] with [$newValue]"

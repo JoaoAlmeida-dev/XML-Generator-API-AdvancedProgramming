@@ -1,8 +1,6 @@
-package model
+package core.model
 
-import controller.visitors.IVisitor
-import core.model.Annotations
-import view.IObservable
+import core.utilities.visitors.interfaces.IVisitor
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.findAnnotation
@@ -10,11 +8,11 @@ import kotlin.reflect.full.hasAnnotation
 import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.jvm.isAccessible
 
-class Entity(
+class XMLEntity(
     inputDepth: Int? = null,
     var name: String,
     var contents: String? = null,
-    val atributes: MutableCollection<Atribute> = mutableListOf(),
+    val XMLAtributes: MutableCollection<XMLAtribute> = mutableListOf(),
     children: MutableCollection<XMLContainer> = mutableListOf(),
     parent: XMLContainer? = null,
 ) : XMLContainer(
@@ -48,7 +46,7 @@ class Entity(
     //TODO extrair reflection do model
     companion object {
         private fun getObjName(obj: Any, name: String?) =
-            obj::class.findAnnotation<Annotations.XmlName>()?.name ?: (name ?: (obj::class.simpleName
+            obj::class.findAnnotation<XMLAnnotations.XmlName>()?.name ?: (name ?: (obj::class.simpleName
                 ?: "Default Name"))
 
         private fun getParentOrDefaultDepth(parent: XMLContainer?): Int =
@@ -80,11 +78,11 @@ class Entity(
     private fun mapConstructor(obj: Map<*, *>) {
         obj.forEach { entry: Map.Entry<Any?, Any?> ->
             if (entry.value!!::class.isSubclassOf(String::class)) {
-                addAtribute(Atribute(key = entry.key.toString(), value = entry.value.toString()))
+                addAtribute(XMLAtribute(key = entry.key.toString(), value = entry.value.toString()))
             } else {
                 if (entry.value != null) {
                     addChild(
-                        Entity(depth = depth + 1, name = entry.key.toString(), obj = entry.value!!, parent = this)
+                        XMLEntity(depth = depth + 1, name = entry.key.toString(), obj = entry.value!!, parent = this)
                     )
                 }
             }
@@ -94,8 +92,8 @@ class Entity(
     private fun arrayConstructor(obj: Array<*>) {
         obj.forEach {
             if (it != null) {
-                val entity: Entity = Entity(depth = depth + 1, obj = it, parent = this)
-                addChild(entity)
+                val XMLEntity: XMLEntity = XMLEntity(depth = depth + 1, obj = it, parent = this)
+                addChild(XMLEntity)
             }
         }
     }
@@ -103,8 +101,8 @@ class Entity(
     private fun iterableConstructor(obj: Iterable<*>) {
         obj.forEach {
             if (it != null) {
-                val entity: Entity = Entity(depth = depth + 1, obj = it, parent = this)
-                addChild(entity)
+                val XMLEntity: XMLEntity = XMLEntity(depth = depth + 1, obj = it, parent = this)
+                addChild(XMLEntity)
             }
         }
     }
@@ -119,9 +117,9 @@ class Entity(
     private fun extractProperties(obj: Any, initialDepth: Int) {
         val declaredMemberProperties: Collection<KProperty1<out Any, *>> = obj::class.declaredMemberProperties
         declaredMemberProperties.forEach { it ->
-            val shouldIgnore: Boolean = it.hasAnnotation<Annotations.XmlIgnore>()
-            val shouldContent: Boolean = it.hasAnnotation<Annotations.XmlTagContent>()
-            val xmlName: String? = it.findAnnotation<Annotations.XmlName>()?.name
+            val shouldIgnore: Boolean = it.hasAnnotation<XMLAnnotations.XmlIgnore>()
+            val shouldContent: Boolean = it.hasAnnotation<XMLAnnotations.XmlTagContent>()
+            val xmlName: String? = it.findAnnotation<XMLAnnotations.XmlName>()?.name
             if (!shouldIgnore) {
                 if (!shouldContent /*&& it.isAccessible*/) {
                     it.isAccessible = true
@@ -129,13 +127,13 @@ class Entity(
                     if (it.isPrimitiveType() || it::class.isSubclassOf(Enum::class)) {
                         it.call(obj)?.let { itCalled ->
                             addAtribute(
-                                Atribute(name = xmlName ?: it.getPropertyName(), value = itCalled)
+                                XMLAtribute(name = xmlName ?: it.getPropertyName(), value = itCalled)
                             )
                         }
                     } else if (it.isAcceptableType(obj)) {
                         it.call(obj)?.let { itCalled ->
                             val propertyInstanciatedValue: Any = itCalled
-                            val element = Entity(
+                            val element = XMLEntity(
                                 depth = initialDepth + 1,
                                 obj = propertyInstanciatedValue,
                                 name = it.name,
@@ -163,7 +161,7 @@ class Entity(
 
     override fun addChild(child: XMLContainer) {
         super.addChild(child)
-        notifyObservers { it: (Entity) -> Unit -> it(this) }
+        notifyObservers { it: (XMLEntity) -> Unit -> it(this) }
     }
 
 
@@ -193,13 +191,13 @@ class Entity(
     }
 
 
-    fun addAtribute(atribute: Atribute) {
-        atributes.add(atribute)
+    fun addAtribute(XMLAtribute: XMLAtribute) {
+        XMLAtributes.add(XMLAtribute)
         notifyObservers { it(this) }
     }
 
-    fun removeAtribute(atribute: Atribute) {
-        atributes.remove(atribute)
+    fun removeAtribute(XMLAtribute: XMLAtribute) {
+        XMLAtributes.remove(XMLAtribute)
         notifyObservers { it(this) }
     }
 
@@ -245,7 +243,7 @@ class Entity(
             }</$name>"
         } else "/>"
         val atributesString: String =
-            if (atributes.isNotEmpty()) atributes.joinToString(separator = " ", prefix = " ") else ""
+            if (XMLAtributes.isNotEmpty()) XMLAtributes.joinToString(separator = " ", prefix = " ") else ""
 
         return "$tab<$name$atributesString$stayOpenTag" +
                 (if (hasContent) /*"\n$tab" + */ contents else "") +
@@ -269,13 +267,13 @@ class Entity(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Entity
+        other as XMLEntity
 
         if (depth != other.depth) return false
         if (name != other.name) return false
         if (parent != other.parent) return false
         if (contents != other.contents) return false
-        if (atributes != other.atributes) return false
+        if (XMLAtributes != other.XMLAtributes) return false
         if (children != other.children) return false
         if (observers != other.observers) return false
 
@@ -287,7 +285,7 @@ class Entity(
         result = 31 * result + name.hashCode()
         result = 31 * result + (parent?.hashCode() ?: 0)
         result = 31 * result + (contents?.hashCode() ?: 0)
-        result = 31 * result + atributes.hashCode()
+        result = 31 * result + XMLAtributes.hashCode()
         result = 31 * result + children.hashCode()
         result = 31 * result + observers.hashCode()
         return result

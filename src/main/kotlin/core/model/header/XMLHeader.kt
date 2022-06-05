@@ -1,8 +1,6 @@
-package model
+package core.model.header
 
-import core.model.Encoding
-
-data class XmlHeader(
+data class XMLHeader(
     val version: Double? = null,
     val encoding: Encoding? = null,
     val standalone: Boolean? = null,

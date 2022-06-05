@@ -1,4 +1,4 @@
-package core.model
+package core.model.header
 
 enum class Encoding(val value: String) {
     UTF_8("UTF-8"),

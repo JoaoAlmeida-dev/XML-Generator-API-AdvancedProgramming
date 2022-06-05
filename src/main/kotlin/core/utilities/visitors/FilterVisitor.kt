@@ -1,15 +1,16 @@
-package controller.visitors
+package core.utilities.visitors
 
-import model.Entity
-import model.XMLDocument
+import core.model.XMLEntity
+import core.model.XMLDocument
+import core.utilities.visitors.interfaces.IVisitor
 
 class FilterVisitor(
-    val decidingFunction: (entity: Entity) -> Boolean
+    val decidingFunction: (XMLEntity: XMLEntity) -> Boolean
 ) : IVisitor {
 
     lateinit var document: XMLDocument
 
-    override fun visit(e: Entity): Boolean {
+    override fun visit(e: XMLEntity): Boolean {
         if (this::document.isInitialized) {
             if (decidingFunction(e)) {
                 if (e.parent != null) {

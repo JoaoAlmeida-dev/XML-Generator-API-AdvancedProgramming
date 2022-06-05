@@ -1,8 +1,8 @@
 package view.custom.panels
 
-import model.Entity
-import model.XMLDocument
-import view.XmlDocumentController
+import core.model.XMLEntity
+import core.model.XMLDocument
+import view.controller.XmlDocumentController
 import java.awt.*
 import javax.swing.BorderFactory
 import javax.swing.JPanel
@@ -39,7 +39,7 @@ class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: 
 
     private fun addChildren(newDoc: XMLDocument) {
         val entity = newDoc.entity
-        if (entity is Entity) {
+        if (entity is XMLEntity) {
             centerPanel.add(EntityPanel(entity, xmlController))
         }
     }

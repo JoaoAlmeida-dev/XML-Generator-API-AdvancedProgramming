@@ -1,6 +1,6 @@
 package testbed
 
-import WindowSkeleton
+import view.WindowSkeleton
 import view.custom.commands.atributepanel.RemoveAtributeCommandMenuItem
 import view.injection.Injector
 

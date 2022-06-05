@@ -9,7 +9,7 @@ class PrintCommandMenuItem : ICommandMenuItem<EntityPanel> {
         val printMenuItem = JMenuItem("Print")
         printMenuItem.addActionListener {
             println("-----------------------------------------")
-            println(panel.entity)
+            println(panel.XMLEntity)
             println("-----------------------------------------")
         }
         return printMenuItem

@@ -1,7 +1,7 @@
 package view.custom.commands.entitypanel
 
-import model.Atribute
-import model.Entity
+import core.model.XMLAtribute
+import core.model.XMLEntity
 import view.custom.commands.ICommandMenuItem
 import view.custom.commands.ICommand
 import view.custom.panels.EntityPanel
@@ -37,7 +37,7 @@ class AddAtributeCommandMenuItem() : ICommandMenuItem<EntityPanel> {
             if (field1.text != null && field1.text.isNotEmpty() &&
                 field2.text != null && field2.text.isNotEmpty()
             ) {
-                panel.xmlController.addExecuteCommand(AddAtributeCommand(panel.entity, field1.text, field2.text))
+                panel.xmlController.addExecuteCommand(AddAtributeCommand(panel.XMLEntity, field1.text, field2.text))
                 //  revalidate()
                 //  repaint()
             } else {
@@ -50,18 +50,18 @@ class AddAtributeCommandMenuItem() : ICommandMenuItem<EntityPanel> {
 }
 
 
-class AddAtributeCommand(private val parentEntity: Entity, private val key: String, private val value: String) :
+class AddAtributeCommand(private val parentXMLEntity: XMLEntity, private val key: String, private val value: String) :
     ICommand {
-    val atribute = Atribute(key, value)
+    val XMLAtribute = XMLAtribute(key, value)
 
     override fun execute() {
-        parentEntity.addAtribute(atribute)
+        parentXMLEntity.addAtribute(XMLAtribute)
     }
 
     override fun undo() {
-        parentEntity.removeAtribute(atribute)
+        parentXMLEntity.removeAtribute(XMLAtribute)
     }
 
-    override fun toString() = "Add Atribute $atribute"
+    override fun toString() = "Add Atribute $XMLAtribute"
 }
 

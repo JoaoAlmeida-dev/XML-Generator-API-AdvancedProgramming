@@ -7,5 +7,8 @@ import javax.swing.JMenuItem
  *
  */
 interface ICommandMenuItem<T : ContainerPanel> {
+
+    //accept
+
     fun getJMenuItem(panel: T): JMenuItem
 }

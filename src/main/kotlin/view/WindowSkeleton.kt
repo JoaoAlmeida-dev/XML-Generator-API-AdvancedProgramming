@@ -1,5 +1,7 @@
-import model.XMLDocument
-import view.XmlDocumentController
+package view
+
+import core.model.XMLDocument
+import view.controller.XmlDocumentController
 import view.custom.panels.XMLDocumentPanel
 import view.injection.Inject
 import view.injection.Injector
@@ -18,7 +20,7 @@ import javax.swing.tree.TreeNode
 import kotlin.system.exitProcess
 
 
-class WindowSkeleton() : JFrame("title") {
+class WindowSkeleton : JFrame("title") {
 
     @Inject
     lateinit var rootDocument: XMLDocument
@@ -38,7 +40,6 @@ class WindowSkeleton() : JFrame("title") {
         val rootPanel = JTabbedPane()
         add(rootPanel)
         createBoxPane(xmlDocumentController, rootPanel)
-        //createTreePane(xmlDocumentController, rootPanel)
         createMenuBar()
         isVisible = true
     }
@@ -134,30 +135,6 @@ class WindowSkeleton() : JFrame("title") {
         menuBar.add(editMenu)
         jMenuBar = menuBar
     }
-
-/*    private fun createTreePane(xmlDocumentController: XmlDocumentController, parentComponent: JComponent) {
-
-        val rootNode = DefaultMutableTreeNode(xmlDocumentController.rootDoc.header)
-        val treePanel = JTree(rootNode)
-        parentComponent.add("Tree", JScrollPane(treePanel))
-        treePanel.isEditable = true
-
-
-        val model = DefaultTreeModel(rootNode)
-        val entityNode =
-            xmlDocumentController.rootDoc.children.first()
-        EntityTreeNode(entityNode, updateTreeModel(model))
-        rootNode.add(entityNode)
-
-    }*/
-
-    private fun updateTreeModel(model: DefaultTreeModel): () -> Unit =
-        fun() = this.run {
-            println("reloaded tree Model")
-            //model.reload(model.root as TreeNode?)
-            model.nodeChanged(model.root as TreeNode?)
-        }
-
 
     private fun createBoxPane(xmlDocumentController: XmlDocumentController, parentComponent: JComponent) {
         val rootboxPanel = JPanel(BorderLayout())

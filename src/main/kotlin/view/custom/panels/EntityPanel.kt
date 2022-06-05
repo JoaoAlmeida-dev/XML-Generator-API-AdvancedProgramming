@@ -1,7 +1,7 @@
 package view.custom.panels
 
-import model.Entity
-import view.XmlDocumentController
+import core.model.XMLEntity
+import view.controller.XmlDocumentController
 import view.custom.commands.entitypanel.*
 import java.awt.*
 import java.awt.event.KeyEvent
@@ -9,7 +9,7 @@ import java.awt.event.KeyListener
 import javax.swing.*
 import javax.swing.border.CompoundBorder
 
-class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) : ContainerPanel() {
+class EntityPanel(val XMLEntity: XMLEntity, val xmlController: XmlDocumentController) : ContainerPanel() {
 
 
     private var northPanel = JPanel()
@@ -33,12 +33,12 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
         add(northPanel, BorderLayout.NORTH)
         add(centerPanel, BorderLayout.CENTER)
         add(southPanel, BorderLayout.SOUTH)
-        addChildren(entity)
+        addChildren(XMLEntity)
 
 //TODO adicionar tipo de notificiação - lesspriority
-        entity.addObserver { entity ->
+        XMLEntity.addObserver { entity ->
             run {
-                entity as Entity
+                entity as XMLEntity
                 clear()
                 addChildren(entity)
                 redraw()
@@ -55,18 +55,18 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
         centerPanel.remove(child)
     }
 
-    private fun addChildren(entity: Entity) {
+    private fun addChildren(XMLEntity: XMLEntity) {
 
-        entity.atributes.forEach {
-            northPanel.add(AtributePanel(entity, it, xmlController))
+        XMLEntity.XMLAtributes.forEach {
+            northPanel.add(AtributePanel(XMLEntity, it, xmlController))
         }
-        entity.children.filterIsInstance<Entity>().forEach {
+        XMLEntity.children.filterIsInstance<XMLEntity>().forEach {
             centerPanel.add(EntityPanel(it, xmlController))
         }
 
-        if (entity.contents != null) {
+        if (XMLEntity.contents != null) {
             val jTextArea =
-                JTextArea(entity.contents)
+                JTextArea(XMLEntity.contents)
             jTextArea.lineWrap = true
 
             jTextArea.addKeyListener(object : KeyListener {
@@ -78,7 +78,7 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
                         println(e.keyCode)
                         if (e.keyCode == KeyEvent.VK_ENTER && e.isControlDown) {
                             println("Saving to instance")
-                            xmlController.addExecuteCommand(OverwriteContentCommand(entity, jTextArea.text))
+                            xmlController.addExecuteCommand(OverwriteContentCommand(XMLEntity, jTextArea.text))
                         }
                     }
 
@@ -103,7 +103,7 @@ class EntityPanel(val entity: Entity, val xmlController: XmlDocumentController) 
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
         g.font = Font("Arial", Font.BOLD, 16)
-        g.drawString(entity.name, 10, 20)
+        g.drawString(XMLEntity.name, 10, 20)
     }
 
 }

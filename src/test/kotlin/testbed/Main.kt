@@ -1,23 +1,23 @@
 package testbed
 
-import model.Atribute
-import model.Entity
-import model.XMLDocument
-import controller.visitors.SearcherIVisitor
-import core.model.Encoding
-import model.XmlHeader
+import core.model.XMLAtribute
+import core.model.XMLEntity
+import core.model.XMLDocument
+import core.utilities.visitors.SearcherIVisitor
+import core.model.header.Encoding
+import core.model.header.XMLHeader
 import testbed.model.Book
 import testbed.model.Library
 import testbed.model.BookStore
 import testbed.model.Chapter
 
 fun main() {
-    val header: XmlHeader = XmlHeader(version = 1.0, encoding = Encoding.UTF_8, standalone = false)
+    val header: XMLHeader = XMLHeader(version = 1.0, encoding = Encoding.UTF_8, standalone = false)
     xmlInference(header)
 
 }
 
-fun xmlInference(header: XmlHeader) {
+fun xmlInference(header: XMLHeader) {
 
     val book: Book =
         Book(
@@ -63,7 +63,8 @@ fun xmlInference(header: XmlHeader) {
     println(xmlDocument)
 
 
-    val entitySearcherVisitor: SearcherIVisitor = SearcherIVisitor { entity: Entity -> entity.name.contains("Book") }
+    val entitySearcherVisitor: SearcherIVisitor =
+        SearcherIVisitor { XMLEntity: XMLEntity -> XMLEntity.name.contains("Book") }
 
     xmlDocument.accept(entitySearcherVisitor)
 
@@ -76,33 +77,33 @@ fun xmlInference(header: XmlHeader) {
 
 }
 
-private fun xmlDemoHardCoded(header: XmlHeader) {
-    val libraryEntity: Entity =
-        Entity(
-            name = "Stilton", inputDepth = 1, atributes =
+private fun xmlDemoHardCoded(header: XMLHeader) {
+    val libraryXMLEntity: XMLEntity =
+        XMLEntity(
+            name = "Stilton", inputDepth = 1, XMLAtributes =
             mutableListOf(
-                Atribute(key = "book", value = "Jeronimo em Belém"),
-                Atribute(key = "author", value = "Jeronimo Stilton"),
-                Atribute(name = "pages", value = 100),
+                XMLAtribute(key = "book", value = "Jeronimo em Belém"),
+                XMLAtribute(key = "author", value = "Jeronimo Stilton"),
+                XMLAtribute(name = "pages", value = 100),
             )
         )
 
-    val bookAtributes: MutableCollection<Atribute> =
+    val bookXMLAtributes: MutableCollection<XMLAtribute> =
         mutableListOf(
-            Atribute(name = "serialN", value = 3425),
-            Atribute(key = "Library", value = "Lisboa")
+            XMLAtribute(name = "serialN", value = 3425),
+            XMLAtribute(key = "Library", value = "Lisboa")
         )
 
-    val entity = Entity(
+    val XMLEntity = XMLEntity(
         name = "Book",
         inputDepth = 0,
-        atributes = bookAtributes,
-        children = mutableListOf(libraryEntity, libraryEntity, libraryEntity)
+        XMLAtributes = bookXMLAtributes,
+        children = mutableListOf(libraryXMLEntity, libraryXMLEntity, libraryXMLEntity)
     )
 
 
-    val xmlEntities: MutableCollection<Entity> = mutableListOf(entity, entity, entity)
-    val xmlDocument: XMLDocument = XMLDocument(header = header, entity = Entity(obj = xmlEntities, depth = 0))
+    val xmlEntities: MutableCollection<XMLEntity> = mutableListOf(XMLEntity, XMLEntity, XMLEntity)
+    val xmlDocument: XMLDocument = XMLDocument(header = header, entity = XMLEntity(obj = xmlEntities, depth = 0))
 
     println(xmlDocument)
 }

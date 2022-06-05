@@ -1,5 +1,7 @@
 package model
 
+import core.model.XMLAtribute
+import core.model.XMLEntity
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import testbed.model.Book
@@ -7,7 +9,7 @@ import testbed.model.BookStore
 import testbed.model.Chapter
 import kotlin.test.assertEquals
 
-internal class EntityTest {
+internal class XMLEntityTest {
 
     @BeforeEach
     internal fun setUp() {
@@ -15,40 +17,40 @@ internal class EntityTest {
 
     @Test
     fun testNoAtributesToString() {
-        val testEntityNoAtributes = Entity(name = "Stilton", inputDepth = 0)
+        val testXMLEntityNoAtributes = XMLEntity(name = "Stilton", inputDepth = 0)
         assertEquals(
             "<Stilton/>",
-            testEntityNoAtributes.toString()
+            testXMLEntityNoAtributes.toString()
         )
     }
 
     @Test
     fun testNoChildToString() {
-        val testEntityNoChild = Entity(
+        val testXMLEntityNoChild = XMLEntity(
             name = "Stilton",
             inputDepth = 0,
-            atributes =
+            XMLAtributes =
             mutableListOf(
-                Atribute(key = "book", value = "Jeronimo em Belém"),
-                Atribute(key = "author", value = "Jeronimo Stilton"),
-                Atribute(key = "pages", value = 100.toString()),
+                XMLAtribute(key = "book", value = "Jeronimo em Belém"),
+                XMLAtribute(key = "author", value = "Jeronimo Stilton"),
+                XMLAtribute(key = "pages", value = 100.toString()),
             )
         )
 
         assertEquals(
             "<Stilton book=\"Jeronimo em Belém\" author=\"Jeronimo Stilton\" pages=\"100\"/>",
-            testEntityNoChild.toString()
+            testXMLEntityNoChild.toString()
         )
     }
 
     @Test
     fun testEnumToString() {
-        val testEntityEnum = Entity(obj = BookStore.BERTRAND, depth = 0)
+        val testXMLEntityEnum = XMLEntity(obj = BookStore.BERTRAND, depth = 0)
 
 
         assertEquals(
             "<Stilton book=\"Jeronimo em Belém\" author=\"Jeronimo Stilton\" pages=\"100\"/>",
-            testEntityEnum.toString()
+            testXMLEntityEnum.toString()
         )
     }
 
@@ -65,7 +67,7 @@ internal class EntityTest {
             ),
         )
 
-        val testArrayEntity = Entity(obj = arrayOf(book), depth = 0)
+        val testArrayXMLEntity = XMLEntity(obj = arrayOf(book), depth = 0)
         assertEquals(
             "<Array>\n" +
                     "\t<Livro Writer=\"Fernando Pessoa\" pages=\"200\" >\n" +
@@ -76,14 +78,14 @@ internal class EntityTest {
                     "\t\t</chapters>\n" +
                     "\t</Livro>\n" +
                     "</Array>",
-            testArrayEntity.toString()
+            testArrayXMLEntity.toString()
         )
     }
 
     @Test
     fun testMapEntityToString() {
 
-        val testMapEntity = Entity(
+        val testMapXMLEntity = XMLEntity(
             obj = mapOf(
                 "mapHeader" to "header",
                 "mapBody" to mapOf(
@@ -98,49 +100,49 @@ internal class EntityTest {
             "<LinkedHashMap mapHeader=\"header\" mapFooter=\"footer\">\n" +
                     "\t<mapBody title=\"O corpo do mapa\" description=\"descrição do mapa\"/>\n" +
                     "</LinkedHashMap>",
-            testMapEntity.toString()
+            testMapXMLEntity.toString()
         )
     }
 
     @Test
     fun testStringEntityToString() {
-        var testListEntity = Entity(obj = "one", depth = 0)
+        var testListXMLEntity = XMLEntity(obj = "one", depth = 0)
 
         assertEquals(
             expected = "<String length=\"3\">one</String>",
-            actual = testListEntity.toString()
+            actual = testListXMLEntity.toString()
         )
     }
 
     @Test
     fun testListEntityToString() {
-        var testListEntity = Entity(obj = mutableListOf("one", "two"), depth = 0)
+        var testListXMLEntity = XMLEntity(obj = mutableListOf("one", "two"), depth = 0)
 
         assertEquals(
             expected = "<ArrayList>\n" +
                     "\t<String >one</String>\n" +
                     "\t<String >two</String>\n" +
                     "</ArrayList>",
-            actual = testListEntity.toString()
+            actual = testListXMLEntity.toString()
         )
     }
 
     @Test
     fun testWithChildToString() {
-        val libraryEntity: Entity =
-            Entity(
-                name = "Stilton", inputDepth = 1, atributes =
+        val libraryXMLEntity: XMLEntity =
+            XMLEntity(
+                name = "Stilton", inputDepth = 1, XMLAtributes =
                 mutableListOf(
-                    Atribute(key = "book", value = "Jeronimo em Belém"),
-                    Atribute(key = "author", value = "Jeronimo Stilton"),
-                    Atribute(name = "pages", value = 100),
+                    XMLAtribute(key = "book", value = "Jeronimo em Belém"),
+                    XMLAtribute(key = "author", value = "Jeronimo Stilton"),
+                    XMLAtribute(name = "pages", value = 100),
                 )
             )
 
-        val testEntityChild = Entity(
+        val testXMLEntityChild = XMLEntity(
             name = "Book",
             inputDepth = 0,
-            children = mutableListOf(libraryEntity, libraryEntity)
+            children = mutableListOf(libraryXMLEntity, libraryXMLEntity)
         )
 
         assertEquals(
@@ -148,14 +150,14 @@ internal class EntityTest {
                     "\t<Stilton book=\"Jeronimo em Belém\" author=\"Jeronimo Stilton\" pages=\"100\"/>\n" +
                     "\t<Stilton book=\"Jeronimo em Belém\" author=\"Jeronimo Stilton\" pages=\"100\"/>\n" +
                     "</Book>",
-            testEntityChild.toString()
+            testXMLEntityChild.toString()
         )
     }
 
     @Test
     fun getName() {
-        val namedEntity: Entity = Entity(name = "Stilton", inputDepth = 0)
-        assertEquals("Stilton", namedEntity.name)
+        val namedXMLEntity: XMLEntity = XMLEntity(name = "Stilton", inputDepth = 0)
+        assertEquals("Stilton", namedXMLEntity.name)
     }
 
 

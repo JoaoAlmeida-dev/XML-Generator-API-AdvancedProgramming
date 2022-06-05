@@ -1,6 +1,6 @@
-package view
+package view.controller
 
-import model.XMLDocument
+import core.model.XMLDocument
 import org.jetbrains.kotlin.backend.common.pop
 import view.custom.commands.*
 import view.custom.commands.atributepanel.RemoveAtributeCommandMenuItem

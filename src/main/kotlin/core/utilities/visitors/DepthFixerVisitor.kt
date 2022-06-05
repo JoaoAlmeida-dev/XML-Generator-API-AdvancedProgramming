@@ -1,13 +1,14 @@
-package controller.visitors
+package core.utilities.visitors
 
-import model.Entity
-import model.XMLDocument
+import core.model.XMLEntity
+import core.model.XMLDocument
+import core.utilities.visitors.interfaces.IVisitor
 
 class DepthFixerVisitor : IVisitor {
 
     var currentDepth: Int = 0
 
-    override fun visit(e: Entity): Boolean {
+    override fun visit(e: XMLEntity): Boolean {
         currentDepth++
         e.depth = currentDepth
         return super.visit(e)

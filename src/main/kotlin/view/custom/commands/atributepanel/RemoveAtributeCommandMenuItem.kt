@@ -1,7 +1,7 @@
 package view.custom.commands.atributepanel
 
-import model.Atribute
-import model.Entity
+import core.model.XMLAtribute
+import core.model.XMLEntity
 import view.custom.commands.ICommand
 import view.custom.commands.ICommandMenuItem
 import view.custom.panels.AtributePanel
@@ -14,7 +14,7 @@ class RemoveAtributeCommandMenuItem : ICommandMenuItem<AtributePanel> {
         val jMenuItem = JMenuItem("Remove Atribute")
         jMenuItem.addActionListener {
             panel.xmlController.addExecuteCommand(
-                RemoveAtributeCommand(panel.parentEntity, panel.atribute)
+                RemoveAtributeCommand(panel.parentXMLEntity, panel.XMLAtribute)
             )
         }
         return jMenuItem
@@ -22,16 +22,16 @@ class RemoveAtributeCommandMenuItem : ICommandMenuItem<AtributePanel> {
 }
 
 
-class RemoveAtributeCommand(private val parentEntity: Entity, private val atribute: Atribute) : ICommand {
+class RemoveAtributeCommand(private val parentXMLEntity: XMLEntity, private val XMLAtribute: XMLAtribute) : ICommand {
 
     override fun execute() {
-        parentEntity.removeAtribute(atribute)
+        parentXMLEntity.removeAtribute(XMLAtribute)
     }
 
     override fun undo() {
-        parentEntity.addAtribute(atribute)
+        parentXMLEntity.addAtribute(XMLAtribute)
     }
 
-    override fun toString() = "Remove Atribute $atribute"
+    override fun toString() = "Remove Atribute $XMLAtribute"
 }
 

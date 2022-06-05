@@ -1,6 +1,6 @@
 package core.model
 
-class Annotations{
+class XMLAnnotations {
 
     @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
     annotation class XmlName(val name: String)

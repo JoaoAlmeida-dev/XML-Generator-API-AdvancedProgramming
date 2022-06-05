@@ -1,18 +1,18 @@
 package testbed.model
 
-import core.model.Annotations
+import core.model.XMLAnnotations
 
-    @Annotations.XmlName("Livro")
+@XMLAnnotations.XmlName("Livro")
 data class Book(
-    @Annotations.XmlName("Writer")
+    @XMLAnnotations.XmlName("Writer")
     val author: String,
-    @Annotations.XmlIgnore
+    @XMLAnnotations.XmlIgnore
     val title: String,
-    @Annotations.XmlTagContent
+    @XMLAnnotations.XmlTagContent
     val subTitle: String,
     val chapters: List<Chapter>,
-    @Annotations.XmlTagContent
-    val store : BookStore,
+    @XMLAnnotations.XmlTagContent
+    val store: BookStore,
     var pages: Int = chapters.sumOf { chapter: Chapter -> chapter.pageN },
 ) {
 

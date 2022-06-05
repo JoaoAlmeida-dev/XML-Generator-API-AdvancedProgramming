@@ -1,11 +1,11 @@
-package model
+package core.model
 
 import view.IObservable
 
-class Atribute(
+class XMLAtribute(
     key: String,
     value: String,
-) : IObservable<(Atribute) -> Unit> {
+) : IObservable<(XMLAtribute) -> Unit> {
     public var key: String = key
         private set(value) {
             field = value
@@ -28,5 +28,5 @@ class Atribute(
         return "$key=\"$value\""
     }
 
-    override val observers: MutableList<(Atribute) -> Unit> = mutableListOf()
+    override val observers: MutableList<(XMLAtribute) -> Unit> = mutableListOf()
 }

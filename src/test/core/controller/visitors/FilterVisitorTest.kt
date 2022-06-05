@@ -1,8 +1,9 @@
 package controller.visitors
 
-import model.Entity
-import model.XMLDocument
-import model.XmlHeader
+import core.utilities.visitors.FilterVisitor
+import core.model.XMLEntity
+import core.model.XMLDocument
+import core.model.header.XMLHeader
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import testbed.model.Book
@@ -43,13 +44,13 @@ internal class FilterVisitorTest {
             books = mutableListOf(book, book2)
         )
 
-        val entity = Entity(obj = library, depth = 0)
-        xmldoc = XMLDocument(entity = entity, header = XmlHeader(version = 1.0))
+        val XMLEntity = XMLEntity(obj = library, depth = 0)
+        xmldoc = XMLDocument(entity = XMLEntity, header = XMLHeader(version = 1.0))
     }
 
     @Test
     fun visit() {
-        val filterVisitor = FilterVisitor { entity: Entity -> entity.children.isEmpty() }
+        val filterVisitor = FilterVisitor { XMLEntity: XMLEntity -> XMLEntity.children.isEmpty() }
         val originalDocString = xmldoc.toString()
         xmldoc.accept(filterVisitor)
 

@@ -1,6 +1,6 @@
 package view.custom.commands.entitypanel
 
-import model.Entity
+import core.model.XMLEntity
 import view.custom.commands.ICommandMenuItem
 import view.custom.commands.ICommand
 import view.custom.panels.EntityPanel
@@ -26,8 +26,8 @@ class AddChildCommandMenuItem() : ICommandMenuItem<EntityPanel> {
             )
             nameField.requestFocus()
 
-            val newEntity = Entity(name = nameField.text, parent = panel.entity)
-            panel.xmlController.addExecuteCommand(AddChildCommand(panel.entity, newEntity))
+            val newXMLEntity = XMLEntity(name = nameField.text, parent = panel.XMLEntity)
+            panel.xmlController.addExecuteCommand(AddChildCommand(panel.XMLEntity, newXMLEntity))
             //revalidate()
             //repaint()
         }
@@ -36,16 +36,16 @@ class AddChildCommandMenuItem() : ICommandMenuItem<EntityPanel> {
 
 }
 
-class AddChildCommand(private val parent: Entity, private val newEntity: Entity) : ICommand {
+class AddChildCommand(private val parent: XMLEntity, private val newXMLEntity: XMLEntity) : ICommand {
 
 
     override fun execute() {
-        parent.addChild(newEntity)
+        parent.addChild(newXMLEntity)
     }
 
     override fun undo() {
-        parent.removeChild(newEntity)
+        parent.removeChild(newXMLEntity)
     }
 
-    override fun toString() = "Add child ${newEntity.name}"
+    override fun toString() = "Add child ${newXMLEntity.name}"
 }

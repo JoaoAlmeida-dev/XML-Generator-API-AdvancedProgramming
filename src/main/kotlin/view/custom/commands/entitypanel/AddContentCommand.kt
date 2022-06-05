@@ -1,6 +1,6 @@
 package view.custom.commands.entitypanel
 
-import model.Entity
+import core.model.XMLEntity
 import view.custom.commands.ICommand
 import view.custom.commands.ICommandMenuItem
 import view.custom.panels.EntityPanel
@@ -27,7 +27,7 @@ class AddContentCommandMenuItem() : ICommandMenuItem<EntityPanel> {
             contentField.requestFocus()
 
             if (contentField.text != null && contentField.text.isNotEmpty()) {
-                panel.xmlController.addExecuteCommand(AddContentCommand(panel.entity, contentField.text))
+                panel.xmlController.addExecuteCommand(AddContentCommand(panel.XMLEntity, contentField.text))
             }
             // revalidate()
             // repaint()
@@ -37,15 +37,15 @@ class AddContentCommandMenuItem() : ICommandMenuItem<EntityPanel> {
 
 }
 
-class AddContentCommand(private val entity: Entity, private val text: String) : ICommand {
+class AddContentCommand(private val XMLEntity: XMLEntity, private val text: String) : ICommand {
 
 
     override fun execute() {
-        entity.addContent(text)
+        XMLEntity.addContent(text)
     }
 
     override fun undo() {
-        entity.removeContent(text)
+        XMLEntity.removeContent(text)
     }
 
     override fun toString() = "Add Content $text"

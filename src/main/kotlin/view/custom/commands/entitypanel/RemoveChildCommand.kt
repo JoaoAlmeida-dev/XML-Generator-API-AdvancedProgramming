@@ -1,6 +1,6 @@
 package view.custom.commands.entitypanel
 
-import model.Entity
+import core.model.XMLEntity
 import view.custom.commands.ICommand
 import view.custom.commands.ICommandMenuItem
 import view.custom.panels.EntityPanel
@@ -11,22 +11,22 @@ class RemoveChildCommandMenuItem() : ICommandMenuItem<EntityPanel> {
     override fun getJMenuItem(panel: EntityPanel): JMenuItem {
         val removeChildMenuItem = JMenuItem("Remove child")
         removeChildMenuItem.addActionListener {
-            panel.xmlController.addExecuteCommand(RemoveChildCommand(panel.entity))
+            panel.xmlController.addExecuteCommand(RemoveChildCommand(panel.XMLEntity))
         }
         return removeChildMenuItem
     }
 
 }
 
-class RemoveChildCommand(private val entity: Entity) : ICommand {
+class RemoveChildCommand(private val XMLEntity: XMLEntity) : ICommand {
 
     override fun execute() {
-        entity.parent?.removeChild(entity)
+        XMLEntity.parent?.removeChild(XMLEntity)
     }
 
     override fun undo() {
-        entity.parent?.addChild(entity)
+        XMLEntity.parent?.addChild(XMLEntity)
     }
 
-    override fun toString() = "Remove child ${entity.name}"
+    override fun toString() = "Remove child ${XMLEntity.name}"
 }

@@ -1,46 +1,48 @@
 package testbed.plugins
 
-import model.Entity
-import model.XMLContainer
+import core.model.XMLContainer
 import view.custom.commands.ICommand
 import view.custom.commands.ICommandMenuItem
 import view.custom.panels.ContainerPanel
 import view.custom.panels.EntityPanel
+import view.custom.panels.XMLDocumentPanel
 import java.awt.Color
 import java.awt.GridLayout
 import java.util.*
 import javax.swing.*
 
 class EventCommandMenuItem : ICommandMenuItem<EntityPanel> {
+
+
+    //TODO Accept method
     override fun getJMenuItem(panel: EntityPanel): JMenuItem {
         val addChildMenuItem = JMenuItem("Add Event")
         addChildMenuItem.addActionListener {
-/*            val nameField = JTextField()
-            val nameFieldLabel = JLabel("name")
+            val jSpinner = JSpinner(SpinnerDateModel(Date(), null, null, Calendar.DATE))
             val jPanel = JPanel()
             jPanel.layout = GridLayout(1, 2)
-            jPanel.add(nameFieldLabel)
-            jPanel.add(nameField)
+            jPanel.add(jSpinner)
 
-            JOptionPane.showConfirmDialog(
+
+            val result: Int = JOptionPane.showConfirmDialog(
                 null,
                 jPanel,
                 "Insert the Event's name",
                 JOptionPane.OK_CANCEL_OPTION
             )
-            nameField.requestFocus()*/
-
-            panel.xmlController.addExecuteCommand(AddEventCommand(panel))
-            //revalidate()
-            //repaint()
+            if (result == JOptionPane.OK_OPTION) {
+                val date: Date = jSpinner.value as Date
+                println(date)
+                panel.xmlController.addExecuteCommand(AddEventCommand(panel, date))
+            }
         }
         return addChildMenuItem
     }
 }
 
-class AddEventCommand(final val panel: ContainerPanel) : ICommand {
-    val event = Event(date = Date())
-    val eventpanel = EventPanel(event)
+class AddEventCommand(val panel: ContainerPanel, date: Date) : ICommand {
+    private val event = Event(date = date)
+    private val eventpanel = EventPanel(event)
 
     override fun toString(): String {
         return "Add event"
@@ -66,11 +68,11 @@ class EventPanel(
         layout = GridLayout(0, 1)
         background = Color.GREEN
         addLabels(event)
-        event.addObserver { event ->
+        event.addObserver { newEvent ->
             run {
-                event as Event
+                newEvent as Event
                 clear()
-                addLabels(event)
+                addLabels(newEvent)
                 redraw()
             }
         }
@@ -83,9 +85,4 @@ class EventPanel(
 
 class Event(
     val date: Date
-) : XMLContainer() {
-    init {
-
-    }
-
-}
+) : XMLContainer()

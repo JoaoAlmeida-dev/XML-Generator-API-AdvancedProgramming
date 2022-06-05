@@ -1,6 +1,6 @@
 package view.custom.commands.entitypanel
 
-import model.Entity
+import core.model.XMLEntity
 import view.custom.commands.ICommand
 import view.custom.commands.ICommandMenuItem
 import view.custom.panels.EntityPanel
@@ -11,7 +11,7 @@ class RenameEntityCommandMenuItem() : ICommandMenuItem<EntityPanel> {
     override fun getJMenuItem(panel: EntityPanel): JMenuItem {
         val addChildMenuItem = JMenuItem("Rename")
         addChildMenuItem.addActionListener {
-            val nameField = JTextField(panel.entity.name)
+            val nameField = JTextField(panel.XMLEntity.name)
             val nameFieldLabel = JLabel("New name")
             val jPanel = JPanel()
             jPanel.layout = GridLayout(1, 2)
@@ -26,7 +26,7 @@ class RenameEntityCommandMenuItem() : ICommandMenuItem<EntityPanel> {
             )
             nameField.requestFocus()
             if (nameField.text.isNotEmpty()) {
-                panel.xmlController.addExecuteCommand(RenameEntityCommand(panel.entity, nameField.text))
+                panel.xmlController.addExecuteCommand(RenameEntityCommand(panel.XMLEntity, nameField.text))
             }
 
         }
@@ -35,16 +35,16 @@ class RenameEntityCommandMenuItem() : ICommandMenuItem<EntityPanel> {
 
 }
 
-class RenameEntityCommand(private val entity: Entity, private val text: String) : ICommand {
-    val oldName = entity.name
+class RenameEntityCommand(private val XMLEntity: XMLEntity, private val text: String) : ICommand {
+    val oldName = XMLEntity.name
     val newName = text
 
     override fun execute() {
-        entity.rename(newName)
+        XMLEntity.rename(newName)
     }
 
     override fun undo() {
-        entity.rename(oldName)
+        XMLEntity.rename(oldName)
     }
 
     override fun toString() = "Rename Entity $newName"

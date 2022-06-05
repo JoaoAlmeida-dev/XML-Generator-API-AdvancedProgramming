@@ -1,7 +1,7 @@
-package model
+package core.model
 
-import controller.visitors.IVisitor
-import controller.visitors.Visitable
+import core.utilities.visitors.interfaces.IVisitor
+import core.utilities.visitors.interfaces.Visitable
 import view.IObservable
 
 abstract class XMLContainer(

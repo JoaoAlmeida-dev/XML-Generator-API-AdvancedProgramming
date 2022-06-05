@@ -1,6 +1,6 @@
 package view.injection
 
-import controller.services.FileReader
+import core.utilities.services.FileReader
 import java.net.URL
 import java.net.URLClassLoader
 import kotlin.reflect.KClass

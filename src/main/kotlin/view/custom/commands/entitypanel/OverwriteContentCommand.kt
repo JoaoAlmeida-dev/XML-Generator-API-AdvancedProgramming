@@ -1,19 +1,18 @@
 package view.custom.commands.entitypanel
 
-import model.Entity
+import core.model.XMLEntity
 import view.custom.commands.ICommand
-import javax.swing.JMenuItem
 
-class OverwriteContentCommand(private val entity: Entity, private val text: String) : ICommand {
-    private val oldContent = entity.contents
+class OverwriteContentCommand(private val XMLEntity: XMLEntity, private val text: String) : ICommand {
+    private val oldContent = XMLEntity.contents
     private val newContent = text
 
     override fun execute() {
-        entity.replaceContent(newContent)
+        XMLEntity.replaceContent(newContent)
     }
 
     override fun undo() {
-        entity.replaceContent(oldContent ?: "")
+        XMLEntity.replaceContent(oldContent ?: "")
     }
 
     override fun toString() = "Overwrite Content $text"

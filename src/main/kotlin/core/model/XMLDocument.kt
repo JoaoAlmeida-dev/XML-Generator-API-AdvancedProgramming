@@ -1,20 +1,19 @@
-package model
+package core.model
 
-import controller.visitors.FilterVisitor
-import controller.visitors.IVisitor
-import view.IObservable
+import core.utilities.visitors.FilterVisitor
+import core.model.header.XMLHeader
 import java.io.File
 
 open class XMLDocument(
-    val header: XmlHeader,
+    val header: XMLHeader,
     entity: XMLContainer?,
 
     ) : XMLContainer(
     depth = 0, children = if (entity != null) mutableListOf(entity) else mutableListOf()
 ) {
 
-    constructor(header: XmlHeader, obj: Any) : this(
-        header = header, entity = Entity(obj = obj, depth = 0)
+    constructor(header: XMLHeader, obj: Any) : this(
+        header = header, entity = XMLEntity(obj = obj, depth = 0)
     )
 
     init {
@@ -47,7 +46,7 @@ open class XMLDocument(
     }
 
 
-    fun filter(decidingFunction: (Entity) -> Boolean): XMLDocument {
+    fun filter(decidingFunction: (XMLEntity) -> Boolean): XMLDocument {
         val filterVisitor = FilterVisitor(decidingFunction)
 
         this.accept(filterVisitor)

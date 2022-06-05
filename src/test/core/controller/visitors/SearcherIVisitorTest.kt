@@ -1,8 +1,9 @@
 package controller.visitors
 
-import model.Entity
-import model.XMLDocument
-import model.XmlHeader
+import core.utilities.visitors.SearcherIVisitor
+import core.model.XMLEntity
+import core.model.XMLDocument
+import core.model.header.XMLHeader
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -46,13 +47,13 @@ internal class SearcherIVisitorTest {
                 books = mutableListOf(book, book2)
             )
 
-        val entity = Entity(obj = library, depth = 0)
-        xmldoc = XMLDocument(entity = entity, header = XmlHeader(version = 1.0))
+        val XMLEntity = XMLEntity(obj = library, depth = 0)
+        xmldoc = XMLDocument(entity = XMLEntity, header = XMLHeader(version = 1.0))
     }
 
     @Test
     fun visit() {
-        val searcherVisitor = SearcherIVisitor { entity: Entity -> entity.children.isEmpty() }
+        val searcherVisitor = SearcherIVisitor { XMLEntity: XMLEntity -> XMLEntity.children.isEmpty() }
         xmldoc.accept(searcherVisitor)
         println(searcherVisitor.entities.joinToString(separator = "\n", prefix = "[\n", postfix = "\n]"))
 

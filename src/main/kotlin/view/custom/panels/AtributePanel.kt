@@ -1,8 +1,8 @@
 package view.custom.panels
 
-import model.Atribute
-import model.Entity
-import view.XmlDocumentController
+import core.model.XMLAtribute
+import core.model.XMLEntity
+import view.controller.XmlDocumentController
 import view.custom.commands.atributepanel.SetAtributeCommand
 import java.awt.Color
 import java.awt.GridLayout
@@ -11,16 +11,16 @@ import javax.swing.JTextField
 import javax.swing.SwingConstants
 
 class AtributePanel(
-    var parentEntity: Entity,
-    var atribute: Atribute,
+    var parentXMLEntity: XMLEntity,
+    var XMLAtribute: XMLAtribute,
     var xmlController: XmlDocumentController
 ) : ContainerPanel() {
 
     init {
         layout = GridLayout(1, 2)
         background = Color.CYAN
-        addLabels(atribute)
-        atribute.addObserver { atribute ->
+        addLabels(XMLAtribute)
+        XMLAtribute.addObserver { atribute ->
             run {
                 clear()
                 addLabels(atribute)
@@ -30,12 +30,12 @@ class AtributePanel(
         createPopupMenu(xmlController.atributeCommands, xmlController.atributePluginCommands)
     }
 
-    private fun addLabels(atribute: Atribute) {
+    private fun addLabels(XMLAtribute: XMLAtribute) {
 
-        add(JLabel(atribute.key, SwingConstants.RIGHT))
-        val valueTextField = JTextField(atribute.value, SwingConstants.RIGHT)
+        add(JLabel(XMLAtribute.key, SwingConstants.RIGHT))
+        val valueTextField = JTextField(XMLAtribute.value, SwingConstants.RIGHT)
         valueTextField.addActionListener {
-            xmlController.addExecuteCommand(SetAtributeCommand(atribute, valueTextField.text))
+            xmlController.addExecuteCommand(SetAtributeCommand(XMLAtribute, valueTextField.text))
         }
         add(valueTextField)
     }
