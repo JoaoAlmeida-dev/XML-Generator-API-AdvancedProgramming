@@ -1,4 +1,4 @@
-package view.custom.commands
+package view.custom.commands.commandInterfaces
 
 import view.custom.panels.ContainerPanel
 import javax.swing.JMenuItem

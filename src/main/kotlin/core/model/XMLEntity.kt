@@ -1,5 +1,6 @@
 package core.model
 
+import core.model.abstracts.XMLContainer
 import core.utilities.visitors.interfaces.IVisitor
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties

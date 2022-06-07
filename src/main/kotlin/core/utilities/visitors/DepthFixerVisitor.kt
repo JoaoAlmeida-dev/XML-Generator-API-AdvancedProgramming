@@ -8,20 +8,20 @@ class DepthFixerVisitor : IVisitor {
 
     var currentDepth: Int = 0
 
-    override fun visit(e: XMLEntity): Boolean {
+    override fun visit(visitable: XMLEntity): Boolean {
         currentDepth++
-        e.depth = currentDepth
-        return super.visit(e)
+        visitable.depth = currentDepth
+        return super.visit(visitable)
     }
 
-    override fun endvisit(e: Any) {
+    override fun endvisit(visitable: Any) {
         currentDepth--
-        super.endvisit(e)
+        super.endvisit(visitable)
     }
 
-    override fun visit(e: XMLDocument): Boolean {
+    override fun visit(visitable: XMLDocument): Boolean {
         currentDepth = 0
-        return super.visit(e)
+        return super.visit(visitable)
     }
 
 }

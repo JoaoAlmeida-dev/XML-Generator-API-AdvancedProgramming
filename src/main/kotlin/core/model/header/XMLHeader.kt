@@ -4,9 +4,9 @@ package core.model.header
  * XMLHeader
  * Class to represent the header of a xml document
  * @see xmlEncoding
- * @property version
- * @property xmlEncoding
- * @property standalone
+ * @property version of the XML standard
+ * @property xmlEncoding of the character set
+ * @property standalone Specifies if the document has an internal DTD (Document Type Definition), more info [here](https://xmlwriter.net/xml_guide/doctype_declaration.shtml#internalDTD)
  * @constructor Create empty X m l header
  */
 data class XMLHeader(

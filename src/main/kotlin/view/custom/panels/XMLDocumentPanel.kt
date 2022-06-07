@@ -2,13 +2,13 @@ package view.custom.panels
 
 import core.model.XMLEntity
 import core.model.XMLDocument
-import view.controller.XmlDocumentController
+import view.controller.XMLDocumentController
 import java.awt.*
 import javax.swing.BorderFactory
 import javax.swing.JPanel
 import javax.swing.border.CompoundBorder
 
-class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: XmlDocumentController) :
+class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: XMLDocumentController) :
     ContainerPanel() {
     private var northPanel = JPanel()
     private var centerPanel = JPanel()

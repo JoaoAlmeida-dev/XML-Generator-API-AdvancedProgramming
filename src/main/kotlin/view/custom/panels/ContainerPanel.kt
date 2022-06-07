@@ -1,6 +1,6 @@
 package view.custom.panels
 
-import view.custom.commands.ICommandMenuItem
+import view.custom.commands.commandInterfaces.ICommandMenuItem
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.JPanel

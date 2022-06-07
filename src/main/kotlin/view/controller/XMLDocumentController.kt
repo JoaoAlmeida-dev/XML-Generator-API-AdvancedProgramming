@@ -2,9 +2,10 @@ package view.controller
 
 import core.model.XMLDocument
 import org.jetbrains.kotlin.backend.common.pop
-import view.custom.commands.*
 import view.custom.commands.atributepanel.RemoveAtributeCommandMenuItem
 import view.custom.commands.atributepanel.SetAtributeCommandMenuItem
+import view.custom.commands.commandInterfaces.ICommand
+import view.custom.commands.commandInterfaces.ICommandMenuItem
 import view.custom.commands.entitypanel.*
 import view.custom.panels.AtributePanel
 import view.custom.panels.EntityPanel
@@ -12,7 +13,7 @@ import view.custom.panels.XMLDocumentPanel
 import view.injection.InjectAdd
 import java.io.File
 
-open class XmlDocumentController(val rootDoc: XMLDocument) {
+open class XMLDocumentController(val rootDoc: XMLDocument) {
 
     public val undoCommandsList: MutableList<ICommand> = mutableListOf<ICommand>()
     private val redoCommandsList: MutableList<ICommand> = mutableListOf<ICommand>()

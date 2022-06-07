@@ -10,11 +10,11 @@ class FilterVisitor(
 
     lateinit var document: XMLDocument
 
-    override fun visit(e: XMLEntity): Boolean {
+    override fun visit(visitable: XMLEntity): Boolean {
         if (this::document.isInitialized) {
-            if (decidingFunction(e)) {
-                if (e.parent != null) {
-                    e.parent!!.removeChild(e)
+            if (decidingFunction(visitable)) {
+                if (visitable.parent != null) {
+                    visitable.parent!!.removeChild(visitable)
                     return false
                 }
             } else {
@@ -23,16 +23,16 @@ class FilterVisitor(
         } else {
             return false
         }
-        return super.visit(e)
+        return super.visit(visitable)
     }
 
-    override fun endvisit(e: Any) {
-        super.endvisit(e)
+    override fun endvisit(visitable: Any) {
+        super.endvisit(visitable)
     }
 
-    override fun visit(e: XMLDocument): Boolean {
-        document = e
-        return super.visit(e)
+    override fun visit(visitable: XMLDocument): Boolean {
+        document = visitable
+        return super.visit(visitable)
     }
 
 }

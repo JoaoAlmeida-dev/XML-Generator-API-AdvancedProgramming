@@ -1,5 +1,6 @@
 package core.model
 
+import core.model.abstracts.XMLContainer
 import core.utilities.visitors.FilterVisitor
 import core.model.header.XMLHeader
 import java.io.File

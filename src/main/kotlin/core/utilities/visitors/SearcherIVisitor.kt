@@ -1,18 +1,16 @@
 package core.utilities.visitors
 
-import core.model.XMLEntity
 import core.utilities.visitors.interfaces.IVisitor
+import core.utilities.visitors.interfaces.Visitable
 
-class SearcherIVisitor(val decidingFunction: (XMLEntity: XMLEntity) -> Boolean) : IVisitor {
+class SearcherIVisitor(val decidingFunction: (XMLEntity: Visitable) -> Boolean) : IVisitor {
 
-    val entities: MutableList<XMLEntity> = mutableListOf()
+    val entities: MutableList<Visitable> = mutableListOf()
 
-    override fun visit(e: XMLEntity): Boolean {
-        if (decidingFunction(e)) {
-            entities.add(e)
+    override fun visit(visitable: Visitable): Boolean {
+        if (decidingFunction(visitable)) {
+            entities.add(visitable)
         }
-        return super.visit(e)
+        return super.visit(visitable)
     }
-
-
 }

@@ -1,7 +1,7 @@
 package view.custom.panels
 
 import core.model.XMLEntity
-import view.controller.XmlDocumentController
+import view.controller.XMLDocumentController
 import view.custom.commands.entitypanel.*
 import java.awt.*
 import java.awt.event.KeyEvent
@@ -9,7 +9,7 @@ import java.awt.event.KeyListener
 import javax.swing.*
 import javax.swing.border.CompoundBorder
 
-class EntityPanel(val XMLEntity: XMLEntity, val xmlController: XmlDocumentController) : ContainerPanel() {
+class EntityPanel(val XMLEntity: XMLEntity, val xmlController: XMLDocumentController) : ContainerPanel() {
 
 
     private var northPanel = JPanel()

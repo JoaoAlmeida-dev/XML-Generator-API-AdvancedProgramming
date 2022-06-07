@@ -1,8 +1,8 @@
 package view.custom.commands.atributepanel
 
 import core.model.XMLAtribute
-import view.custom.commands.ICommandMenuItem
-import view.custom.commands.ICommand
+import view.custom.commands.commandInterfaces.ICommandMenuItem
+import view.custom.commands.commandInterfaces.ICommand
 import view.custom.panels.AtributePanel
 import java.awt.GridLayout
 import javax.swing.*

@@ -2,7 +2,7 @@ package view.custom.panels
 
 import core.model.XMLAtribute
 import core.model.XMLEntity
-import view.controller.XmlDocumentController
+import view.controller.XMLDocumentController
 import view.custom.commands.atributepanel.SetAtributeCommand
 import java.awt.Color
 import java.awt.GridLayout
@@ -13,7 +13,7 @@ import javax.swing.SwingConstants
 class AtributePanel(
     var parentXMLEntity: XMLEntity,
     var XMLAtribute: XMLAtribute,
-    var xmlController: XmlDocumentController
+    var xmlController: XMLDocumentController
 ) : ContainerPanel() {
 
     init {

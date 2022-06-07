@@ -1,6 +1,6 @@
 package view.custom.commands.entitypanel
 
-import view.custom.commands.ICommandMenuItem
+import view.custom.commands.commandInterfaces.ICommandMenuItem
 import view.custom.panels.EntityPanel
 import javax.swing.JMenuItem
 

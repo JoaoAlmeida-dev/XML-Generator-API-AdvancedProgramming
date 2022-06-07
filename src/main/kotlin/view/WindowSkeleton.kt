@@ -1,7 +1,7 @@
 package view
 
 import core.model.XMLDocument
-import view.controller.XmlDocumentController
+import view.controller.XMLDocumentController
 import view.custom.panels.XMLDocumentPanel
 import view.injection.Inject
 import view.injection.Injector
@@ -15,8 +15,6 @@ import java.awt.event.MouseListener
 import java.io.File
 import javax.swing.*
 import javax.swing.filechooser.FileSystemView
-import javax.swing.tree.DefaultTreeModel
-import javax.swing.tree.TreeNode
 import kotlin.system.exitProcess
 
 
@@ -25,7 +23,7 @@ class WindowSkeleton : JFrame("title") {
     @Inject
     lateinit var rootDocument: XMLDocument
 
-    lateinit var xmlDocumentController: XmlDocumentController
+    lateinit var xmlDocumentController: XMLDocumentController
 
     init {
         defaultCloseOperation = EXIT_ON_CLOSE
@@ -35,7 +33,7 @@ class WindowSkeleton : JFrame("title") {
 
     fun open() {
 
-        xmlDocumentController = XmlDocumentController(rootDocument)
+        xmlDocumentController = XMLDocumentController(rootDocument)
         Injector.inject(xmlDocumentController)
         val rootPanel = JTabbedPane()
         add(rootPanel)
@@ -136,7 +134,7 @@ class WindowSkeleton : JFrame("title") {
         jMenuBar = menuBar
     }
 
-    private fun createBoxPane(xmlDocumentController: XmlDocumentController, parentComponent: JComponent) {
+    private fun createBoxPane(xmlDocumentController: XMLDocumentController, parentComponent: JComponent) {
         val rootboxPanel = JPanel(BorderLayout())
         parentComponent.add("Boxes", rootboxPanel)
 

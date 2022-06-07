@@ -2,8 +2,8 @@ package view.custom.commands.atributepanel
 
 import core.model.XMLAtribute
 import core.model.XMLEntity
-import view.custom.commands.ICommand
-import view.custom.commands.ICommandMenuItem
+import view.custom.commands.commandInterfaces.ICommand
+import view.custom.commands.commandInterfaces.ICommandMenuItem
 import view.custom.panels.AtributePanel
 import javax.swing.JMenuItem
 

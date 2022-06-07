@@ -1,8 +1,8 @@
 package view.custom.commands.entitypanel
 
 import core.model.XMLEntity
-import view.custom.commands.ICommandMenuItem
-import view.custom.commands.ICommand
+import view.custom.commands.commandInterfaces.ICommandMenuItem
+import view.custom.commands.commandInterfaces.ICommand
 import view.custom.panels.EntityPanel
 import java.awt.GridLayout
 import javax.swing.*

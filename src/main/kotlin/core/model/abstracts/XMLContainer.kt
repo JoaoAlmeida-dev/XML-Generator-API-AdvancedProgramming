@@ -1,8 +1,7 @@
-package core.model
+package core.model.abstracts
 
 import core.utilities.visitors.interfaces.IVisitor
 import core.utilities.visitors.interfaces.Visitable
-import view.IObservable
 
 /**
  * XMLContainer
