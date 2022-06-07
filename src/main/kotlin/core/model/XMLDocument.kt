@@ -4,6 +4,19 @@ import core.utilities.visitors.FilterVisitor
 import core.model.header.XMLHeader
 import java.io.File
 
+/**
+ * XMLDocument
+ *
+ * Class that represents the whole xml document, contains the header and the root entity
+ *
+ * @see XMLHeader
+ * @see XMLEntity
+ *
+ * @property header
+ * @constructor
+ *
+ * @param entity
+ */
 open class XMLDocument(
     val header: XMLHeader,
     entity: XMLContainer?,
@@ -46,6 +59,13 @@ open class XMLDocument(
     }
 
 
+    /**
+     * Filter
+     *
+     * @param decidingFunction
+     * @receiver
+     * @return
+     */
     fun filter(decidingFunction: (XMLEntity) -> Boolean): XMLDocument {
         val filterVisitor = FilterVisitor(decidingFunction)
 
@@ -53,6 +73,11 @@ open class XMLDocument(
         return filterVisitor.document
     }
 
+    /**
+     * Dump to file
+     *
+     * @param filename
+     */
     fun dumpToFile(filename: String) {
         File(filename).writeText(this.toString())
     }

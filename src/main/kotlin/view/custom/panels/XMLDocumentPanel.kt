@@ -52,7 +52,7 @@ class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: 
     override fun paintComponent(g: Graphics) {
         val header = doc.header
         val headerStr = "version: ${header.version}; " +
-                "encoding: ${header.encoding}; " +
+                "encoding: ${header.xmlEncoding}; " +
                 "standalone: ${header.standalone};"
 
         super.paintComponent(g)

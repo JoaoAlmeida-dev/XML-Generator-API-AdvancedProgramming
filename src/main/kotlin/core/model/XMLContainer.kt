@@ -4,6 +4,18 @@ import core.utilities.visitors.interfaces.IVisitor
 import core.utilities.visitors.interfaces.Visitable
 import view.IObservable
 
+/**
+ * XMLContainer
+ *
+ * An abstract class that abstracts the concept of a container in XML, basically anything that can have a parent, a list of children and a depth parameter.
+ * @see XMLDocument
+ * @see XMLEntity
+ *
+ * @property depth
+ * @property parent
+ * @property children
+ * @constructor Create empty XMLContainer with default depth of 0 (root)
+ */
 abstract class XMLContainer(
     open var depth: Int = 0,
     final var parent: XMLContainer? = null,
@@ -12,6 +24,11 @@ abstract class XMLContainer(
 
     override val observers: MutableList<(XMLContainer) -> Unit> = mutableListOf()
 
+    /**
+     * Remove child
+     *
+     * @param child
+     */
     open fun removeChild(child: XMLContainer) {
         child.parent = null
         if (children.contains(child)) {
@@ -25,6 +42,11 @@ abstract class XMLContainer(
         }
     }
 
+    /**
+     * Add child
+     *
+     * @param child
+     */
     open fun addChild(child: XMLContainer) {
         children.add(child)
     }

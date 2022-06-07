@@ -1,6 +1,6 @@
 package model
 
-import core.model.header.Encoding
+import core.model.header.XMLEncoding
 import core.model.header.XMLHeader
 import org.junit.jupiter.api.Test
 
@@ -12,7 +12,7 @@ internal class XmlHeaderTest {
 
     @BeforeEach
     internal fun setUp() {
-        header = XMLHeader(1.0, Encoding.UTF_8, false)
+        header = XMLHeader(1.0, XMLEncoding.UTF_8, false)
     }
 
     @Test
@@ -22,7 +22,7 @@ internal class XmlHeaderTest {
 
     @Test
     fun testNoVersionToString() {
-        val headerNoVersion = XMLHeader(encoding = Encoding.UTF_8, standalone = true)
+        val headerNoVersion = XMLHeader(xmlEncoding = XMLEncoding.UTF_8, standalone = true)
 
         assertEquals("<?xml encoding=\"UTF-8\" standalone=\"yes\" ?>", headerNoVersion.toString())
     }
@@ -36,7 +36,7 @@ internal class XmlHeaderTest {
 
     @Test
     fun testNoStandaloneToString() {
-        val headerNoStandalone = XMLHeader(version = 1.0, encoding = Encoding.UTF_8)
+        val headerNoStandalone = XMLHeader(version = 1.0, xmlEncoding = XMLEncoding.UTF_8)
 
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>", headerNoStandalone.toString())
     }
@@ -48,7 +48,7 @@ internal class XmlHeaderTest {
 
     @Test
     fun getEncoding() {
-        assertEquals("UTF-8", header.encoding!!.value)
+        assertEquals("UTF-8", header.xmlEncoding!!.value)
     }
 
     @Test

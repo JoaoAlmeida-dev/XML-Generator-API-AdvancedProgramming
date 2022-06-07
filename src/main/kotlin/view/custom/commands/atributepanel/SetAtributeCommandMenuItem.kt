@@ -26,7 +26,7 @@ class SetAtributeCommandMenuItem : ICommandMenuItem<AtributePanel> {
             //atribute.value = textField.text
             panel.xmlController.addExecuteCommand(
                 SetAtributeCommand(
-                    oldAtribute = panel.XMLAtribute,
+                    oldXMLAtribute = panel.XMLAtribute,
                     newValue = textField.text
                 )
             )
@@ -39,11 +39,11 @@ class SetAtributeCommand(private val oldXMLAtribute: XMLAtribute, private val ne
     var oldAtributeValue: String = "" + oldXMLAtribute.value
 
     override fun execute() {
-        oldXMLAtribute.rename(newValue)
+        oldXMLAtribute.changeValue(newValue)
     }
 
     override fun undo() {
-        oldXMLAtribute.rename(oldAtributeValue)
+        oldXMLAtribute.changeValue(oldAtributeValue)
     }
 
     override fun toString() = "replaced [$oldAtributeValue] with [$newValue]"

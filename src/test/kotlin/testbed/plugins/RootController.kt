@@ -1,6 +1,6 @@
 package testbed.plugins
 
-import core.model.header.Encoding
+import core.model.header.XMLEncoding
 import core.model.XMLDocument
 import core.model.header.XMLHeader
 import testbed.model.Book
@@ -43,7 +43,7 @@ class RootController : XMLDocument(header = header, obj = library) {
             ),
             "mapFooter" to "footer"
         )
-        val header: XMLHeader = XMLHeader(version = 1.0, encoding = Encoding.UTF_8, standalone = false)
+        val header: XMLHeader = XMLHeader(version = 1.0, xmlEncoding = XMLEncoding.UTF_8, standalone = false)
         val rootdoc = XMLDocument(header = header, obj = library)
     }
 }

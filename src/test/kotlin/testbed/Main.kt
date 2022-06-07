@@ -4,7 +4,7 @@ import core.model.XMLAtribute
 import core.model.XMLEntity
 import core.model.XMLDocument
 import core.utilities.visitors.SearcherIVisitor
-import core.model.header.Encoding
+import core.model.header.XMLEncoding
 import core.model.header.XMLHeader
 import testbed.model.Book
 import testbed.model.Library
@@ -12,7 +12,7 @@ import testbed.model.BookStore
 import testbed.model.Chapter
 
 fun main() {
-    val header: XMLHeader = XMLHeader(version = 1.0, encoding = Encoding.UTF_8, standalone = false)
+    val header: XMLHeader = XMLHeader(version = 1.0, xmlEncoding = XMLEncoding.UTF_8, standalone = false)
     xmlInference(header)
 
 }

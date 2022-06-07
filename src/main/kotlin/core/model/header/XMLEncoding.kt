@@ -1,6 +1,13 @@
 package core.model.header
 
-enum class Encoding(val value: String) {
+/**
+ * Encoding
+ * Enum to represent the different types of encoding
+ *
+ * @property value
+ * @constructor Create empty Encoding
+ */
+enum class XMLEncoding(val value: String) {
     UTF_8("UTF-8"),
     UTF_16("UTF-16"),
     ISO_10646_UCS_2("ISO-10646-UCS-2"),
@@ -15,6 +22,6 @@ enum class Encoding(val value: String) {
     ISO_8859_8("ISO-8859-8"),
     ISO_8859_9("ISO-8859-9"),
     ISO_2022_JP("ISO-2022-JP"),
-    Shift_JIS("Shift_JIS"),
+    SHIFT_JIS("Shift_JIS"),
     EUC_JP("EUC-JP"),
 }

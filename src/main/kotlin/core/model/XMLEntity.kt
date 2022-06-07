@@ -8,6 +8,35 @@ import kotlin.reflect.full.hasAnnotation
 import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.jvm.isAccessible
 
+/**
+ * XMLEntity
+ * Class to represent an entity in xml.
+ * An entity is anything that is wrapped in <>
+ *
+ * The entities can bee really short like: `"<Chapter/>"`
+ *
+ * Have multiple atributes like:
+ * `<Livro Writer="Jeronimo Stilton" pages="1000">Jeronimo em Belém </Livro>`
+ *
+ * Or even entities inside:
+ * `<Livro Writer="Jeronimo Stilton" pages="1000">Jeronimo em Belém
+<chapters>
+<Chapter/>
+<Chapter/>
+</chapters>
+</Livro>`
+ *
+ * @see XMLAtribute
+ *
+ * @property name
+ * @property contents
+ * @property XMLAtributes
+ * @constructor
+ *
+ * @param inputDepth
+ * @param children
+ * @param parent
+ */
 class XMLEntity(
     inputDepth: Int? = null,
     var name: String,
@@ -31,15 +60,6 @@ class XMLEntity(
         depth = getParentOrDefaultDepth(parent)
     }
 
-
-/*    enum class EventType {
-        ADDCHILD,
-        REMOVECHILD,
-        ADDATRIBUTE,
-        REMOVEATRIBUTE,
-        REPLACE
-    }
-*/
 
     private val tab: String get() = "\t".repeat(depth)
 
@@ -171,11 +191,21 @@ class XMLEntity(
     }
 
 
+    /**
+     * Remove content
+     *
+     * @param content
+     */
     fun removeContent(content: String) {
         contents = contents?.replace(content, "")
         notifyObservers { it(this) }
     }
 
+    /**
+     * Add content
+     *
+     * @param content
+     */
     fun addContent(content: String) {
         if (contents != null) {
             contents += " $content"
@@ -185,22 +215,42 @@ class XMLEntity(
         notifyObservers { it(this) }
     }
 
+    /**
+     * Replace content
+     *
+     * @param content
+     */
     fun replaceContent(content: String) {
         contents = content
         notifyObservers { it(this) }
     }
 
 
+    /**
+     * Add atribute
+     *
+     * @param XMLAtribute
+     */
     fun addAtribute(XMLAtribute: XMLAtribute) {
         XMLAtributes.add(XMLAtribute)
         notifyObservers { it(this) }
     }
 
+    /**
+     * Remove atribute
+     *
+     * @param XMLAtribute
+     */
     fun removeAtribute(XMLAtribute: XMLAtribute) {
         XMLAtributes.remove(XMLAtribute)
         notifyObservers { it(this) }
     }
 
+    /**
+     * Rename
+     *
+     * @param text
+     */
     fun rename(text: String) {
         name = text
         notifyObservers { it(this) }

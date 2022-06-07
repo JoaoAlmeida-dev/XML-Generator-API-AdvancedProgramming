@@ -31,9 +31,10 @@ object Injector {
         }.forEach {
             val classNameInMap = propertiesMap["${c.simpleName}.${it.name}"]
             println("INJECTOR::ADD::${c.simpleName}.${it.name}")
-            println("INJECTOR::ADD::" + Class.forName(propertiesMap["${c.simpleName}.${it.name}"]))
+            println("INJECTOR::ADD::$classNameInMap")
+            println("INJECTOR::ADD::" + Class.forName(classNameInMap))
             val injectedProperty =
-                (Class.forName(propertiesMap["${c.simpleName}.${it.name}"]).kotlin).createInstance()
+                (Class.forName(classNameInMap).kotlin).createInstance()
             //(it as KMutableProperty<*>).setter.call(createdInstance, DefaultSetup())
             (it as KMutableProperty<*>).setter.call(createdInstance, injectedProperty)
         }
