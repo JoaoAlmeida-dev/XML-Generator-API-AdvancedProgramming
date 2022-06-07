@@ -32,6 +32,43 @@ The project is divided in 2 main packages
 | Core       | The main **problem** representation and ways to **interact** with it |
 | View       |             The way to view and **visually** interact with the model |
 
+### In Depth Graph
+
+#### Core
+```mermaid
+graph TD;
+   core --> model
+   core --> utilities
+   
+   utilities --> services
+   services --> FileReader
+   utilities --> visitors
+   visitors --> interfaces
+   interfaces --> IVisitor
+   interfaces --> IVisitable
+   visitors --> DepthFixerVisitor
+   visitors --> FilterVisitor
+   visitors --> SearcherVisitor
+   
+   model --> XMLContainer
+   model --> header
+   header --> XMLEncoding
+   header --> XMLHeader
+   model --> XMLAtributte
+   model --> XMLEntity
+   model --> XMLDocument
+   
+```
+
+#### View
+
+```mermaid
+graph TD;
+   view --> custom
+   view --> injection
+   view --> controller
+```
+
 Now we will go more in depth on what each package has to offer
 
 ---
