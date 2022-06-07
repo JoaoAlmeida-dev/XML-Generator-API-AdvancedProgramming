@@ -4,7 +4,7 @@
 
 ### You can view the initial instructions that inspired this project [here](https://andre-santos-pt.github.io/projetoxml/)
 
-### If you are looking to develop a plugin for this framework skip to [Developing plugins](#Developing plugins)
+### If you are looking to develop a plugin for this framework skip to [Developing plugins](#developing-plugins)
 
 # Project description
 
