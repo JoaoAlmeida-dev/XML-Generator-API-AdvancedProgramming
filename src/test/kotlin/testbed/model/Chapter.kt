@@ -1,6 +1,6 @@
 package testbed.model
 
-class Chapter(
+data class Chapter(
     val name: String,
     val pageN: Int,
 )

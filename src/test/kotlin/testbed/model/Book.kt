@@ -11,7 +11,7 @@ data class Book(
     @XMLAnnotations.XmlTagContent
     val subTitle: String,
     val chapters: List<Chapter>,
-    @XMLAnnotations.XmlTagContent
+
     val store: BookStore,
     var pages: Int = chapters.sumOf { chapter: Chapter -> chapter.pageN },
 ) {

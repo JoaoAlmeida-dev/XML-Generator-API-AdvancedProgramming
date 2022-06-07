@@ -27,6 +27,9 @@ import kotlin.reflect.jvm.isAccessible
 </chapters>
 </Livro>`
  *
+ * XMLEntities can be constructed using reflexion with: String, Array, Iterable, Map, DataClass and Enum
+ *
+ *
  * @see XMLAtribute
  *
  * @property name
@@ -70,13 +73,15 @@ class XMLEntity(
             obj::class.findAnnotation<XMLAnnotations.XmlName>()?.name ?: (name ?: (obj::class.simpleName
                 ?: "Default Name"))
 
-        private fun getParentOrDefaultDepth(parent: XMLContainer?): Int =
-            if (parent == null) 0 else parent.depth + 1
+        private fun getParentOrDefaultDepth(parent: XMLContainer?, defaultDepth: Int? = 0): Int =
+            if (parent == null) {
+                defaultDepth ?: 0
+            } else parent.depth + 1
     }
 //region constructors
 
     constructor(obj: Any, depth: Int?, name: String? = null, parent: XMLContainer? = null) : this(
-        inputDepth = getParentOrDefaultDepth(parent),
+        inputDepth = getParentOrDefaultDepth(parent, depth),
         name = getObjName(obj, name),
         parent = parent
     ) {
@@ -96,8 +101,14 @@ class XMLEntity(
     }
 
 
-    private fun mapConstructor(obj: Map<*, *>) {
-        obj.forEach { entry: Map.Entry<Any?, Any?> ->
+    /**
+     * Map constructor
+     *
+     * Builds the entity with the given map as a base
+     * @param map
+     */
+    private fun mapConstructor(map: Map<*, *>) {
+        map.forEach { entry: Map.Entry<Any?, Any?> ->
             if (entry.value!!::class.isSubclassOf(String::class)) {
                 addAtribute(XMLAtribute(key = entry.key.toString(), value = entry.value.toString()))
             } else {
@@ -110,71 +121,88 @@ class XMLEntity(
         }
     }
 
-    private fun arrayConstructor(obj: Array<*>) {
-        obj.forEach {
+    /**
+     * Array constructor
+     *
+     * Builds the entity with the given array as a base
+     * @param array
+     */
+    private fun arrayConstructor(array: Array<*>) {
+        array.forEach {
             if (it != null) {
-                val XMLEntity: XMLEntity = XMLEntity(depth = depth + 1, obj = it, parent = this)
-                addChild(XMLEntity)
+                val xmlEntity: XMLEntity = XMLEntity(depth = depth + 1, obj = it, parent = this)
+                addChild(xmlEntity)
             }
         }
     }
 
-    private fun iterableConstructor(obj: Iterable<*>) {
-        obj.forEach {
+    /**
+     * Iterable constructor
+     *
+     * Builds the entity with the given iterable as a base
+     * @param iterable
+     */
+    private fun iterableConstructor(iterable: Iterable<*>) {
+        iterable.forEach {
             if (it != null) {
-                val XMLEntity: XMLEntity = XMLEntity(depth = depth + 1, obj = it, parent = this)
-                addChild(XMLEntity)
+                val xmlEntity: XMLEntity = XMLEntity(depth = depth + 1, obj = it, parent = this)
+                addChild(xmlEntity)
             }
         }
     }
 
-    private fun stringConstruction(obj: String) {
-        extractProperties(obj = obj, initialDepth = depth)
-        addContent(obj)
+    /**
+     * String construction
+     *
+     * Builds the entity with the given string as a base
+     * @param string
+     */
+    private fun stringConstruction(string: String) {
+        extractProperties(obj = string, initialDepth = depth)
+        addContent(string)
     }
 
 //endregion constructors
 
     private fun extractProperties(obj: Any, initialDepth: Int) {
         val declaredMemberProperties: Collection<KProperty1<out Any, *>> = obj::class.declaredMemberProperties
-        declaredMemberProperties.forEach { it ->
-            val shouldIgnore: Boolean = it.hasAnnotation<XMLAnnotations.XmlIgnore>()
-            val shouldContent: Boolean = it.hasAnnotation<XMLAnnotations.XmlTagContent>()
-            val xmlName: String? = it.findAnnotation<XMLAnnotations.XmlName>()?.name
+        declaredMemberProperties.forEach { memberProperty ->
+            val shouldIgnore: Boolean = memberProperty.hasAnnotation<XMLAnnotations.XmlIgnore>()
+            val shouldContent: Boolean = memberProperty.hasAnnotation<XMLAnnotations.XmlTagContent>()
+            val xmlName: String? = memberProperty.findAnnotation<XMLAnnotations.XmlName>()?.name
             if (!shouldIgnore) {
-                if (!shouldContent /*&& it.isAccessible*/) {
-                    it.isAccessible = true
-                    //TODO
-                    if (it.isPrimitiveType() || it::class.isSubclassOf(Enum::class)) {
-                        it.call(obj)?.let { itCalled ->
+                if (!shouldContent /*&& memberProperty.isAccessible*/) {
+                    memberProperty.isAccessible = true
+
+                    val isEnum: Boolean =
+                        if (memberProperty.returnType.classifier != null) {
+                            memberProperty.call(obj)!!::class.isSubclassOf(Enum::class)
+                        } else {
+                            false
+                        }
+                    if (memberProperty.isPrimitiveType() || isEnum) {
+                        memberProperty.call(obj)?.let { itCalled ->
                             addAtribute(
-                                XMLAtribute(name = xmlName ?: it.getPropertyName(), value = itCalled)
+                                XMLAtribute(name = xmlName ?: memberProperty.name, value = itCalled)
                             )
                         }
-                    } else if (it.isAcceptableType(obj)) {
-                        it.call(obj)?.let { itCalled ->
+                    } else if (memberProperty.isAcceptableType(obj)) {
+                        memberProperty.call(obj)?.let { itCalled ->
                             val propertyInstanciatedValue: Any = itCalled
                             val element = XMLEntity(
                                 depth = initialDepth + 1,
                                 obj = propertyInstanciatedValue,
-                                name = it.name,
+                                name = memberProperty.name,
                                 parent = this,
                             )
                             addChild(element)
-                            /*
-                                propertyInstanciatedValue as Iterable<*>
-                                propertyInstanciatedValue.forEach {
-                                    val entity: Entity = Entity(depth = depth + 1, obj = it!!)
-                                    children.add(entity)
-                                }
-                                */
                         }
                     } else {
-                        println("Entity::extractProperties::NOT::isAcceptableType: " + it)
+                        println("Entity::extractProperties::NOT::isAcceptableType: $memberProperty")
                     }
                 }
             } else {
-                addContent(it.call(obj).toString())
+                addContent(memberProperty.call(obj).toString())
             }
         }
     }
@@ -276,13 +304,6 @@ class XMLEntity(
         return isPrimitive || isIterable || isMap || isArray || isData
     }
 
-    private fun KProperty1<out Any, *>.getPropertyName() =
-    //if (this.hasAnnotation<DbName>()) {
-    //this.findAnnotation<DbName>()!!.name
-        //} else {
-        this.name
-
-    //}
     override fun toString(): String {
         val hasContent = contents != null
         val hasChildren = children.isNotEmpty()

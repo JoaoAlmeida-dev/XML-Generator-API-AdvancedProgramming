@@ -13,10 +13,19 @@ import view.custom.panels.XMLDocumentPanel
 import view.injection.InjectAdd
 import java.io.File
 
+/**
+ * XMLDocumentController
+ *
+ * Is a class that serves as a controller for the view to interact with the model.
+ *
+ * The view issues commands to the controller and it executes those commands on the model.
+ *
+ * @property rootDoc
+ * @constructor Create an XMLdocument controller with a rootDocument
+ */
 open class XMLDocumentController(val rootDoc: XMLDocument) {
 
-    public val undoCommandsList: MutableList<ICommand> = mutableListOf<ICommand>()
-    private val redoCommandsList: MutableList<ICommand> = mutableListOf<ICommand>()
+    val commandStack: CommandStack = CommandStack()
 
     @InjectAdd
     public val entityPluginCommands: MutableList<ICommandMenuItem<EntityPanel>> = mutableListOf()
@@ -55,104 +64,18 @@ open class XMLDocumentController(val rootDoc: XMLDocument) {
             rootDoc.dumpToFile(split.joinToString(separator = "."))
         }
     }
-    //region UndoRedo
 
-    fun addUndo(command: ICommand) {
-        redoCommandsList.clear()
-        undoCommandsList.add(command)
-    }
-
-    fun undo() {
-        if (undoCommandsList.isNotEmpty()) {
-            val pop = undoCommandsList.pop()
-            pop.undo()
-            redoCommandsList.add(pop)
-            println("XmlDocumentController::undo - size:\n${undoCommandsList.size}")
-        } else {
-            println("XmlDocumentController::undo - Empty list")
-        }
-    }
-
-    fun redo() {
-        if (redoCommandsList.isNotEmpty()) {
-            val pop = redoCommandsList.pop()
-            pop.execute()
-            undoCommandsList.add(pop)
-            println("XmlDocumentController::redo - size:\n${redoCommandsList.size}")
-        } else {
-            println("XmlDocumentController::redo - Empty list")
-        }
-    }
 
     fun addExecuteCommand(command: ICommand) {
         command.execute()
-        addUndo(command)
+        commandStack.addUndo(command)
     }
 
-
-    //region Atributes
-
-/*    fun addAtribute(parentEntity: Entity, key: String, value: String) {
-
-        val addAtributeCommand: ICommand = AddAtributeCommand(parentEntity, key, value)
-        addAtributeCommand.execute()
-        addUndo(addAtributeCommand)
-    }*/
-/*
-    fun removeAtribute(parentEntity: Entity, atribute: Atribute) {
-        val removeAtributeCommand: ICommand =
-            RemoveAtributeCommandMenuItem.RemoveAtributeCommand(parentEntity, atribute)
-        removeAtributeCommand.execute()
-        addUndo(removeAtributeCommand)
-    }*/
-
-/*    fun setAtribute(oldAtribute: Atribute, newValue: String) {
-        val removeAtributeCommand: ICommand = SetAtributeCommand(oldAtribute, newValue)
-        removeAtributeCommand.execute()
-        addUndo(removeAtributeCommand)
-    }*/
-    //endregion
-
-    //region Child
-/*
-
-    fun renameEntity(entity: Entity, text: String) {
-        val renameEntityCommand: ICommand = RenameEntity(entity, text)
-        renameEntityCommand.execute()
-        addUndo(renameEntityCommand)
+    fun undo() {
+        commandStack.undo()
     }
 
-    fun addChild(parent: Entity, newEntity: Entity) {
-        val addChildCommand: ICommand = AddChildCommand(parent, newEntity)
-        addChildCommand.execute()
-        addUndo(addChildCommand)
+    fun redo() {
+        commandStack.redo()
     }
-
-    fun removeChild(entity: Entity) {
-        val removeChildCommand: ICommand = RemoveChildCommand(entity)
-        removeChildCommand.execute()
-        addUndo(removeChildCommand)
-    }
-*/
-    //endregion
-
-    //region Content
-/*
-    fun addContent(entity: Entity, text: String) {
-        val addContentCommand: ICommand = AddContentCommand(entity, text)
-        addContentCommand.execute()
-        addUndo(addContentCommand)
-    }
-
-    fun overwriteContent(entity: Entity, text: String) {
-        val overwriteContentCommand = OverwriteContentCommand(entity, text)
-        overwriteContentCommand.execute()
-        addUndo(overwriteContentCommand)
-
-    }*/
-    //endregion
-
-    //endregion
-
-
 }

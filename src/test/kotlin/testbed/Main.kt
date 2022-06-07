@@ -3,6 +3,7 @@ package testbed
 import core.model.XMLAtribute
 import core.model.XMLEntity
 import core.model.XMLDocument
+import core.model.abstracts.XMLContainer
 import core.utilities.visitors.SearcherIVisitor
 import core.model.header.XMLEncoding
 import core.model.header.XMLHeader
@@ -64,7 +65,7 @@ fun xmlInference(header: XMLHeader) {
 
 
     val entitySearcherVisitor: SearcherIVisitor =
-        SearcherIVisitor { XMLEntity: XMLEntity -> XMLEntity.name.contains("Book") }
+        SearcherIVisitor { entity: XMLEntity -> entity.name.contains("Book") }
 
     xmlDocument.accept(entitySearcherVisitor)
 

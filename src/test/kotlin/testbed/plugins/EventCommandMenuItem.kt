@@ -22,7 +22,6 @@ class EventCommandMenuItem : ICommandMenuItem<EntityPanel> {
             jPanel.layout = GridLayout(1, 2)
             jPanel.add(jSpinner)
 
-
             val result: Int = JOptionPane.showConfirmDialog(
                 null,
                 jPanel,

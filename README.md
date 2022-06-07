@@ -1,10 +1,10 @@
-# XMLin
-
-# Wiki
+# XML-Generator-API-AdvancedProgramming
 
 ### You can view the initial instructions that inspired this project [here](https://andre-santos-pt.github.io/projetoxml/)
 
 ### If you are looking to develop a plugin for this framework skip to [Developing plugins](#Developing plugins)
+
+# Wiki
 
 # Project description
 
@@ -38,7 +38,7 @@ The project is divided in 2 main packages
 
 ### In Depth Graph
 
-#### Core
+#### Graph - [Core](#core)
 
 ```mermaid
 graph TD;
@@ -67,7 +67,7 @@ graph TD;
    
 ```
 
-#### View
+#### Graph - [View](#view)
 
 ```mermaid
 graph TD;
@@ -83,6 +83,8 @@ graph TD;
    
    custom --> commands
    commands --> atributepanel
+   commands --> entitypanel 
+   commands --> commandInterfaces
    commandInterfaces --> ICommand
    commandInterfaces --> ICommandMenuItem
    commandInterfaces --> atribtePane
@@ -95,13 +97,13 @@ graph TD;
    
 ```
 
-Now we will go more in depth on what each package has to offer
+Now we will go more in depth on what each package has to offer.
 
 ---
 
 ### Core
 
-Inside the core we have the Model and the Utilities sub packages
+Inside the core we have the Model and the Utilities sub packages.
 
 #### Model
 

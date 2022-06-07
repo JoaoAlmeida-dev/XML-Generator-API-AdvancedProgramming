@@ -101,8 +101,9 @@ class WindowSkeleton : JFrame("title") {
             override fun mouseReleased(e: MouseEvent?) {}
             override fun mouseEntered(e: MouseEvent?) {
                 historyMenu.removeAll()
-                println(xmlDocumentController.undoCommandsList)
-                xmlDocumentController.undoCommandsList.forEach {
+                val undoCommandsList = xmlDocumentController.commandStack.undoCommandsList
+                println(undoCommandsList)
+                undoCommandsList.forEach {
                     historyMenu.add(JLabel(it.toString()))
                 }
                 historyMenu.doClick()

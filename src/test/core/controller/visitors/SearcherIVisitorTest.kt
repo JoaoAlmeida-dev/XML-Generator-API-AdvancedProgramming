@@ -3,6 +3,7 @@ package controller.visitors
 import core.utilities.visitors.SearcherIVisitor
 import core.model.XMLEntity
 import core.model.XMLDocument
+import core.model.abstracts.XMLContainer
 import core.model.header.XMLHeader
 import org.junit.jupiter.api.Test
 
@@ -53,7 +54,7 @@ internal class SearcherIVisitorTest {
 
     @Test
     fun visit() {
-        val searcherVisitor = SearcherIVisitor { XMLEntity: XMLEntity -> XMLEntity.children.isEmpty() }
+        val searcherVisitor = SearcherIVisitor { XMLEntity: XMLContainer -> XMLEntity.children.isEmpty() }
         xmldoc.accept(searcherVisitor)
         println(searcherVisitor.entities.joinToString(separator = "\n", prefix = "[\n", postfix = "\n]"))
 
