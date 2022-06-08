@@ -1,8 +1,8 @@
 package view.custom.panels
 
-import core.model.XMLAtribute
-import core.model.XMLEntity
-import view.controller.XMLDocumentController
+import model.XMLAtribute
+import model.XMLEntity
+import controller.XMLDocumentController
 import view.custom.commands.atributepanel.SetAtributeCommand
 import java.awt.Color
 import java.awt.GridLayout

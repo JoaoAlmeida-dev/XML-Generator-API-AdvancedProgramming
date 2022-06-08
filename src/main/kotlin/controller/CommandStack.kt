@@ -1,7 +1,6 @@
-package view.controller
+package controller
 
-import core.model.abstracts.IObservable
-import core.model.abstracts.XMLContainer
+import model.abstracts.IObservable
 import org.jetbrains.kotlin.backend.common.pop
 import view.custom.commands.commandInterfaces.ICommand
 

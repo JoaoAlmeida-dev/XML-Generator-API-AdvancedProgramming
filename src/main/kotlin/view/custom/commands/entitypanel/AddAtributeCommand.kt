@@ -1,7 +1,7 @@
 package view.custom.commands.entitypanel
 
-import core.model.XMLAtribute
-import core.model.XMLEntity
+import model.XMLAtribute
+import model.XMLEntity
 import view.custom.commands.commandInterfaces.ICommandMenuItem
 import view.custom.commands.commandInterfaces.ICommand
 import view.custom.panels.EntityPanel

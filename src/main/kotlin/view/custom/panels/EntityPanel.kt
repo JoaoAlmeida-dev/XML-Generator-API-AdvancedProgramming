@@ -1,7 +1,7 @@
 package view.custom.panels
 
-import core.model.XMLEntity
-import view.controller.XMLDocumentController
+import model.XMLEntity
+import controller.XMLDocumentController
 import view.custom.commands.entitypanel.*
 import java.awt.*
 import java.awt.event.KeyEvent

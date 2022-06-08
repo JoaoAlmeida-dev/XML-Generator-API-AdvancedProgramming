@@ -1,9 +1,9 @@
 package controller.visitors
 
-import core.utilities.visitors.FilterVisitor
-import core.model.XMLEntity
-import core.model.XMLDocument
-import core.model.header.XMLHeader
+import controller.utilities.visitors.FilterVisitor
+import model.XMLEntity
+import model.XMLDocument
+import model.header.XMLHeader
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import testbed.model.Book

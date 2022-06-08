@@ -1,4 +1,4 @@
-package core.model.header
+package model.header
 
 /**
  * XMLHeader

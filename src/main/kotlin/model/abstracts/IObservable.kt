@@ -1,4 +1,4 @@
-package core.model.abstracts
+package model.abstracts
 
 /**
  * Interface for observable objects

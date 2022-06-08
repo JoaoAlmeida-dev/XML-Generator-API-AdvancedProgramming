@@ -1,6 +1,6 @@
 package testbed.model
 
-import core.model.XMLAnnotations
+import model.XMLAnnotations
 
 @XMLAnnotations.XmlName("Livro")
 data class Book(

@@ -1,9 +1,7 @@
-package core.utilities.visitors
+package controller.utilities.visitors
 
-import core.model.XMLEntity
-import core.model.abstracts.XMLContainer
-import core.utilities.visitors.interfaces.IVisitor
-import core.utilities.visitors.interfaces.Visitable
+import model.XMLEntity
+import controller.utilities.visitors.interfaces.IVisitor
 
 class SearcherIVisitor(val decidingFunction: (entity: XMLEntity) -> Boolean) : IVisitor {
 

@@ -1,8 +1,8 @@
 package testbed.plugins
 
-import core.model.header.XMLEncoding
-import core.model.XMLDocument
-import core.model.header.XMLHeader
+import model.header.XMLEncoding
+import model.XMLDocument
+import model.header.XMLHeader
 import testbed.model.Book
 import testbed.model.BookStore
 import testbed.model.Chapter

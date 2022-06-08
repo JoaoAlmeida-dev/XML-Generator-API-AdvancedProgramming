@@ -1,6 +1,6 @@
 package view.custom.commands.atributepanel
 
-import core.model.XMLAtribute
+import model.XMLAtribute
 import view.custom.commands.commandInterfaces.ICommandMenuItem
 import view.custom.commands.commandInterfaces.ICommand
 import view.custom.panels.AtributePanel

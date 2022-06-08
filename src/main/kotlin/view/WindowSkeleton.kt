@@ -1,7 +1,7 @@
 package view
 
-import core.model.XMLDocument
-import view.controller.XMLDocumentController
+import model.XMLDocument
+import controller.XMLDocumentController
 import view.custom.panels.XMLDocumentPanel
 import view.injection.Inject
 import view.injection.Injector

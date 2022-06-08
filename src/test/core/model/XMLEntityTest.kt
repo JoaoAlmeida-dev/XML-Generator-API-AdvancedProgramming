@@ -1,7 +1,5 @@
 package model
 
-import core.model.XMLAtribute
-import core.model.XMLEntity
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import testbed.model.Book

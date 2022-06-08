@@ -1,8 +1,8 @@
-package core.utilities.visitors.interfaces
+package controller.utilities.visitors.interfaces
 
-import core.model.XMLEntity
-import core.model.abstracts.XMLContainer
-import core.model.XMLDocument
+import model.XMLEntity
+import model.abstracts.XMLContainer
+import model.XMLDocument
 
 /**
  * IVisitor is an interface to declare a visitor.

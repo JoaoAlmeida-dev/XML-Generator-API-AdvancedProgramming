@@ -1,7 +1,7 @@
-package core.model
+package model
 
-import core.model.abstracts.XMLContainer
-import core.utilities.visitors.interfaces.IVisitor
+import model.abstracts.XMLContainer
+import controller.utilities.visitors.interfaces.IVisitor
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.findAnnotation

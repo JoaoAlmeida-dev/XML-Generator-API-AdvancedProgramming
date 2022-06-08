@@ -1,12 +1,11 @@
 package testbed
 
-import core.model.XMLAtribute
-import core.model.XMLEntity
-import core.model.XMLDocument
-import core.model.abstracts.XMLContainer
-import core.utilities.visitors.SearcherIVisitor
-import core.model.header.XMLEncoding
-import core.model.header.XMLHeader
+import model.XMLAtribute
+import model.XMLEntity
+import model.XMLDocument
+import controller.utilities.visitors.SearcherIVisitor
+import model.header.XMLEncoding
+import model.header.XMLHeader
 import testbed.model.Book
 import testbed.model.Library
 import testbed.model.BookStore

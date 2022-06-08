@@ -1,7 +1,7 @@
-package core.model.abstracts
+package model.abstracts
 
-import core.utilities.visitors.interfaces.IVisitor
-import core.utilities.visitors.interfaces.Visitable
+import controller.utilities.visitors.interfaces.IVisitor
+import controller.utilities.visitors.interfaces.Visitable
 
 /**
  * XMLContainer

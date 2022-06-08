@@ -1,4 +1,4 @@
-package core.utilities.visitors.interfaces
+package controller.utilities.visitors.interfaces
 
 /**
  * Visitable

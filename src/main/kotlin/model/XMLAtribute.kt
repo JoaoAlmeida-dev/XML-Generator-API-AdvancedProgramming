@@ -1,6 +1,6 @@
-package core.model
+package model
 
-import core.model.abstracts.IObservable
+import model.abstracts.IObservable
 
 /**
  * XMLAtribute

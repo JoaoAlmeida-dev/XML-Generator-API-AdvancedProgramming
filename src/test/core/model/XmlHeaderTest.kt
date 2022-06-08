@@ -1,7 +1,7 @@
 package model
 
-import core.model.header.XMLEncoding
-import core.model.header.XMLHeader
+import model.header.XMLEncoding
+import model.header.XMLHeader
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

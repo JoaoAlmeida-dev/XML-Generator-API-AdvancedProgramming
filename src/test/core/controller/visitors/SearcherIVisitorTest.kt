@@ -1,10 +1,10 @@
 package controller.visitors
 
-import core.utilities.visitors.SearcherIVisitor
-import core.model.XMLEntity
-import core.model.XMLDocument
-import core.model.abstracts.XMLContainer
-import core.model.header.XMLHeader
+import controller.utilities.visitors.SearcherIVisitor
+import model.XMLEntity
+import model.XMLDocument
+import model.abstracts.XMLContainer
+import model.header.XMLHeader
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

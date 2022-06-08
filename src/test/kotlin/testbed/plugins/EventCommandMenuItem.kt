@@ -1,7 +1,7 @@
 package testbed.plugins
 
-import core.model.XMLEntity
-import core.model.abstracts.XMLContainer
+import model.XMLEntity
+import model.abstracts.XMLContainer
 import view.custom.commands.commandInterfaces.ICommand
 import view.custom.commands.commandInterfaces.ICommandMenuItem
 import view.custom.commands.entitypanel.AddChildCommand

@@ -1,8 +1,8 @@
-package core.model
+package model
 
-import core.model.abstracts.XMLContainer
-import core.utilities.visitors.FilterVisitor
-import core.model.header.XMLHeader
+import model.abstracts.XMLContainer
+import controller.utilities.visitors.FilterVisitor
+import model.header.XMLHeader
 import java.io.File
 
 /**

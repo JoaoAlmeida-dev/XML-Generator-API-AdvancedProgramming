@@ -1,8 +1,8 @@
-package core.utilities.visitors
+package controller.utilities.visitors
 
-import core.model.XMLEntity
-import core.model.XMLDocument
-import core.utilities.visitors.interfaces.IVisitor
+import model.XMLEntity
+import model.XMLDocument
+import controller.utilities.visitors.interfaces.IVisitor
 
 class FilterVisitor(
     val decidingFunction: (XMLEntity: XMLEntity) -> Boolean

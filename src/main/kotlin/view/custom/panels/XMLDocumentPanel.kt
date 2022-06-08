@@ -1,8 +1,8 @@
 package view.custom.panels
 
-import core.model.XMLEntity
-import core.model.XMLDocument
-import view.controller.XMLDocumentController
+import model.XMLEntity
+import model.XMLDocument
+import controller.XMLDocumentController
 import java.awt.*
 import javax.swing.BorderFactory
 import javax.swing.JPanel
