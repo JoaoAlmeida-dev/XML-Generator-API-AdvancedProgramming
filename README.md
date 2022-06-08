@@ -188,6 +188,10 @@ Or even other entities **inside**:
 </Livro>
 ```
 
+###### Construction
+
+XMLEntities can be built from a lot of different objects , such as String, Array, Iterable, Map, DataClass and Enum
+
 ##### Annotations
 
 Annotations are used to better customize the generated xml
@@ -436,8 +440,6 @@ class CustomPanelCommandMenuItem : ICommandMenuItem<EntityPanel> {
 }
 ```
 
-![HTML custom Panel](https://user-images.githubusercontent.com/24848457/172525092-ee6bf33d-429b-4e25-965a-02a9839180e2.png)
-
 As you can see, anything can be done with few lines of code.
 
 The accept method is to determine whether the menuItem should be enabled or disabled for said panel.
@@ -447,6 +449,8 @@ Then, when the user clicks on it, we will go the xmlController stored inside the
 command.
 This particular AddPanelCommand simply adds the JPanel onto the body of the parent Panel, **not** changing the
 underlying xml model.
+
+![HTML custom Panel](https://user-images.githubusercontent.com/24848457/172525092-ee6bf33d-429b-4e25-965a-02a9839180e2.png)
 
 ### What if I want to change the model and add my custom xml snippet to it?
 
@@ -463,7 +467,7 @@ data class MySnippet(
 
 ```
 
-Then we need to implment the ICommandMenuItem in another class:
+Then we need to implement the ICommandMenuItem in another class:
 
 ```kotlin
 class CustomXMLSnippetCommandMenuItem : ICommandMenuItem<EntityPanel> {
@@ -484,8 +488,12 @@ class CustomXMLSnippetCommandMenuItem : ICommandMenuItem<EntityPanel> {
 }
 ```
 
-Now we used the AddChildCommand in order to take the xmlEntity of the parent panel and add our new entity to it,
+Now we used the **AddChildCommand** in order to take the xmlEntity of the parent panel and add our new entity to it,
 changing the underlying model.
+
+Notice that we wrapped our MySnippet inside a XMLEntity, and gave it the entity of the panel we clicked on as a parent,
+this is so it is correctly placed inside our model, and because our model works with this XMLEntity class, details on it
+can e found [here](#xmlentity)
 
 ![CustomSnippet](https://user-images.githubusercontent.com/24848457/172526683-2f51a484-03ab-4000-a27c-22aeb11535ef.png)
 
