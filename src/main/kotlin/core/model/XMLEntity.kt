@@ -80,7 +80,7 @@ class XMLEntity(
     }
 //region constructors
 
-    constructor(obj: Any, depth: Int?, name: String? = null, parent: XMLContainer? = null) : this(
+    constructor(obj: Any, depth: Int? = null, name: String? = null, parent: XMLContainer? = null) : this(
         inputDepth = getParentOrDefaultDepth(parent, depth),
         name = getObjName(obj, name),
         parent = parent
@@ -183,7 +183,7 @@ class XMLEntity(
                     if (memberProperty.isPrimitiveType() || isEnum) {
                         memberProperty.call(obj)?.let { itCalled ->
                             addAtribute(
-                                XMLAtribute(name = xmlName ?: memberProperty.name, value = itCalled)
+                                XMLAtribute(key = xmlName ?: memberProperty.name, value = itCalled)
                             )
                         }
                     } else if (memberProperty.isAcceptableType(obj)) {
@@ -290,6 +290,7 @@ class XMLEntity(
             Int::class -> true
             Number::class -> true
             String::class -> true
+            Boolean::class -> true
             else -> false
         }
     }

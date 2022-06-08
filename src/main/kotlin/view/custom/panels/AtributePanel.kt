@@ -33,7 +33,7 @@ class AtributePanel(
     private fun addLabels(XMLAtribute: XMLAtribute) {
 
         add(JLabel(XMLAtribute.key, SwingConstants.RIGHT))
-        val valueTextField = JTextField(XMLAtribute.value, SwingConstants.RIGHT)
+        val valueTextField = JTextField(XMLAtribute.value.toString(), SwingConstants.RIGHT)
         valueTextField.addActionListener {
             xmlController.addExecuteCommand(SetAtributeCommand(XMLAtribute, valueTextField.text))
         }

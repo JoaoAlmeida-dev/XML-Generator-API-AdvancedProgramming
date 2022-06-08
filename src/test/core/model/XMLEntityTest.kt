@@ -135,7 +135,7 @@ internal class XMLEntityTest {
                 mutableListOf(
                     XMLAtribute(key = "book", value = "Jeronimo em Belém"),
                     XMLAtribute(key = "author", value = "Jeronimo Stilton"),
-                    XMLAtribute(name = "pages", value = 100),
+                    XMLAtribute(key = "pages", value = 100),
                 )
             )
 

@@ -80,6 +80,7 @@ graph TD;
    injection --> InjectorTags
    
    controller --> XMLDocmentController
+   controller --> CommandStack
    
    custom --> commands
    commands --> atributepanel
@@ -110,6 +111,22 @@ Inside the core we have the Model and the Utilities sub packages.
 The model uses some clever abstraction to represent an xml document programmatically.
 
 We developed a set of classes that each represent and aspect of xml:
+
+```mermaid
+graph TD;
+   core --> model
+   
+   model --> abstracts
+   abstracts --> IObservable
+   abstracts --> XMLContainer
+   model --> header
+   header --> XMLEncoding
+   header --> XMLHeader
+   model --> XMLEntity
+   model --> XMLDocument
+   model --> XMLAtributte
+   
+```
 
 * XmlHeader
 * XMLContainer (abstract)
@@ -191,6 +208,22 @@ Useful tags include:
 
 #### Utilities
 
+```mermaid
+graph TD;
+   core --> utilities
+   
+   utilities --> services
+   services --> FileReader
+   utilities --> visitors
+   visitors --> interfaces
+   interfaces --> IVisitor
+   interfaces --> IVisitable
+   visitors --> DepthFixerVisitor
+   visitors --> FilterVisitor
+   visitors --> SearcherVisitor
+   
+```
+
 ##### Services
 
 A package where we hold various diferent specific services.
@@ -247,19 +280,99 @@ Which takes in a decidingFunction and stores a list of all the visitables that m
 
 ### View
 
+```mermaid
+graph TD;
+   view --> custom
+   view --> injection
+   view --> controller
+   view --> WindowSkeleton
+   
+   injection --> Injector
+   injection --> InjectorTags
+   
+   controller --> XMLDocmentController
+   controller --> CommandStack
+   
+   custom --> commands
+   commands --> atributepanel
+   commands --> entitypanel 
+   commands --> commandInterfaces
+   commandInterfaces --> ICommand
+   commandInterfaces --> ICommandMenuItem
+   commandInterfaces --> atribtePane
+   
+   custom --> panels
+   panels --> AtributePanel
+   panels --> ContainerPanel
+   panels --> EntityPanel
+   panels --> PXMLDocumentPanel
+   
+```
+
 #### Controller
+
+The controller package is a package respective to controlling the model and serves as a channel for the view to interact
+with the model.
+
+Here there are two classes:
+
+```mermaid
+graph TD;
+   view --> controller
+   controller --> XMLDocmentController
+   controller --> CommandStack
+      
+```
 
 #### Custom
 
+```mermaid
+graph TD;
+   view --> custom
+   
+   custom --> commands
+   commands --> atributepanel
+   commands --> entitypanel 
+   commands --> commandInterfaces
+   commandInterfaces --> ICommand
+   commandInterfaces --> ICommandMenuItem
+   commandInterfaces --> atribtePane
+   
+   custom --> panels
+   panels --> AtributePanel
+   panels --> ContainerPanel
+   panels --> EntityPanel
+   panels --> PXMLDocumentPanel
+   
+```
+
 #### Injection
+
+```mermaid
+graph TD;
+   view --> injection
+   
+   injection --> Injector
+   injection --> InjectorTags
+   
+```
 
 ---
 
 # Developing plugins
 
+The Plugin side of this framework was developed with freedom always in the forefront.
+
+With the current architecture a plugin must always implement our ICommandMenuItem class.
+You can see its implementation
+[here](https://github.com/JoaoAlmeida-dev/XML-Generator-API-AdvancedProgramming/blob/ef16bafc0d9116cdb7302581b700abcfd67deb09/src/main/kotlin/view/custom/commands/commandInterfaces/ICommandMenuItem.kt)
+.
+
+This is because the entry point for our plugins is always trough a rightClick menu (a Jmenu).
+
 ## Classes you should implement/extend
 
-*
-*
-*
-*
+* ICommandMenuItem
+* ICommand
+* ContainerPanel
+* XMLContainer or XMLEntity

@@ -33,7 +33,7 @@ class RootController : XMLDocument(header = header, obj = library) {
                 stores = BookStore.values(),
                 title = "Livraria de Lisboa",
                 subTitle = "2022",
-                books = mutableListOf(book, book2)
+                books = mutableListOf(book)//, book2)
             )
         private val map: Map<String, Any> = mapOf(
             "mapHeader" to "header",

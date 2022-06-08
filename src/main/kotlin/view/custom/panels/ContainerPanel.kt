@@ -45,15 +45,19 @@ abstract class ContainerPanel : JPanel() {
         })
 
         commands?.forEach {
-            popupmenu.add(
-                it.getJMenuItem(this as T)
-            )
+            val jMenuItem = it.getJMenuItem(this as T)
+            popupmenu.add(jMenuItem)
+            if (!it.accept(this as T)) {
+                jMenuItem.isEnabled = false
+            }
         }
         popupmenu.addSeparator()
         pluginCommands?.forEach {
-            popupmenu.add(
-                it.getJMenuItem(this as T)
-            )
+            val jMenuItem = it.getJMenuItem(this as T)
+            popupmenu.add(jMenuItem)
+            if (!it.accept(this as T)) {
+                jMenuItem.isEnabled = false
+            }
         }
 
     }

@@ -8,6 +8,7 @@ import core.model.abstracts.IObservable
  * Represents an atribute in xml.
  * Can be found inside XMLEntities: <tag atributeKey=atributeValue /tag>
  *
+ * Stores a key value pair, where the key must be string the value can be Any
  *
  * @constructor
  *
@@ -16,10 +17,9 @@ import core.model.abstracts.IObservable
  */
 class XMLAtribute(
     key: String,
-    value: String,
+    value: Any,
 ) : IObservable<(XMLAtribute) -> Unit> {
-
-    constructor(name: String, value: Any) : this(name, value.toString())
+    override val observers: MutableList<(XMLAtribute) -> Unit> = mutableListOf()
 
     /**
      * Key
@@ -33,7 +33,7 @@ class XMLAtribute(
     /**
      * Value
      */
-    public var value: String = value
+    public var value: Any = value
         private set(value) {
             field = value
             notifyObservers { it(this) }
@@ -44,7 +44,7 @@ class XMLAtribute(
      *
      * @param newValue
      */
-    fun changeValue(newValue: String) {
+    fun changeValue(newValue: Any) {
         value = newValue
         notifyObservers { it(this) }
     }
@@ -56,5 +56,4 @@ class XMLAtribute(
         return "$key=\"$value\""
     }
 
-    override val observers: MutableList<(XMLAtribute) -> Unit> = mutableListOf()
 }

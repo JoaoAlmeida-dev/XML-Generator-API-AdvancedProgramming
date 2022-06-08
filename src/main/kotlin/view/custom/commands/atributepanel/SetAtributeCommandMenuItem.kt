@@ -12,7 +12,7 @@ class SetAtributeCommandMenuItem : ICommandMenuItem<AtributePanel> {
         val jMenuItem = JMenuItem("Set Atribute")
         jMenuItem.addActionListener {
 
-            val textField = JTextField(panel.XMLAtribute.value)
+            val textField = JTextField(panel.XMLAtribute.value.toString())
             val jPanel = JPanel()
             jPanel.layout = GridLayout(1, 2)
             jPanel.add(textField)

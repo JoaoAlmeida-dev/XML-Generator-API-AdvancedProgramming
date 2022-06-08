@@ -85,13 +85,13 @@ private fun xmlDemoHardCoded(header: XMLHeader) {
             mutableListOf(
                 XMLAtribute(key = "book", value = "Jeronimo em Belém"),
                 XMLAtribute(key = "author", value = "Jeronimo Stilton"),
-                XMLAtribute(name = "pages", value = 100),
+                XMLAtribute(key = "pages", value = 100),
             )
         )
 
     val bookXMLAtributes: MutableCollection<XMLAtribute> =
         mutableListOf(
-            XMLAtribute(name = "serialN", value = 3425),
+            XMLAtribute(key = "serialN", value = 3425),
             XMLAtribute(key = "Library", value = "Lisboa")
         )
 
