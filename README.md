@@ -54,6 +54,7 @@ graph TD;
    model --> XMLEntity
    model --> XMLDocument
    model --> XMLAtributte
+   model --> XMLAnnotations
    
 ```
 
@@ -66,18 +67,25 @@ graph TD;
    controller --> CommandStack
    controller --> utilities
    
+   controller --> commands
+   commands --> attributeCommands
+   commands --> entityCommands
+   commands --> commandInterfaces --> ICommand
+   
+   
    utilities --> services
    services --> FileReader
    
    utilities --> visitors
-   visitors --> DepthFixerVisitor
-   visitors --> FilterVisitor
-   visitors --> SearcherVisitor
    
+   visitors --> multipleVisitors*
    visitors --> interfaces
    interfaces --> IVisitor
    interfaces --> IVisitable   
 ```
+
+*multipleVisitors is to represent that multiple classes that implement the IVisitor interface live inside the visitors
+package
 
 #### Graph - [View](#view)
 
@@ -91,21 +99,22 @@ graph TD;
    injection --> InjectorTags
    
    
-   custom --> commands
-   commands --> atributepanel
-   commands --> entitypanel 
-   commands --> commandInterfaces
-   commandInterfaces --> ICommand
-   commandInterfaces --> ICommandMenuItem
-   commandInterfaces --> atribtePane
+   custom --> commandMenuItems
+   commandMenuItems --> atributepanel
+   commandMenuItems --> entitypanel
+   commandMenuItems --> xmldocpanel
+   commandMenuItems --> commandInterfaces  --> ICommandMenuItem
    
    custom --> panels
+   panels --> ContainerPanel*
+   panels --> MyPanel*
    panels --> AtributePanel
-   panels --> ContainerPanel
    panels --> EntityPanel
-   panels --> PXMLDocumentPanel
+   panels --> XMLDocumentPanel
    
 ```
+
+*MyPanel and ContainerPanel are abstract classes
 
 Now we will go more in depth on what each package has to offer.
 
@@ -129,6 +138,7 @@ graph TD;
    model --> XMLEntity
    model --> XMLDocument
    model --> XMLAtributte
+   model --> XMLAnnotations
    
 ```
 
@@ -217,6 +227,11 @@ graph TD;
    controller --> CommandStack
    controller --> XMLDocumentController
    controller --> utilities
+   controller --> commands
+   commands --> attributeCommands
+   commands --> commandInterfaces --> ICommand
+   commands --> entityCommands
+   
    
    utilities --> services
    services --> FileReader
@@ -224,15 +239,22 @@ graph TD;
    visitors --> interfaces
    interfaces --> IVisitor
    interfaces --> IVisitable
-   visitors --> DepthFixerVisitor
-   visitors --> FilterVisitor
-   visitors --> SearcherVisitor
+   visitors --> multipleVisitors*
    
 ```
 
+*multipleVisitors is to represent that multiple classes that implement the IVisitor interface live inside the visitors
+package
+
+##### CommandStack
+
+The command Stack is an object that holds two lists of Commands
+
+##### XMLDocumentController
+
 ##### Services
 
-A package where we hold various diferent specific services.
+A package where we hold various different specific services.
 
 The only current service is a File Reader that is used for reading the properties file.
 
@@ -296,13 +318,11 @@ graph TD;
    injection --> InjectorTags
    
    
-   custom --> commands
-   commands --> atributepanel
-   commands --> entitypanel 
-   commands --> commandInterfaces
-   commandInterfaces --> ICommand
-   commandInterfaces --> ICommandMenuItem
-   commandInterfaces --> atribtePane
+   custom --> commandMenuItems
+   commandMenuItems --> atributepanel
+   commandMenuItems --> entitypanel
+   commandMenuItems --> xmldocpanel
+   commandMenuItems --> commandInterfaces  --> ICommandMenuItem
    
    custom --> panels
    panels --> AtributePanel
@@ -317,22 +337,39 @@ graph TD;
 ```mermaid
 graph TD;
    view --> custom
-   
-   custom --> commands
-   commands --> atributepanel
-   commands --> entitypanel 
-   commands --> commandInterfaces
-   commandInterfaces --> ICommand
-   commandInterfaces --> ICommandMenuItem
-   commandInterfaces --> atribtePane
+     
+   custom --> commandMenuItems
+   commandMenuItems --> atributepanel
+   commandMenuItems --> entitypanel
+   commandMenuItems --> xmldocpanel
+   commandMenuItems --> commandInterfaces  --> ICommandMenuItem
    
    custom --> panels
+   panels --> ContainerPanel*
+   panels --> MyPanel*
    panels --> AtributePanel
-   panels --> ContainerPanel
    panels --> EntityPanel
-   panels --> PXMLDocumentPanel
+   panels --> XMLDocumentPanel
    
 ```
+
+*MyPanel and ContainerPanel are abstract classes
+
+This package comprises Command Menu Items which are wrappers around commands from the controller package that are meant
+to be displayed as right click menuOptions.
+
+The panels folder holds the abstract class ContainerPanel which extends MyPanel which in turn extends the java JPanel.
+
+**MyPanel** is an abstraction for creating panels that hold an xmlController and holds the implementation for adding the
+popupMenu, as all the implemented panels can have rightClick options.
+
+**ContainerPanel** is an abstraction for XMLContainers (which in the base framework, include XMLEntity and XMLDocument),
+it provides ways to add and remove panels that can be displayed in the bod of the parent panels.
+
+The EntityPanel observes a XMLEntity and displays its content, attributes and name in the gui.
+It also properly updates when the underlying model changes.
+
+This is true for XMLDocumentPanel and AttributePanel, which observe the XMLDocument and XMLAttribute respectively.
 
 #### Injection
 

@@ -1,8 +1,6 @@
-package view.custom.commands.atributepanel
+package view.custom.commandMenuItems.atributepanel
 
-import model.XMLAttribute
-import view.custom.commands.commandInterfaces.ICommandMenuItem
-import view.custom.commands.commandInterfaces.ICommand
+import view.custom.commandMenuItems.commandMenuInterfaces.ICommandMenuItem
 import view.custom.panels.AttributePanel
 import java.awt.GridLayout
 import javax.swing.*
@@ -35,17 +33,3 @@ class SetAtributeCommandMenuItem : ICommandMenuItem<AttributePanel> {
     }
 }
 
-class SetAtributeCommand(private val oldXMLAttribute: XMLAttribute, private val newValue: Any) : ICommand {
-    private val oldAtributeValue = oldXMLAttribute.value
-
-    override fun execute() {
-        oldXMLAttribute.changeValue(newValue)
-    }
-
-    override fun undo() {
-        oldXMLAttribute.changeValue(oldAtributeValue)
-    }
-
-    override fun toString() = "replaced [$oldAtributeValue] with [$newValue]"
-
-}

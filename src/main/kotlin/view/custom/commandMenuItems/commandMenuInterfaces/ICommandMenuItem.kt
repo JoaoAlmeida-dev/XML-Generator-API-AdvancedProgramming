@@ -1,6 +1,5 @@
-package view.custom.commands.commandInterfaces
+package view.custom.commandMenuItems.commandMenuInterfaces
 
-import view.custom.panels.ContainerPanel
 import javax.swing.JMenuItem
 import javax.swing.JPanel
 

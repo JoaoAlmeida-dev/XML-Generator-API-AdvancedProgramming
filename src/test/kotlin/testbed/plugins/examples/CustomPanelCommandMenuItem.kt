@@ -1,7 +1,7 @@
 package testbed.plugins.examples
 
-import view.custom.commands.commandInterfaces.ICommandMenuItem
-import view.custom.commands.entitypanel.AddPanelCommand
+import view.custom.commandMenuItems.commandMenuInterfaces.ICommandMenuItem
+import view.custom.commandMenuItems.entitypanel.AddPanelCommand
 import view.custom.panels.EntityPanel
 import javax.swing.JEditorPane
 import javax.swing.JMenuItem

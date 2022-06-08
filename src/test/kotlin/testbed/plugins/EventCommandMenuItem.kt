@@ -3,10 +3,8 @@ package testbed.plugins
 import controller.XMLDocumentController
 import model.XMLEntity
 import model.abstracts.XMLContainer
-import view.custom.commands.commandInterfaces.ICommand
-import view.custom.commands.commandInterfaces.ICommandMenuItem
-import view.custom.commands.entitypanel.AddChildCommand
-import view.custom.commands.entitypanel.AddPanelCommand
+import view.custom.commandMenuItems.commandMenuInterfaces.ICommandMenuItem
+import view.custom.commandMenuItems.entitypanel.AddChildCommand
 import view.custom.panels.ContainerPanel
 import view.custom.panels.EntityPanel
 import java.awt.Color

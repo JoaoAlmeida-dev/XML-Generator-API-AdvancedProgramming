@@ -2,7 +2,7 @@ package controller
 
 import model.abstracts.IObservable
 import org.jetbrains.kotlin.backend.common.pop
-import view.custom.commands.commandInterfaces.ICommand
+import view.custom.commandMenuItems.commandMenuInterfaces.ICommand
 
 class CommandStack : IObservable<(CommandStack) -> Unit> {
     override val observers: MutableList<(CommandStack) -> Unit> = mutableListOf()

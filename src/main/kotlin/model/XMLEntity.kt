@@ -110,7 +110,13 @@ class XMLEntity(
     private fun mapConstructor(map: Map<*, *>) {
         map.forEach { entry: Map.Entry<Any?, Any?> ->
             if (entry.value!!::class.isSubclassOf(String::class)) {
-                addAtribute(XMLAttribute(key = entry.key.toString(), value = entry.value.toString()))
+                addAtribute(
+                    XMLAttribute(
+                        key = entry.key.toString(),
+                        value = entry.value.toString(),
+                        parentEntity = this
+                    )
+                )
             } else {
                 if (entry.value != null) {
                     addChild(
@@ -183,7 +189,11 @@ class XMLEntity(
                     if (memberProperty.isPrimitiveType() || isEnum) {
                         memberProperty.call(obj)?.let { itCalled ->
                             addAtribute(
-                                XMLAttribute(key = xmlName ?: memberProperty.name, value = itCalled)
+                                XMLAttribute(
+                                    key = xmlName ?: memberProperty.name,
+                                    value = itCalled,
+                                    parentEntity = this
+                                )
                             )
                         }
                     } else if (memberProperty.isAcceptableType(obj)) {
@@ -200,7 +210,10 @@ class XMLEntity(
                     } else {
                         memberProperty.call(obj)?.let { itCalled ->
                             addAtribute(
-                                XMLAttribute(key = xmlName ?: memberProperty.name, value = itCalled)
+                                XMLAttribute(
+                                    key = xmlName ?: memberProperty.name, value = itCalled,
+                                    parentEntity = this
+                                )
                             )
                         }
                     }

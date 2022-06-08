@@ -1,7 +1,7 @@
-package view.custom.commands.entitypanel
+package view.custom.commandMenuItems.entitypanel
 
 import model.XMLEntity
-import view.custom.commands.commandInterfaces.ICommand
+import view.custom.commandMenuItems.commandMenuInterfaces.ICommand
 
 class OverwriteContentCommand(private val XMLEntity: XMLEntity, private val text: String) : ICommand {
     private val oldContent = XMLEntity.contents

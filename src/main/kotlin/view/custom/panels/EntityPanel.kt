@@ -4,7 +4,7 @@ import model.XMLEntity
 import controller.XMLDocumentController
 import model.XMLAttribute
 import view.custom.atributes.BasicAttributePanel
-import view.custom.commands.entitypanel.*
+import view.custom.commandMenuItems.entitypanel.*
 import java.awt.*
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener

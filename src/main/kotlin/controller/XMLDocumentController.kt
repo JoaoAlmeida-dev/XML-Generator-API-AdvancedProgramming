@@ -2,11 +2,11 @@ package controller
 
 import model.XMLDocument
 import view.custom.atributes.IAtributePlugin
-import view.custom.commands.atributepanel.RemoveAtributeCommandMenuItem
-import view.custom.commands.atributepanel.SetAtributeCommandMenuItem
-import view.custom.commands.commandInterfaces.ICommand
-import view.custom.commands.commandInterfaces.ICommandMenuItem
-import view.custom.commands.entitypanel.*
+import view.custom.commandMenuItems.atributepanel.RemoveAtributeCommandMenuItem
+import view.custom.commandMenuItems.atributepanel.SetAtributeCommandMenuItem
+import view.custom.commandMenuItems.commandMenuInterfaces.ICommand
+import view.custom.commandMenuItems.commandMenuInterfaces.ICommandMenuItem
+import view.custom.commandMenuItems.entitypanel.*
 import view.custom.panels.AttributePanel
 import view.custom.panels.EntityPanel
 import view.custom.panels.XMLDocumentPanel

@@ -1,4 +1,4 @@
-package view.custom.commands.commandInterfaces
+package view.custom.commandMenuItems.commandMenuInterfaces
 
 interface ICommand {
     override fun toString(): String

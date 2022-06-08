@@ -1,8 +1,6 @@
-package view.custom.commands.entitypanel
+package view.custom.commandMenuItems.entitypanel
 
-import model.XMLEntity
-import view.custom.commands.commandInterfaces.ICommand
-import view.custom.commands.commandInterfaces.ICommandMenuItem
+import view.custom.commandMenuItems.commandMenuInterfaces.ICommandMenuItem
 import view.custom.panels.EntityPanel
 import java.awt.GridLayout
 import javax.swing.*
@@ -35,17 +33,3 @@ class RenameEntityCommandMenuItem() : ICommandMenuItem<EntityPanel> {
 
 }
 
-class RenameEntityCommand(private val XMLEntity: XMLEntity, private val text: String) : ICommand {
-    val oldName = XMLEntity.name
-    val newName = text
-
-    override fun execute() {
-        XMLEntity.rename(newName)
-    }
-
-    override fun undo() {
-        XMLEntity.rename(oldName)
-    }
-
-    override fun toString() = "Rename Entity $newName"
-}

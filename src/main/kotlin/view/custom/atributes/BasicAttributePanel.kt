@@ -3,9 +3,8 @@ package view.custom.atributes
 import controller.XMLDocumentController
 import model.XMLAttribute
 import model.XMLEntity
-import view.custom.commands.atributepanel.SetAtributeCommand
+import view.custom.commandMenuItems.atributepanel.SetAtributeCommand
 import view.custom.panels.AttributePanel
-import view.custom.panels.ContainerPanel
 import java.awt.Color
 import java.awt.GridLayout
 import javax.swing.JLabel

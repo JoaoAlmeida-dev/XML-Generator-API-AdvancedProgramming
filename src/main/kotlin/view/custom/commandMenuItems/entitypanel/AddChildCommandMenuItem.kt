@@ -1,8 +1,7 @@
-package view.custom.commands.entitypanel
+package view.custom.commandMenuItems.entitypanel
 
 import model.XMLEntity
-import view.custom.commands.commandInterfaces.ICommandMenuItem
-import view.custom.commands.commandInterfaces.ICommand
+import view.custom.commandMenuItems.commandMenuInterfaces.ICommandMenuItem
 import view.custom.panels.EntityPanel
 import java.awt.GridLayout
 import javax.swing.*
@@ -36,16 +35,3 @@ class AddChildCommandMenuItem() : ICommandMenuItem<EntityPanel> {
 
 }
 
-class AddChildCommand(private val parent: XMLEntity, private val newXMLEntity: XMLEntity) : ICommand {
-
-
-    override fun execute() {
-        parent.addChild(newXMLEntity)
-    }
-
-    override fun undo() {
-        parent.removeChild(newXMLEntity)
-    }
-
-    override fun toString() = "Add child ${newXMLEntity.name}"
-}

@@ -80,29 +80,29 @@ fun xmlInference(header: XMLHeader) {
 private fun xmlDemoHardCoded(header: XMLHeader) {
     val libraryXMLEntity: XMLEntity =
         XMLEntity(
-            name = "Stilton", inputDepth = 1, XMLAttributes =
-            mutableListOf(
-                XMLAttribute(key = "book", value = "Jeronimo em Belém"),
-                XMLAttribute(key = "author", value = "Jeronimo Stilton"),
-                XMLAttribute(key = "pages", value = 100),
-            )
+            name = "Stilton", inputDepth = 1
         )
+    val xmlAttributes = mutableListOf(
+        XMLAttribute(key = "book", value = "Jeronimo em Belém", libraryXMLEntity),
+        XMLAttribute(key = "author", value = "Jeronimo Stilton", libraryXMLEntity),
+        XMLAttribute(key = "pages", value = 100, libraryXMLEntity),
+    )
+    xmlAttributes.forEach { libraryXMLEntity.addAtribute(it) }
 
-    val bookXMLAttributes: MutableCollection<XMLAttribute> =
-        mutableListOf(
-            XMLAttribute(key = "serialN", value = 3425),
-            XMLAttribute(key = "Library", value = "Lisboa")
-        )
 
-    val XMLEntity = XMLEntity(
+    val xmlEntity = XMLEntity(
         name = "Book",
         inputDepth = 0,
-        XMLAttributes = bookXMLAttributes,
         children = mutableListOf(libraryXMLEntity, libraryXMLEntity, libraryXMLEntity)
     )
+    val bookXMLAttributes: MutableCollection<XMLAttribute> =
+        mutableListOf(
+            XMLAttribute(key = "serialN", value = 3425, xmlEntity),
+            XMLAttribute(key = "Library", value = "Lisboa", xmlEntity)
+        )
+    bookXMLAttributes.forEach { xmlEntity.addAtribute(it) }
 
-
-    val xmlEntities: MutableCollection<XMLEntity> = mutableListOf(XMLEntity, XMLEntity, XMLEntity)
+    val xmlEntities: MutableCollection<XMLEntity> = mutableListOf(xmlEntity, xmlEntity, xmlEntity)
     val xmlDocument: XMLDocument = XMLDocument(header = header, entity = XMLEntity(obj = xmlEntities, depth = 0))
 
     println(xmlDocument)

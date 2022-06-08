@@ -1,7 +1,7 @@
 package view.custom.panels
 
 import controller.XMLDocumentController
-import view.custom.commands.commandInterfaces.ICommandMenuItem
+import view.custom.commandMenuItems.commandMenuInterfaces.ICommandMenuItem
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.JPanel

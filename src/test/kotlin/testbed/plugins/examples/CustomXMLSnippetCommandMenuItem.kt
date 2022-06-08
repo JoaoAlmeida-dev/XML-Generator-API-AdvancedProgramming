@@ -1,8 +1,8 @@
 package testbed.plugins.examples
 
 import model.XMLEntity
-import view.custom.commands.commandInterfaces.ICommandMenuItem
-import view.custom.commands.entitypanel.AddChildCommand
+import view.custom.commandMenuItems.commandMenuInterfaces.ICommandMenuItem
+import view.custom.commandMenuItems.entitypanel.AddChildCommand
 import view.custom.panels.EntityPanel
 import javax.swing.JMenuItem
 

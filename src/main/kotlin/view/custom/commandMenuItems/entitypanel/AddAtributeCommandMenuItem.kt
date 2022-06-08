@@ -1,9 +1,6 @@
-package view.custom.commands.entitypanel
+package view.custom.commandMenuItems.entitypanel
 
-import model.XMLAttribute
-import model.XMLEntity
-import view.custom.commands.commandInterfaces.ICommandMenuItem
-import view.custom.commands.commandInterfaces.ICommand
+import view.custom.commandMenuItems.commandMenuInterfaces.ICommandMenuItem
 import view.custom.panels.EntityPanel
 import java.awt.GridLayout
 import javax.swing.*
@@ -50,18 +47,4 @@ class AddAtributeCommandMenuItem() : ICommandMenuItem<EntityPanel> {
 }
 
 
-class AddAtributeCommand(private val parentXMLEntity: XMLEntity, private val key: String, private val value: String) :
-    ICommand {
-    val XMLAttribute = XMLAttribute(key, value)
-
-    override fun execute() {
-        parentXMLEntity.addAtribute(XMLAttribute)
-    }
-
-    override fun undo() {
-        parentXMLEntity.removeAtribute(XMLAttribute)
-    }
-
-    override fun toString() = "Add Atribute $XMLAttribute"
-}
 

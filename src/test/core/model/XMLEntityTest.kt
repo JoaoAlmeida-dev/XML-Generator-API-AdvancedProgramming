@@ -27,13 +27,13 @@ internal class XMLEntityTest {
         val testXMLEntityNoChild = XMLEntity(
             name = "Stilton",
             inputDepth = 0,
-            XMLAttributes =
-            mutableListOf(
-                XMLAttribute(key = "book", value = "Jeronimo em Belém"),
-                XMLAttribute(key = "author", value = "Jeronimo Stilton"),
-                XMLAttribute(key = "pages", value = 100.toString()),
-            )
         )
+        val testXMLEntityNoChildattribtes = mutableListOf(
+            XMLAttribute(key = "book", value = "Jeronimo em Belém", testXMLEntityNoChild),
+            XMLAttribute(key = "author", value = "Jeronimo Stilton", testXMLEntityNoChild),
+            XMLAttribute(key = "pages", value = 100.toString(), testXMLEntityNoChild),
+        )
+        testXMLEntityNoChildattribtes.forEach { testXMLEntityNoChild.addAtribute(it) }
 
         assertEquals(
             "<Stilton book=\"Jeronimo em Belém\" author=\"Jeronimo Stilton\" pages=\"100\"/>",
@@ -129,13 +129,14 @@ internal class XMLEntityTest {
     fun testWithChildToString() {
         val libraryXMLEntity: XMLEntity =
             XMLEntity(
-                name = "Stilton", inputDepth = 1, XMLAttributes =
-                mutableListOf(
-                    XMLAttribute(key = "book", value = "Jeronimo em Belém"),
-                    XMLAttribute(key = "author", value = "Jeronimo Stilton"),
-                    XMLAttribute(key = "pages", value = 100),
-                )
+                name = "Stilton", inputDepth = 1
             )
+        val xmlAttributes = mutableListOf(
+            XMLAttribute(key = "book", value = "Jeronimo em Belém", libraryXMLEntity),
+            XMLAttribute(key = "author", value = "Jeronimo Stilton", libraryXMLEntity),
+            XMLAttribute(key = "pages", value = 100, libraryXMLEntity),
+        )
+        xmlAttributes.forEach { libraryXMLEntity.addAtribute(it) }
 
         val testXMLEntityChild = XMLEntity(
             name = "Book",

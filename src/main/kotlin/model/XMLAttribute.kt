@@ -18,6 +18,7 @@ import model.abstracts.IObservable
 class XMLAttribute(
     key: String,
     value: Any,
+    val parentEntity: XMLEntity,
 ) : IObservable<(XMLAttribute) -> Unit> {
     override val observers: MutableList<(XMLAttribute) -> Unit> = mutableListOf()
 
