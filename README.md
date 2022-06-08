@@ -250,11 +250,32 @@ graph TD;
 *multipleVisitors is to represent that multiple classes that implement the IVisitor interface live inside the visitors
 package
 
-##### CommandStack
+##### Commands
 
-The command Stack is an object that holds two lists of Commands
+A command is an object that represents an action that can be undone.
+
+These objects must implement the ICommand interface, therefore they must override the toString method (for displaying in
+the gui), and they must implement an **execute** and an **undo** method.
+
+The purpose of the **undo** method is to revert what was done inside execute.
 
 ##### XMLDocumentController
+
+The controller serves as the entry point for interacting with the model.
+
+Whenever you want to change something in the model, you must call the controller and use the `addExecuteCommand` method
+to execute your command onto the model and add it onto the commandStack, so you can undo it in the future
+
+The controller has handlers to delegate functionality onto the CommandStack.
+
+##### CommandStack
+
+The command Stack is an object that holds two stacks of Commands.
+A list for storing undoCommands and another for redoCommands.
+
+When a command is taken out of the undoStack it is moved onto the redoStack.
+Whenever a new command is added to the undoStack, the redoStack is cleaned, this is to prevent clashing operations from
+happening.
 
 ##### Services
 
