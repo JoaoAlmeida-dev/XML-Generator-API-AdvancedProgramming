@@ -27,17 +27,13 @@ class WindowSkeleton : JFrame("title") {
 
     init {
         defaultCloseOperation = EXIT_ON_CLOSE
-        size = Dimension(300, 300)
-
+        size = Dimension(500, 500)
     }
 
     fun open() {
-
         xmlDocumentController = XMLDocumentController(rootDocument)
         Injector.inject(xmlDocumentController)
-        val rootPanel = JTabbedPane()
-        add(rootPanel)
-        createBoxPane(xmlDocumentController, rootPanel)
+        createBoxPane(xmlDocumentController)
         createMenuBar()
         isVisible = true
     }
@@ -48,15 +44,21 @@ class WindowSkeleton : JFrame("title") {
         val editMenu = JMenu("Edit")
         fileMenu.mnemonic = KeyEvent.VK_F
 
-        val eMenuItem = JMenuItem("Exit")
-        eMenuItem.mnemonic = KeyEvent.VK_E
-        eMenuItem.toolTipText = "Exit application"
-        eMenuItem.addActionListener { exitProcess(0) }
+        val exitAction: Action = object : AbstractAction("Exit application") {
+            override fun actionPerformed(e: ActionEvent?) {
+                exitProcess(0)
+            }
+        }
+        exitAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK))
+
+        val printAction: Action = object : AbstractAction("Print") {
+            override fun actionPerformed(e: ActionEvent?) {
+                xmlDocumentController.printDoc()
+            }
+        }
+        printAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK))
 
         //region Export
-
-        val export = JMenuItem()
-        export.toolTipText = "Export to file"
         val exportAction: Action = object : AbstractAction("Export") {
             override fun actionPerformed(e: ActionEvent?) {
                 val j = JFileChooser()
@@ -70,30 +72,27 @@ class WindowSkeleton : JFrame("title") {
             }
         }
         exportAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK))
-        export.action = exportAction
         //endregion
 
+        fileMenu.add(exportAction)
+        fileMenu.add(exitAction)
+        fileMenu.add(printAction)
+
         //region Undo
-        val undo = JMenuItem()
         val undoAction: Action = object : AbstractAction("Undo") {
             override fun actionPerformed(e: ActionEvent?) = xmlDocumentController.undo()
         }
         undoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK))
-        undo.action = undoAction
         //endregion
 
         //region Redo
-        val redo = JMenuItem()
         val redoAction: Action = object : AbstractAction("Redo") {
             override fun actionPerformed(e: ActionEvent?) = xmlDocumentController.redo()
         }
         redoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK))
-        redo.action = redoAction
         //endregion
 
         //region History
-
-
         val historyMenu = JMenu("History")
         historyMenu.addMouseListener(object : MouseListener {
             override fun mouseClicked(e: MouseEvent?) {}
@@ -101,7 +100,7 @@ class WindowSkeleton : JFrame("title") {
             override fun mouseReleased(e: MouseEvent?) {}
             override fun mouseEntered(e: MouseEvent?) {
                 historyMenu.removeAll()
-                val undoCommandsList = xmlDocumentController.commandStack.undoCommandsList
+                val undoCommandsList = xmlDocumentController.getUndoList()
                 println(undoCommandsList)
                 undoCommandsList.forEach {
                     historyMenu.add(JLabel(it.toString()))
@@ -112,39 +111,19 @@ class WindowSkeleton : JFrame("title") {
             override fun mouseExited(e: MouseEvent?) {}
 
         })
-/*
-        //val history = JMenuItem()
-        val historyAction: Action = object : AbstractAction("History") {
-            override fun actionPerformed(e: ActionEvent?) {
-            }
-        }
-        historyMenu.action = historyAction
-*/
 
         //endregion
-
-
-        editMenu.add(undo)
-        editMenu.add(redo)
-        //editMenu.add(history)
+        editMenu.add(undoAction)
+        editMenu.add(redoAction)
         editMenu.add(historyMenu)
-        fileMenu.add(export)
-        fileMenu.add(eMenuItem)
         menuBar.add(fileMenu)
         menuBar.add(editMenu)
         jMenuBar = menuBar
     }
 
-    private fun createBoxPane(xmlDocumentController: XMLDocumentController, parentComponent: JComponent) {
+    private fun createBoxPane(xmlDocumentController: XMLDocumentController) {
         val rootboxPanel = JPanel(BorderLayout())
-        parentComponent.add("Boxes", rootboxPanel)
-
-        val jButton = JButton("Print State")
-        jButton.addActionListener {
-            xmlDocumentController.printDoc()
-        }
-        rootboxPanel.add(jButton, BorderLayout.NORTH)
-
+        add(rootboxPanel)
 
         val jPanel = JPanel(GridLayout(0, 1))
         val centerScrollPane: JScrollPane =
@@ -154,9 +133,7 @@ class WindowSkeleton : JFrame("title") {
         //rootboxPanel.add(centerScrollPane, BorderLayout.CENTER)
         rootboxPanel.add(jPanel, BorderLayout.CENTER)
         jPanel.add(XMLDocumentPanel(xmlDocumentController.rootDoc, xmlDocumentController))
-
     }
-
 
 }
 

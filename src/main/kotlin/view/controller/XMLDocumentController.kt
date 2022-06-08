@@ -25,7 +25,7 @@ import java.io.File
  */
 open class XMLDocumentController(val rootDoc: XMLDocument) {
 
-    val commandStack: CommandStack = CommandStack()
+    private val commandStack: CommandStack = CommandStack()
 
     @InjectAdd
     public val entityPluginCommands: MutableList<ICommandMenuItem<EntityPanel>> = mutableListOf()
@@ -78,4 +78,6 @@ open class XMLDocumentController(val rootDoc: XMLDocument) {
     fun redo() {
         commandStack.redo()
     }
+
+    fun getUndoList(): MutableList<ICommand> = commandStack.undoCommandsList
 }

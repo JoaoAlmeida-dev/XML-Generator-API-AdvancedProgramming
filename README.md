@@ -1,5 +1,7 @@
 # XML-Generator-API-AdvancedProgramming
 
+![Preview of the GUI](https://user-images.githubusercontent.com/24848457/172510919-b219eea2-caa1-4bdf-9d06-c032f28fd00b.png)
+
 ### You can view the initial instructions that inspired this project [here](https://andre-santos-pt.github.io/projetoxml/)
 
 ### If you are looking to develop a plugin for this framework skip to [Developing plugins](#developing-plugins)
