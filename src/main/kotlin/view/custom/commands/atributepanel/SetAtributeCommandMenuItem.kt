@@ -35,8 +35,8 @@ class SetAtributeCommandMenuItem : ICommandMenuItem<AttributePanel> {
     }
 }
 
-class SetAtributeCommand(private val oldXMLAttribute: XMLAttribute, private val newValue: String) : ICommand {
-    var oldAtributeValue: String = "" + oldXMLAttribute.value
+class SetAtributeCommand(private val oldXMLAttribute: XMLAttribute, private val newValue: Any) : ICommand {
+    private val oldAtributeValue = oldXMLAttribute.value
 
     override fun execute() {
         oldXMLAttribute.changeValue(newValue)

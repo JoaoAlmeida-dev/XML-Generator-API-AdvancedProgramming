@@ -180,7 +180,13 @@ class XMLEntity(
                         } else {
                             false
                         }
-                    if (memberProperty.isAcceptableType(obj)) {
+                    if (memberProperty.isPrimitiveType() || isEnum) {
+                        memberProperty.call(obj)?.let { itCalled ->
+                            addAtribute(
+                                XMLAttribute(key = xmlName ?: memberProperty.name, value = itCalled)
+                            )
+                        }
+                    } else if (memberProperty.isAcceptableType(obj)) {
                         memberProperty.call(obj)?.let { itCalled ->
                             val propertyInstanciatedValue: Any = itCalled
                             val element = XMLEntity(
@@ -191,7 +197,7 @@ class XMLEntity(
                             )
                             addChild(element)
                         }
-                    } else {//if (memberProperty.isPrimitiveType() || isEnum) {
+                    } else {
                         memberProperty.call(obj)?.let { itCalled ->
                             addAtribute(
                                 XMLAttribute(key = xmlName ?: memberProperty.name, value = itCalled)

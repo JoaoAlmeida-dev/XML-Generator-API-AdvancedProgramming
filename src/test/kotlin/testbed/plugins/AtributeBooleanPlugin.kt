@@ -8,14 +8,13 @@ import view.custom.commands.atributepanel.SetAtributeCommand
 import view.custom.panels.AttributePanel
 import java.awt.Color
 import java.awt.GridLayout
-import java.util.*
+import javax.swing.JCheckBox
 import javax.swing.JLabel
-import javax.swing.JTextField
 import javax.swing.SwingConstants
 
-class AttributeHourPlugin : IAtributePlugin {
+class AttributeBooleanPlugin : IAtributePlugin {
     override fun accept(attribute: XMLAttribute): Boolean {
-        return attribute.value::class == Date::class
+        return attribute.value::class == Boolean::class
     }
 
     override fun getPanel(
@@ -23,27 +22,29 @@ class AttributeHourPlugin : IAtributePlugin {
         attribute: XMLAttribute,
         xmlDocumentController: XMLDocumentController
     ): AttributePanel {
-        println("Hour atribute sucess")
-        return InnerHourAttributePanel(parentXMLEntity, attribute, xmlDocumentController)
+        println("Boolean atribute sucess")
+        return InnerBooleanAttributePanel(parentXMLEntity, attribute, xmlDocumentController)
     }
 
-    private class InnerHourAttributePanel(
+    private class InnerBooleanAttributePanel(
         parentXMLEntity: XMLEntity,
         xmlAttribute: XMLAttribute, xmlController: XMLDocumentController
     ) : AttributePanel(parentXMLEntity, xmlAttribute, xmlController) {
         init {
-            layout = GridLayout(2, 1)
-            background = Color.GREEN
+            layout = GridLayout(1, 2)
+            background = Color.RED
         }
 
         override fun constructView(attribute: XMLAttribute) {
             add(JLabel(xmlAttribute.key, SwingConstants.RIGHT))
-            val valueTextField = JTextField(xmlAttribute.value.toString(), SwingConstants.RIGHT)
-            valueTextField.addActionListener {
-                xmlController.addExecuteCommand(SetAtributeCommand(xmlAttribute, valueTextField.text))
+            val valueCheckBox = JCheckBox()
+            valueCheckBox.isSelected = attribute.value as Boolean
+            valueCheckBox.addActionListener {
+                xmlController.addExecuteCommand(SetAtributeCommand(xmlAttribute, valueCheckBox.isSelected))
             }
-            add(valueTextField)
+            add(valueCheckBox)
         }
+
 
     }
 }
