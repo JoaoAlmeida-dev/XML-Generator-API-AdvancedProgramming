@@ -365,7 +365,7 @@ The Plugin side of this framework was developed with freedom always in the foref
 
 With the current architecture a plugin must always implement our ICommandMenuItem class.
 You can see its implementation
-[here](https://github.com/JoaoAlmeida-dev/XML-Generator-API-AdvancedProgramming/blob/ef16bafc0d9116cdb7302581b700abcfd67deb09/src/main/kotlin/view/custom/commands/commandInterfaces/ICommandMenuItem.kt)
+[here](https://github.com/JoaoAlmeida-dev/XML-Generator-API-AdvancedProgramming/blob/master/src/main/kotlin/view/custom/commands/commandInterfaces/ICommandMenuItem.kt)
 .
 
 This is because the entry point for our plugins is always trough a rightClick menu (a Jmenu).
