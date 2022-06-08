@@ -30,7 +30,7 @@ open class XMLDocumentController(val rootDoc: XMLDocument) {
     public val entityPluginCommands: MutableList<ICommandMenuItem<EntityPanel>> = mutableListOf()
 
     @InjectAdd
-    public val atributePluginCommands: MutableList<ICommandMenuItem<AtributePanel>> = mutableListOf()
+    public val attributePluginCommands: MutableList<ICommandMenuItem<AtributePanel>> = mutableListOf()
 
     @InjectAdd
     public val xmldocumentPluginCommands: MutableList<ICommandMenuItem<XMLDocumentPanel>> = mutableListOf()

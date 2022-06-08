@@ -2,6 +2,8 @@ package view
 
 import model.XMLDocument
 import controller.XMLDocumentController
+import model.header.XMLEncoding
+import model.header.XMLHeader
 import view.custom.panels.XMLDocumentPanel
 import view.injection.Inject
 import view.injection.Injector
@@ -28,6 +30,9 @@ class WindowSkeleton : JFrame("title") {
     init {
         defaultCloseOperation = EXIT_ON_CLOSE
         size = Dimension(500, 500)
+        if (!this::rootDocument.isInitialized) {
+            rootDocument = XMLDocument(XMLHeader())
+        }
     }
 
     fun open() {

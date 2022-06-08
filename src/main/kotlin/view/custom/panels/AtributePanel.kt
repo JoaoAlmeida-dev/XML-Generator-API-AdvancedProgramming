@@ -27,7 +27,7 @@ class AtributePanel(
                 redraw()
             }
         }
-        createPopupMenu(xmlController.atributeCommands, xmlController.atributePluginCommands)
+        createPopupMenu(xmlController.atributeCommands, xmlController.attributePluginCommands)
     }
 
     private fun addLabels(XMLAtribute: XMLAtribute) {

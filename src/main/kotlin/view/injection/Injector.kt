@@ -10,15 +10,29 @@ import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.hasAnnotation
 
+/**
+ * The Injector is the class that actually instantiates and injects outside classes into our own variables that have been
+ * tagged with @Inject or @InjectAdd (declared inside InjectorTags.kt)
+ *
+ * @see Inject
+ * @see InjectAdd
+ */
+
 object Injector {
 
-    val propertiesMap: Map<String, String> = FileReader.readFileAsMap("di.properties")
+    private val propertiesMap: Map<String, String> = FileReader.readFileAsMap("di.properties")
 
+    /**
+     * Create a new instance of a KClass and then inject variables tagged with Inject and InjectAdd into it
+     * */
     public final fun create(c: KClass<*>): Any {
         val createdInstance = c.createInstance()
         return inject(createdInstance)
     }
 
+    /**
+     * Inject possible classes into the instanciated object
+     * */
     public final fun inject(
         createdInstance: Any,
     ): Any {
@@ -30,13 +44,15 @@ object Injector {
             it.hasAnnotation<Inject>()
         }.forEach {
             val classNameInMap = propertiesMap["${c.simpleName}.${it.name}"]
-            println("INJECTOR::ADD::${c.simpleName}.${it.name}")
-            println("INJECTOR::ADD::$classNameInMap")
-            println("INJECTOR::ADD::" + Class.forName(classNameInMap))
-            val injectedProperty =
-                (Class.forName(classNameInMap).kotlin).createInstance()
-            //(it as KMutableProperty<*>).setter.call(createdInstance, DefaultSetup())
-            (it as KMutableProperty<*>).setter.call(createdInstance, injectedProperty)
+            if (!classNameInMap.isNullOrEmpty()) {
+                println("INJECTOR::ADD::${c.simpleName}.${it.name}")
+                println("INJECTOR::ADD::$classNameInMap")
+                println("INJECTOR::ADD::" + Class.forName(classNameInMap))
+                val injectedProperty =
+                    (Class.forName(classNameInMap).kotlin).createInstance()
+                //(it as KMutableProperty<*>).setter.call(createdInstance, DefaultSetup())
+                (it as KMutableProperty<*>).setter.call(createdInstance, injectedProperty)
+            }
         }
 
         c.declaredMemberProperties.filter {

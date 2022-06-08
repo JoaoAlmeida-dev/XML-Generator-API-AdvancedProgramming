@@ -20,7 +20,7 @@ import java.io.File
  */
 open class XMLDocument(
     val header: XMLHeader,
-    entity: XMLContainer?,
+    entity: XMLContainer? = XMLEntity(name = "root"),
 
     ) : XMLContainer(
     depth = 0, children = if (entity != null) mutableListOf(entity) else mutableListOf()

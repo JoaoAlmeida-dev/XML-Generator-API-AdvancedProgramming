@@ -42,8 +42,8 @@ import kotlin.reflect.jvm.isAccessible
  * @param parent
  */
 class XMLEntity(
-    inputDepth: Int? = null,
     var name: String,
+    inputDepth: Int? = null,
     var contents: String? = null,
     val XMLAtributes: MutableCollection<XMLAtribute> = mutableListOf(),
     children: MutableCollection<XMLContainer> = mutableListOf(),
