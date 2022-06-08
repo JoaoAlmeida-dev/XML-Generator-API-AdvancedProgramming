@@ -1,4 +1,4 @@
-package view.custom.atributes
+package view.custom.attributes
 
 import controller.XMLDocumentController
 import model.XMLAttribute
@@ -12,7 +12,7 @@ import javax.swing.JTextField
 import javax.swing.SwingConstants
 
 
-class BasicAttributePanel : IAtributePlugin {
+class DefaultAttributePanel : IAtributePlugin {
     override fun accept(attribute: XMLAttribute): Boolean = true
 
     override fun getPanel(

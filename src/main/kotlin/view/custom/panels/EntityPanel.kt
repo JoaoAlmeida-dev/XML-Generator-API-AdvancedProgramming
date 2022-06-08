@@ -3,7 +3,7 @@ package view.custom.panels
 import model.XMLEntity
 import controller.XMLDocumentController
 import model.XMLAttribute
-import view.custom.atributes.BasicAttributePanel
+import view.custom.attributes.DefaultAttributePanel
 import view.custom.commandMenuItems.entitypanel.*
 import java.awt.*
 import java.awt.event.KeyEvent
@@ -71,7 +71,7 @@ class EntityPanel(val xmlEntity: XMLEntity, xmlController: XMLDocumentController
                 }
             }
             if (!found) {
-                northPanel.add(BasicAttributePanel().getPanel(XMLEntity, xmlAttribute, xmlController))
+                northPanel.add(DefaultAttributePanel().getPanel(XMLEntity, xmlAttribute, xmlController))
             }
 
         }

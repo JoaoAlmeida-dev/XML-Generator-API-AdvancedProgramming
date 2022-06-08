@@ -112,6 +112,10 @@ graph TD;
    panels --> EntityPanel
    panels --> XMLDocumentPanel
    
+   custom --> attributes
+   attributes --> IAttributePlugin
+   attributes --> DefaultAttributePanel
+   
 ```
 
 *MyPanel and ContainerPanel are abstract classes
@@ -150,7 +154,7 @@ The Header is usually the first line of every xml document, it generally looks s
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 ```
 
-It has three diferent properties:
+It has three different properties:
 
 * Version
     * Specifies the version of the XML standard
@@ -330,6 +334,10 @@ graph TD;
    panels --> EntityPanel
    panels --> PXMLDocumentPanel
    
+   custom --> attributes
+   attributes --> IAttributePlugin
+   attributes --> DefaultAttributePanel
+   
 ```
 
 #### Custom
@@ -350,6 +358,10 @@ graph TD;
    panels --> AtributePanel
    panels --> EntityPanel
    panels --> XMLDocumentPanel
+      
+   custom --> attributes
+   attributes --> IAttributePlugin
+   attributes --> DefaultAttributePanel
    
 ```
 
@@ -404,6 +416,7 @@ This is because the entry point for our plugins is always through a rightClick m
 * ICommand
 * ContainerPanel
 * XMLContainer or XMLEntity
+* IAttributePlugin
 
 ## How do I Inject my things into the framework?
 
@@ -553,5 +566,231 @@ The xml after the change:
 
 ### What if I want to change how the xml model is displayed on the GUI?
 
-TODO
+To change the default display of attributes in the gui, you need to implement your version of the IAttributePlugin
+interface.
 
+The following example shows how to display attributes where the key is either equals to "title" or to "name".
+And makes them a JLabel instead of a JTextField.
+
+```kotlin
+
+class AttributeTitlePlugin : IAtributePlugin {
+    override fun accept(attribute: XMLAttribute): Boolean {
+        return attribute.key.lowercase(Locale.getDefault()) == "title" || attribute.key.lowercase(Locale.getDefault()) == "name"
+    }
+
+    override fun getPanel(
+        parentXMLEntity: XMLEntity,
+        attribute: XMLAttribute,
+        xmlDocumentController: XMLDocumentController
+    ): AttributePanel {
+        println("Boolean atribute sucess")
+        return InnerTitleAttributePanel(parentXMLEntity, attribute, xmlDocumentController)
+    }
+
+    private class InnerTitleAttributePanel(
+        parentXMLEntity: XMLEntity,
+        xmlAttribute: XMLAttribute, xmlController: XMLDocumentController
+    ) : AttributePanel(parentXMLEntity, xmlAttribute, xmlController) {
+        init {
+            layout = GridLayout(1, 2)
+        }
+
+        override fun constructView(attribute: XMLAttribute) {
+            add(JLabel(xmlAttribute.key, SwingConstants.RIGHT))
+            add(JLabel(xmlAttribute.value.toString(), SwingConstants.CENTER))
+        }
+    }
+}
+```
+
+The accept function determines when this AttributePlugin will be used.
+
+The getPanel method returns the AttributePanel that will be displayed, here you can implement your own version of the
+panel.
+To do that we extended the base AttributePanel and overriden the constructView to add all the labels and components we
+need onto the panel. Our framework will take care of updating itself, clearing all its components and executing this
+constructView method every time the attribute also changes.
+
+You can see the results of this implementation in the following image:
+![TitleNameAttributeExample](https://user-images.githubusercontent.com/24848457/172637250-fe6aae58-9ea9-46f6-bdb2-518885421f6f.png)
+As you can see, now all the attributes with key = "name" or "title" are now JLabels.
+
+### Using it all together
+
+Here we used two plugins to create the following experience:
+![EventExample](https://user-images.githubusercontent.com/24848457/172640213-1d639a61-ad55-4084-a546-93f4059c68fd.png)
+
+* Note: we changed the background of the relevant attributes for this example, for easier viewing.
+
+We added a new MenuOption to add an Event, it takes a date, a description and a boolean checkBox to know if it is
+mandatory or not.
+
+```kotlin
+data class Event(
+    val date: Date,
+    val description: String,
+    val isMandatory: Boolean
+) : XMLContainer()
+```
+
+We then need to implement the MenuOption:
+
+```kotlin
+class EventCommandMenuItem : ICommandMenuItem<EntityPanel> {
+
+    override fun accept(panel: EntityPanel): Boolean {
+        return true
+    }
+
+    override fun getJMenuItem(panel: EntityPanel): JMenuItem {
+        val addChildMenuItem = JMenuItem("Add Event")
+        addChildMenuItem.addActionListener {
+            val jSpinner = JSpinner(SpinnerDateModel(Date(), null, null, Calendar.DATE))
+            val descriptionTextBox = JTextField()
+            val isMandatoryCheckBox = JCheckBox()
+            val jPanel = JPanel()
+            jPanel.layout = GridLayout(0, 2)
+            jPanel.add(JLabel("date"))
+            jPanel.add(jSpinner)
+            jPanel.add(JLabel("description"))
+            jPanel.add(descriptionTextBox)
+            jPanel.add(JLabel("isMandatory"))
+            jPanel.add(isMandatoryCheckBox)
+
+            val result: Int = JOptionPane.showConfirmDialog(
+                null,
+                jPanel,
+                "Insert the Event's name",
+                JOptionPane.OK_CANCEL_OPTION
+            )
+            if (result == JOptionPane.OK_OPTION) {
+                val date: Date = jSpinner.value as Date
+                println(date)
+                val event = Event(date, descriptionTextBox.text, isMandatoryCheckBox.isSelected)
+                panel.xmlController.addExecuteCommand(
+                    AddChildCommand(
+                        panel.xmlEntity,
+                        XMLEntity(event, parent = panel.xmlEntity)
+                    )
+                )
+            }
+        }
+        return addChildMenuItem
+    }
+}
+```
+
+This menuOption adds the event gotten from user input and adds it to the model, wrapped inside an XMLEntity.
+
+To put the cherry on top of the cake, We develop two different AttributePlugins:
+
+#### AttributeBooleanPlugin
+
+```kotlin
+class AttributeBooleanPlugin : IAtributePlugin {
+    override fun accept(attribute: XMLAttribute): Boolean {
+        return attribute.value::class == Boolean::class
+    }
+
+    override fun getPanel(
+        parentXMLEntity: XMLEntity,
+        attribute: XMLAttribute,
+        xmlDocumentController: XMLDocumentController
+    ): AttributePanel {
+        println("Boolean atribute sucess")
+        return InnerBooleanAttributePanel(parentXMLEntity, attribute, xmlDocumentController)
+    }
+
+    private class InnerBooleanAttributePanel(
+        parentXMLEntity: XMLEntity,
+        xmlAttribute: XMLAttribute, xmlController: XMLDocumentController
+    ) : AttributePanel(parentXMLEntity, xmlAttribute, xmlController) {
+        init {
+            layout = GridLayout(1, 2)
+            background = Color.GREEN
+        }
+
+        override fun constructView(attribute: XMLAttribute) {
+            add(JLabel(xmlAttribute.key, SwingConstants.RIGHT))
+            val valueCheckBox = JCheckBox()
+            valueCheckBox.isSelected = attribute.value as Boolean
+            valueCheckBox.addActionListener {
+                xmlController.addExecuteCommand(SetAtributeCommand(xmlAttribute, valueCheckBox.isSelected))
+            }
+            add(valueCheckBox)
+        }
+
+
+    }
+}
+```
+
+Where we target all the Attributes with value as a boolean (in the accept method) and display a JCheckBox.
+
+#### AttributeHourPlugin
+
+```kotlin
+class AttributeHourPlugin : IAtributePlugin {
+    override fun accept(attribute: XMLAttribute): Boolean {
+        return attribute.value::class == Date::class
+    }
+
+    override fun getPanel(
+        parentXMLEntity: XMLEntity,
+        attribute: XMLAttribute,
+        xmlDocumentController: XMLDocumentController
+    ): AttributePanel {
+        println("Hour atribute sucess")
+        return InnerHourAttributePanel(parentXMLEntity, attribute, xmlDocumentController)
+    }
+
+    private class InnerHourAttributePanel(
+        parentXMLEntity: XMLEntity,
+        xmlAttribute: XMLAttribute, xmlController: XMLDocumentController
+    ) : AttributePanel(parentXMLEntity, xmlAttribute, xmlController) {
+        init {
+            layout = GridLayout(2, 1)
+            background = Color.GREEN
+        }
+
+        override fun constructView(attribute: XMLAttribute) {
+            val value = attribute.value
+            if (value::class == Date::class) {
+                value as Date
+                add(JLabel(xmlAttribute.key, SwingConstants.RIGHT))
+                val valueTextField =
+                    JSpinner(SpinnerDateModel(value, null, null, Calendar.DATE))
+                valueTextField.addChangeListener { e: ChangeEvent? ->
+                    if (e != null) {
+                        xmlController.addExecuteCommand(
+                            SetAtributeCommand(xmlAttribute, valueTextField.value)
+                        )
+                    }
+                }
+                add(valueTextField)
+            }
+        }
+    }
+}
+```
+
+Where we target all the Attributes with value as a Date (in the accept method) and display a JSpinner.
+We also changed the layout of the panel to show that layout changes are possible.
+
+## Final Plugin Development Tips
+
+With all of this freedom comes responsibility...🕷
+
+As a plugin Developer you must not forget to call the xmlController.addExecuteCommand method and pass in a command if
+you want to see your changes applied to the model.
+
+You are also responsible for adding action listeners to your custom TextFields and custom panels to properly display
+change in the model and in the GUI
+
+# Thank you
+
+That is all for now.
+Open an issue if you have any doubts, we will try our best to help you in your dev journey.
+
+João-Almeida-dev

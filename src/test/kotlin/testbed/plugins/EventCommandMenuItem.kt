@@ -15,11 +15,9 @@ import javax.swing.*
 class EventCommandMenuItem : ICommandMenuItem<EntityPanel> {
 
     override fun accept(panel: EntityPanel): Boolean {
-        //return panel.xmlEntity.name == "Chapter"
         return true
     }
 
-    //TODO Accept method
     override fun getJMenuItem(panel: EntityPanel): JMenuItem {
         val addChildMenuItem = JMenuItem("Add Event")
         addChildMenuItem.addActionListener {
@@ -45,20 +43,19 @@ class EventCommandMenuItem : ICommandMenuItem<EntityPanel> {
                 val date: Date = jSpinner.value as Date
                 println(date)
                 val event = Event(date, descriptionTextBox.text, isMandatoryCheckBox.isSelected)
-                //panel.xmlController.addExecuteCommand(AddEventCommand(panel, event))
                 panel.xmlController.addExecuteCommand(
                     AddChildCommand(
                         panel.xmlEntity,
                         XMLEntity(event, parent = panel.xmlEntity)
                     )
                 )
-                //panel.xmlController.addExecuteCommand(AddPanelCommand(panel, EventPanel(event, panel.xmlController)))
             }
         }
         return addChildMenuItem
     }
 }
 
+/*
 class EventPanel(
     event: Event,
     xmlController: XMLDocumentController
@@ -87,6 +84,7 @@ class EventPanel(
         add(JLabel(event.isMandatory.toString()))
     }
 }
+*/
 
 data class Event(
     val date: Date,

@@ -3,9 +3,10 @@ package testbed.plugins
 import controller.XMLDocumentController
 import model.XMLAttribute
 import model.XMLEntity
-import view.custom.atributes.IAtributePlugin
+import view.custom.attributes.IAtributePlugin
 import view.custom.commandMenuItems.atributepanel.SetAtributeCommand
 import view.custom.panels.AttributePanel
+import java.awt.Color
 import java.awt.GridLayout
 import java.util.*
 import javax.swing.*
@@ -31,6 +32,8 @@ class AttributeHourPlugin : IAtributePlugin {
     ) : AttributePanel(parentXMLEntity, xmlAttribute, xmlController) {
         init {
             layout = GridLayout(2, 1)
+            background = Color.GREEN
+
         }
 
         override fun constructView(attribute: XMLAttribute) {

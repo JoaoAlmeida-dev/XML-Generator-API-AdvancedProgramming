@@ -8,13 +8,14 @@ import view.custom.commandMenuItems.atributepanel.SetAtributeCommand
 import view.custom.panels.AttributePanel
 import java.awt.Color
 import java.awt.GridLayout
+import java.util.*
 import javax.swing.JCheckBox
 import javax.swing.JLabel
 import javax.swing.SwingConstants
 
-class AttributeBooleanPlugin : IAtributePlugin {
+class AttributeTitlePlugin : IAtributePlugin {
     override fun accept(attribute: XMLAttribute): Boolean {
-        return attribute.value::class == Boolean::class
+        return attribute.key.lowercase(Locale.getDefault()) == "title" || attribute.key.lowercase(Locale.getDefault()) == "name"
     }
 
     override fun getPanel(
@@ -23,26 +24,20 @@ class AttributeBooleanPlugin : IAtributePlugin {
         xmlDocumentController: XMLDocumentController
     ): AttributePanel {
         println("Boolean atribute sucess")
-        return InnerBooleanAttributePanel(parentXMLEntity, attribute, xmlDocumentController)
+        return InnerTitleAttributePanel(parentXMLEntity, attribute, xmlDocumentController)
     }
 
-    private class InnerBooleanAttributePanel(
+    private class InnerTitleAttributePanel(
         parentXMLEntity: XMLEntity,
         xmlAttribute: XMLAttribute, xmlController: XMLDocumentController
     ) : AttributePanel(parentXMLEntity, xmlAttribute, xmlController) {
         init {
             layout = GridLayout(1, 2)
-            background = Color.GREEN
         }
 
         override fun constructView(attribute: XMLAttribute) {
             add(JLabel(xmlAttribute.key, SwingConstants.RIGHT))
-            val valueCheckBox = JCheckBox()
-            valueCheckBox.isSelected = attribute.value as Boolean
-            valueCheckBox.addActionListener {
-                xmlController.addExecuteCommand(SetAtributeCommand(xmlAttribute, valueCheckBox.isSelected))
-            }
-            add(valueCheckBox)
+            add(JLabel(xmlAttribute.value.toString(), SwingConstants.CENTER))
         }
 
 

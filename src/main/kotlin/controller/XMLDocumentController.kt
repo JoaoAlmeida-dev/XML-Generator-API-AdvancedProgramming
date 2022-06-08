@@ -1,7 +1,7 @@
 package controller
 
 import model.XMLDocument
-import view.custom.atributes.IAtributePlugin
+import view.custom.attributes.IAtributePlugin
 import view.custom.commandMenuItems.atributepanel.RemoveAtributeCommandMenuItem
 import view.custom.commandMenuItems.atributepanel.SetAtributeCommandMenuItem
 import view.custom.commandMenuItems.commandMenuInterfaces.ICommand

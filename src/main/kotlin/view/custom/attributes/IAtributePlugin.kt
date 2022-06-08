@@ -1,10 +1,9 @@
-package view.custom.atributes
+package view.custom.attributes
 
 import controller.XMLDocumentController
 import model.XMLAttribute
 import model.XMLEntity
 import view.custom.panels.AttributePanel
-import view.custom.panels.ContainerPanel
 
 interface IAtributePlugin {
     /**
