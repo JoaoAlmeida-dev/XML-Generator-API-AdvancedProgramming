@@ -33,30 +33,18 @@ syntax.
 
 The project is divided in 2 main packages
 
-| Package    |                                                          Description |
-|------------|---------------------------------------------------------------------:|
-| Core       | The main **problem** representation and ways to **interact** with it |
-| View       |             The way to view and **visually** interact with the model |
+| Package    |                                              Description |
+|------------|---------------------------------------------------------:|
+| Model      |                      The main **problem** representation |
+| Controller |                      Ways to **interact** with the model |
+| View       | The way to view and **visually** interact with the model |
 
 ### In Depth Graph
 
-#### Graph - [Core](#core)
+#### Graph - [Model](#model)
 
 ```mermaid
 graph TD;
-   core --> model
-   core --> utilities
-   
-   utilities --> services
-   services --> FileReader
-   utilities --> visitors
-   visitors --> interfaces
-   interfaces --> IVisitor
-   interfaces --> IVisitable
-   visitors --> DepthFixerVisitor
-   visitors --> FilterVisitor
-   visitors --> SearcherVisitor
-   
    model --> abstracts
    abstracts --> IObservable
    abstracts --> XMLContainer
@@ -69,20 +57,39 @@ graph TD;
    
 ```
 
+#### Graph - [Controller](#controller)
+
+```mermaid
+graph TD;
+
+   controller --> XMLDocmentController
+   controller --> CommandStack
+   controller --> utilities
+   
+   utilities --> services
+   services --> FileReader
+   
+   utilities --> visitors
+   visitors --> DepthFixerVisitor
+   visitors --> FilterVisitor
+   visitors --> SearcherVisitor
+   
+   visitors --> interfaces
+   interfaces --> IVisitor
+   interfaces --> IVisitable   
+```
+
 #### Graph - [View](#view)
 
 ```mermaid
 graph TD;
    view --> custom
    view --> injection
-   view --> controller
    view --> WindowSkeleton
    
    injection --> Injector
    injection --> InjectorTags
    
-   controller --> XMLDocmentController
-   controller --> CommandStack
    
    custom --> commands
    commands --> atributepanel
@@ -104,11 +111,7 @@ Now we will go more in depth on what each package has to offer.
 
 ---
 
-### Core
-
-Inside the core we have the Model and the Utilities sub packages.
-
-#### Model
+### Model
 
 The model uses some clever abstraction to represent an xml document programmatically.
 
@@ -116,7 +119,6 @@ We developed a set of classes that each represent and aspect of xml:
 
 ```mermaid
 graph TD;
-   core --> model
    
    model --> abstracts
    abstracts --> IObservable
@@ -129,13 +131,6 @@ graph TD;
    model --> XMLAtributte
    
 ```
-
-* XmlHeader
-* XMLContainer (abstract)
-    * XMLDocument
-    * XMLEntity
-    * XMLAtribute
-* XMLAnnotations
 
 ##### XMLHeader
 
@@ -208,11 +203,16 @@ Useful tags include:
 * @XmlIgnore
     * Declares that the variable is to be ignored by the xml
 
-#### Utilities
+### Controller
+
+The controller package is a package respective to controlling the model and serves as a channel for the view to interact
+with the model.
 
 ```mermaid
 graph TD;
-   core --> utilities
+   controller --> CommandStack
+   controller --> XMLDocumentController
+   controller --> utilities
    
    utilities --> services
    services --> FileReader
@@ -237,7 +237,7 @@ The only current service is a File Reader that is used for reading the propertie
 * Visitor Interface
     * Declares two methods, a visit and an endVisit
 * Visitable Interface
-    * Declares a single mehthod, accept
+    * Declares a single method, accept
 
 Visitors are a way to implement custom functionality into our xml "tree".
 
@@ -286,14 +286,11 @@ Which takes in a decidingFunction and stores a list of all the visitables that m
 graph TD;
    view --> custom
    view --> injection
-   view --> controller
    view --> WindowSkeleton
    
    injection --> Injector
    injection --> InjectorTags
    
-   controller --> XMLDocmentController
-   controller --> CommandStack
    
    custom --> commands
    commands --> atributepanel
@@ -309,21 +306,6 @@ graph TD;
    panels --> EntityPanel
    panels --> PXMLDocumentPanel
    
-```
-
-#### Controller
-
-The controller package is a package respective to controlling the model and serves as a channel for the view to interact
-with the model.
-
-Here there are two classes:
-
-```mermaid
-graph TD;
-   view --> controller
-   controller --> XMLDocmentController
-   controller --> CommandStack
-      
 ```
 
 #### Custom
