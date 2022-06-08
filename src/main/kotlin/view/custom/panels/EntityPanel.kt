@@ -37,7 +37,7 @@ class EntityPanel(val xmlEntity: XMLEntity, xmlController: XMLDocumentController
         add(southPanel, BorderLayout.SOUTH)
         addChildren(xmlEntity)
 
-//TODO adicionar tipo de notificiação - lesspriority
+//TODO more specific notifications for more performance gains
         xmlEntity.addObserver { entity ->
             run {
                 entity as XMLEntity
