@@ -1,8 +1,11 @@
 package testbed.plugins
 
+import controller.XMLDocumentController
+import model.XMLEntity
 import model.abstracts.XMLContainer
 import view.custom.commands.commandInterfaces.ICommand
 import view.custom.commands.commandInterfaces.ICommandMenuItem
+import view.custom.commands.entitypanel.AddChildCommand
 import view.custom.commands.entitypanel.AddPanelCommand
 import view.custom.panels.ContainerPanel
 import view.custom.panels.EntityPanel
@@ -14,7 +17,8 @@ import javax.swing.*
 class EventCommandMenuItem : ICommandMenuItem<EntityPanel> {
 
     override fun accept(panel: EntityPanel): Boolean {
-        return panel.xmlEntity.name == "Chapter"
+        //return panel.xmlEntity.name == "Chapter"
+        return true
     }
 
     //TODO Accept method
@@ -42,36 +46,25 @@ class EventCommandMenuItem : ICommandMenuItem<EntityPanel> {
             if (result == JOptionPane.OK_OPTION) {
                 val date: Date = jSpinner.value as Date
                 println(date)
-                val event = Event(date.toString(), descriptionTextBox.text, isMandatoryCheckBox.isSelected)
+                val event = Event(date, descriptionTextBox.text, isMandatoryCheckBox.isSelected)
                 //panel.xmlController.addExecuteCommand(AddEventCommand(panel, event))
-                //panel.xmlController.addExecuteCommand(AddChildCommand(panel.XMLEntity, XMLEntity(event, parent = panel.XMLEntity)))
-                panel.xmlController.addExecuteCommand(AddPanelCommand(panel, EventPanel(event)))
+                panel.xmlController.addExecuteCommand(
+                    AddChildCommand(
+                        panel.xmlEntity,
+                        XMLEntity(event, parent = panel.xmlEntity)
+                    )
+                )
+                //panel.xmlController.addExecuteCommand(AddPanelCommand(panel, EventPanel(event, panel.xmlController)))
             }
         }
         return addChildMenuItem
     }
 }
 
-class AddEventCommand(val panel: ContainerPanel, event: Event) : ICommand {
-    private val eventpanel = EventPanel(event)
-
-    override fun toString(): String {
-        return "Add event"
-    }
-
-    override fun execute() {
-        panel.addPanel(eventpanel)
-    }
-
-    override fun undo() {
-        panel.removePanel(eventpanel)
-    }
-
-}
-
 class EventPanel(
-    event: Event
-) : ContainerPanel() {
+    event: Event,
+    xmlController: XMLDocumentController
+) : ContainerPanel(xmlController) {
 
     init {
         layout = GridLayout(0, 2)
@@ -98,7 +91,7 @@ class EventPanel(
 }
 
 data class Event(
-    val date: String,
+    val date: Date,
     val description: String,
     val isMandatory: Boolean
 ) : XMLContainer()

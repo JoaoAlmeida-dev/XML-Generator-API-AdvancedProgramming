@@ -1,6 +1,6 @@
 package testbed
 
-import model.XMLAtribute
+import model.XMLAttribute
 import model.XMLEntity
 import model.XMLDocument
 import controller.utilities.visitors.SearcherIVisitor
@@ -80,24 +80,24 @@ fun xmlInference(header: XMLHeader) {
 private fun xmlDemoHardCoded(header: XMLHeader) {
     val libraryXMLEntity: XMLEntity =
         XMLEntity(
-            name = "Stilton", inputDepth = 1, XMLAtributes =
+            name = "Stilton", inputDepth = 1, XMLAttributes =
             mutableListOf(
-                XMLAtribute(key = "book", value = "Jeronimo em Belém"),
-                XMLAtribute(key = "author", value = "Jeronimo Stilton"),
-                XMLAtribute(key = "pages", value = 100),
+                XMLAttribute(key = "book", value = "Jeronimo em Belém"),
+                XMLAttribute(key = "author", value = "Jeronimo Stilton"),
+                XMLAttribute(key = "pages", value = 100),
             )
         )
 
-    val bookXMLAtributes: MutableCollection<XMLAtribute> =
+    val bookXMLAttributes: MutableCollection<XMLAttribute> =
         mutableListOf(
-            XMLAtribute(key = "serialN", value = 3425),
-            XMLAtribute(key = "Library", value = "Lisboa")
+            XMLAttribute(key = "serialN", value = 3425),
+            XMLAttribute(key = "Library", value = "Lisboa")
         )
 
     val XMLEntity = XMLEntity(
         name = "Book",
         inputDepth = 0,
-        XMLAtributes = bookXMLAtributes,
+        XMLAttributes = bookXMLAttributes,
         children = mutableListOf(libraryXMLEntity, libraryXMLEntity, libraryXMLEntity)
     )
 

@@ -2,6 +2,8 @@ package view.custom.panels
 
 import model.XMLEntity
 import controller.XMLDocumentController
+import model.XMLAttribute
+import view.custom.atributes.BasicAttributePanel
 import view.custom.commands.entitypanel.*
 import java.awt.*
 import java.awt.event.KeyEvent
@@ -9,7 +11,7 @@ import java.awt.event.KeyListener
 import javax.swing.*
 import javax.swing.border.CompoundBorder
 
-class EntityPanel(val xmlEntity: XMLEntity, val xmlController: XMLDocumentController) : ContainerPanel() {
+class EntityPanel(val xmlEntity: XMLEntity, xmlController: XMLDocumentController) : ContainerPanel(xmlController) {
 
 
     private var northPanel = JPanel()
@@ -59,8 +61,19 @@ class EntityPanel(val xmlEntity: XMLEntity, val xmlController: XMLDocumentContro
 
     private fun addChildren(XMLEntity: XMLEntity) {
 
-        XMLEntity.XMLAtributes.forEach {
-            northPanel.add(AtributePanel(XMLEntity, it, xmlController))
+        XMLEntity.XMLAttributes.forEach { xmlAttribute: XMLAttribute ->
+            var found: Boolean = false
+            xmlController.atributePlugins.forEach {
+                if (it.accept(xmlAttribute)) {
+                    found = true
+                    northPanel.add(it.getPanel(XMLEntity, xmlAttribute, xmlController))
+                    return@forEach
+                }
+            }
+            if (!found) {
+                northPanel.add(BasicAttributePanel().getPanel(XMLEntity, xmlAttribute, xmlController))
+            }
+
         }
         XMLEntity.children.filterIsInstance<XMLEntity>().forEach {
             centerPanel.add(EntityPanel(it, xmlController))

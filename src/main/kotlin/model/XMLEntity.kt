@@ -30,11 +30,11 @@ import kotlin.reflect.jvm.isAccessible
  * XMLEntities can be constructed using reflexion with: String, Array, Iterable, Map, DataClass and Enum
  *
  *
- * @see XMLAtribute
+ * @see XMLAttribute
  *
  * @property name
  * @property contents
- * @property XMLAtributes
+ * @property XMLAttributes
  * @constructor
  *
  * @param inputDepth
@@ -45,7 +45,7 @@ class XMLEntity(
     var name: String,
     inputDepth: Int? = null,
     var contents: String? = null,
-    val XMLAtributes: MutableCollection<XMLAtribute> = mutableListOf(),
+    val XMLAttributes: MutableCollection<XMLAttribute> = mutableListOf(),
     children: MutableCollection<XMLContainer> = mutableListOf(),
     parent: XMLContainer? = null,
 ) : XMLContainer(
@@ -110,7 +110,7 @@ class XMLEntity(
     private fun mapConstructor(map: Map<*, *>) {
         map.forEach { entry: Map.Entry<Any?, Any?> ->
             if (entry.value!!::class.isSubclassOf(String::class)) {
-                addAtribute(XMLAtribute(key = entry.key.toString(), value = entry.value.toString()))
+                addAtribute(XMLAttribute(key = entry.key.toString(), value = entry.value.toString()))
             } else {
                 if (entry.value != null) {
                     addChild(
@@ -180,13 +180,7 @@ class XMLEntity(
                         } else {
                             false
                         }
-                    if (memberProperty.isPrimitiveType() || isEnum) {
-                        memberProperty.call(obj)?.let { itCalled ->
-                            addAtribute(
-                                XMLAtribute(key = xmlName ?: memberProperty.name, value = itCalled)
-                            )
-                        }
-                    } else if (memberProperty.isAcceptableType(obj)) {
+                    if (memberProperty.isAcceptableType(obj)) {
                         memberProperty.call(obj)?.let { itCalled ->
                             val propertyInstanciatedValue: Any = itCalled
                             val element = XMLEntity(
@@ -197,9 +191,14 @@ class XMLEntity(
                             )
                             addChild(element)
                         }
-                    } else {
-                        println("Entity::extractProperties::NOT::isAcceptableType: $memberProperty")
+                    } else {//if (memberProperty.isPrimitiveType() || isEnum) {
+                        memberProperty.call(obj)?.let { itCalled ->
+                            addAtribute(
+                                XMLAttribute(key = xmlName ?: memberProperty.name, value = itCalled)
+                            )
+                        }
                     }
+                    //else {  println("Entity::extractProperties::NOT::isAcceptableType: $memberProperty")}
                 }
             } else {
                 addContent(memberProperty.call(obj).toString())
@@ -258,20 +257,20 @@ class XMLEntity(
     /**
      * Add atribute
      *
-     * @param XMLAtribute
+     * @param XMLAttribute
      */
-    fun addAtribute(XMLAtribute: XMLAtribute) {
-        XMLAtributes.add(XMLAtribute)
+    fun addAtribute(XMLAttribute: XMLAttribute) {
+        XMLAttributes.add(XMLAttribute)
         notifyObservers { it(this) }
     }
 
     /**
      * Remove atribute
      *
-     * @param XMLAtribute
+     * @param XMLAttribute
      */
-    fun removeAtribute(XMLAtribute: XMLAtribute) {
-        XMLAtributes.remove(XMLAtribute)
+    fun removeAtribute(XMLAttribute: XMLAttribute) {
+        XMLAttributes.remove(XMLAttribute)
         notifyObservers { it(this) }
     }
 
@@ -316,7 +315,7 @@ class XMLEntity(
             }</$name>"
         } else "/>"
         val atributesString: String =
-            if (XMLAtributes.isNotEmpty()) XMLAtributes.joinToString(separator = " ", prefix = " ") else ""
+            if (XMLAttributes.isNotEmpty()) XMLAttributes.joinToString(separator = " ", prefix = " ") else ""
 
         return "$tab<$name$atributesString$stayOpenTag" +
                 (if (hasContent) /*"\n$tab" + */ contents else "") +
@@ -346,7 +345,7 @@ class XMLEntity(
         if (name != other.name) return false
         if (parent != other.parent) return false
         if (contents != other.contents) return false
-        if (XMLAtributes != other.XMLAtributes) return false
+        if (XMLAttributes != other.XMLAttributes) return false
         if (children != other.children) return false
         if (observers != other.observers) return false
 
@@ -358,7 +357,7 @@ class XMLEntity(
         result = 31 * result + name.hashCode()
         result = 31 * result + (parent?.hashCode() ?: 0)
         result = 31 * result + (contents?.hashCode() ?: 0)
-        result = 31 * result + XMLAtributes.hashCode()
+        result = 31 * result + XMLAttributes.hashCode()
         result = 31 * result + children.hashCode()
         result = 31 * result + observers.hashCode()
         return result

@@ -15,11 +15,11 @@ import model.abstracts.IObservable
  * @param key
  * @param value
  */
-class XMLAtribute(
+class XMLAttribute(
     key: String,
     value: Any,
-) : IObservable<(XMLAtribute) -> Unit> {
-    override val observers: MutableList<(XMLAtribute) -> Unit> = mutableListOf()
+) : IObservable<(XMLAttribute) -> Unit> {
+    override val observers: MutableList<(XMLAttribute) -> Unit> = mutableListOf()
 
     /**
      * Key

@@ -1,12 +1,13 @@
 package controller
 
 import model.XMLDocument
+import view.custom.atributes.IAtributePlugin
 import view.custom.commands.atributepanel.RemoveAtributeCommandMenuItem
 import view.custom.commands.atributepanel.SetAtributeCommandMenuItem
 import view.custom.commands.commandInterfaces.ICommand
 import view.custom.commands.commandInterfaces.ICommandMenuItem
 import view.custom.commands.entitypanel.*
-import view.custom.panels.AtributePanel
+import view.custom.panels.AttributePanel
 import view.custom.panels.EntityPanel
 import view.custom.panels.XMLDocumentPanel
 import view.injection.InjectAdd
@@ -27,10 +28,13 @@ open class XMLDocumentController(val rootDoc: XMLDocument) {
     private val commandStack: CommandStack = CommandStack()
 
     @InjectAdd
+    public val atributePlugins: MutableList<IAtributePlugin> = mutableListOf()
+
+    @InjectAdd
     public val entityPluginCommands: MutableList<ICommandMenuItem<EntityPanel>> = mutableListOf()
 
     @InjectAdd
-    public val attributePluginCommands: MutableList<ICommandMenuItem<AtributePanel>> = mutableListOf()
+    public val attributePluginCommands: MutableList<ICommandMenuItem<AttributePanel>> = mutableListOf()
 
     @InjectAdd
     public val xmldocumentPluginCommands: MutableList<ICommandMenuItem<XMLDocumentPanel>> = mutableListOf()
@@ -43,7 +47,7 @@ open class XMLDocumentController(val rootDoc: XMLDocument) {
         RenameEntityCommandMenuItem(),
         PrintCommandMenuItem(),
     )
-    public val atributeCommands: MutableList<ICommandMenuItem<AtributePanel>> = mutableListOf(
+    public val atributeCommands: MutableList<ICommandMenuItem<AttributePanel>> = mutableListOf(
         SetAtributeCommandMenuItem(),
         RemoveAtributeCommandMenuItem()
     )

@@ -27,11 +27,11 @@ internal class XMLEntityTest {
         val testXMLEntityNoChild = XMLEntity(
             name = "Stilton",
             inputDepth = 0,
-            XMLAtributes =
+            XMLAttributes =
             mutableListOf(
-                XMLAtribute(key = "book", value = "Jeronimo em Belém"),
-                XMLAtribute(key = "author", value = "Jeronimo Stilton"),
-                XMLAtribute(key = "pages", value = 100.toString()),
+                XMLAttribute(key = "book", value = "Jeronimo em Belém"),
+                XMLAttribute(key = "author", value = "Jeronimo Stilton"),
+                XMLAttribute(key = "pages", value = 100.toString()),
             )
         )
 
@@ -129,11 +129,11 @@ internal class XMLEntityTest {
     fun testWithChildToString() {
         val libraryXMLEntity: XMLEntity =
             XMLEntity(
-                name = "Stilton", inputDepth = 1, XMLAtributes =
+                name = "Stilton", inputDepth = 1, XMLAttributes =
                 mutableListOf(
-                    XMLAtribute(key = "book", value = "Jeronimo em Belém"),
-                    XMLAtribute(key = "author", value = "Jeronimo Stilton"),
-                    XMLAtribute(key = "pages", value = 100),
+                    XMLAttribute(key = "book", value = "Jeronimo em Belém"),
+                    XMLAttribute(key = "author", value = "Jeronimo Stilton"),
+                    XMLAttribute(key = "pages", value = 100),
                 )
             )
 

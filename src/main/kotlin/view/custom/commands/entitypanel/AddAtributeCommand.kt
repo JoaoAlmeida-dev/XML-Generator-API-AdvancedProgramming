@@ -1,6 +1,6 @@
 package view.custom.commands.entitypanel
 
-import model.XMLAtribute
+import model.XMLAttribute
 import model.XMLEntity
 import view.custom.commands.commandInterfaces.ICommandMenuItem
 import view.custom.commands.commandInterfaces.ICommand
@@ -52,16 +52,16 @@ class AddAtributeCommandMenuItem() : ICommandMenuItem<EntityPanel> {
 
 class AddAtributeCommand(private val parentXMLEntity: XMLEntity, private val key: String, private val value: String) :
     ICommand {
-    val XMLAtribute = XMLAtribute(key, value)
+    val XMLAttribute = XMLAttribute(key, value)
 
     override fun execute() {
-        parentXMLEntity.addAtribute(XMLAtribute)
+        parentXMLEntity.addAtribute(XMLAttribute)
     }
 
     override fun undo() {
-        parentXMLEntity.removeAtribute(XMLAtribute)
+        parentXMLEntity.removeAtribute(XMLAttribute)
     }
 
-    override fun toString() = "Add Atribute $XMLAtribute"
+    override fun toString() = "Add Atribute $XMLAttribute"
 }
 

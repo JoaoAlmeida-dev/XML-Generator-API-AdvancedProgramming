@@ -8,8 +8,8 @@ import javax.swing.BorderFactory
 import javax.swing.JPanel
 import javax.swing.border.CompoundBorder
 
-class XMLDocumentPanel(private val doc: XMLDocument, private val xmlController: XMLDocumentController) :
-    ContainerPanel() {
+class XMLDocumentPanel(private val doc: XMLDocument, xmlController: XMLDocumentController) :
+    ContainerPanel(xmlController) {
     private var northPanel = JPanel()
     private var centerPanel = JPanel()
 
