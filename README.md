@@ -341,6 +341,9 @@ graph TD;
    
 ```
 
+The Injector is the class that actually instantiates and injects outside classes into our own variables that have been
+tagged with @Inject or @InjectAdd (declared inside InjectorTags.kt)
+
 ---
 
 # Developing plugins
@@ -352,11 +355,158 @@ You can see its implementation
 [here](https://github.com/JoaoAlmeida-dev/XML-Generator-API-AdvancedProgramming/blob/master/src/main/kotlin/view/custom/commands/commandInterfaces/ICommandMenuItem.kt)
 .
 
-This is because the entry point for our plugins is always trough a rightClick menu (a Jmenu).
+This is because the entry point for our plugins is always through a rightClick menu (a JMenu).
 
-## Classes you should implement/extend
+## Relevant Classes for plugin Development
 
 * ICommandMenuItem
 * ICommand
 * ContainerPanel
 * XMLContainer or XMLEntity
+
+## How do I Inject my things into the framework?
+
+First of all you need to understand **Dependency injection**, which is just a fancy name for saying that you implement
+your
+own classes and we instanciate and use them inside our framework, injecting them into our structure...
+Do you now see where the name comes from?
+
+To do inject your classes you need to change the `di.properties` file.
+It has a structure of "class.injectVariable = your_class"
+
+A simple example is one that the framework already uses out of the box, the root xml document used as a base for when
+you launch the program:
+`WindowSkeleton.rootDocument=testbed.plugins.RootController`
+As you can see, the rootDocument variable in the class WindowSkeleton, has an @Inject
+tag and our injector will take the RootController class, from testbed.plugins and instanciate it onto that variable
+
+Now if you want to change the base xml object, or have a blank slate you can simply change the right side of the equals
+sign to you class or remove the line entirely.
+
+### Inject vs InjectAdd
+
+An InjectAdd, diferently from the simples Inject, can have multiple classes associated to the same variable.
+Internally that variable is a list.
+
+To specify this, simply put all the classes you want to inject onto a variable, on the right side of that variable's `=`
+sign, separated by commas `,`.
+Like so:
+
+`frameworkClass.variableInjectADD=testbed.plugins.myClass1,testbed.plugins.myClass2`
+
+### Available Injections
+
+A list of all the **Inject** variables available currently
+
+* `WindowSkeleton.rootDocument`
+
+A list of all the **InjectAdd** variables available currently
+
+* `XMLDocumentController.entityPluginCommands`
+* `XMLDocumentController.attributePluginCommands`
+* `XMLDocumentController.xmldocumentPluginCommands`
+
+## How do I specify my plugin?
+
+### GUI extensions
+
+So if your goal is to make a new Menu Option that creates a new Panel on the **GUI** of the app, then all you have to do
+is
+implement a new **ICommandMenuItem**.
+
+The following example should sufice:
+
+```kotlin
+class CustomPanelCommandMenuItem : ICommandMenuItem<EntityPanel> {
+    override fun accept(panel: EntityPanel): Boolean = true
+
+    override fun getJMenuItem(panel: EntityPanel): JMenuItem {
+        val myCustomPanel = JPanel()
+        val webPage = JEditorPane()
+        webPage.isEditable = false
+        webPage.setPage("https://google.com/")
+
+        myCustomPanel.add(JScrollPane(webPage))
+        val jMenuItem = JMenuItem("Add my custom Panel")
+        jMenuItem.addActionListener {
+            panel.xmlController.addExecuteCommand(AddPanelCommand(panel, myCustomPanel))
+        }
+        return jMenuItem
+    }
+}
+```
+
+![HTML custom Panel](https://user-images.githubusercontent.com/24848457/172525092-ee6bf33d-429b-4e25-965a-02a9839180e2.png)
+
+As you can see, anything can be done with few lines of code.
+
+The accept method is to determine whether the menuItem should be enabled or disabled for said panel.
+
+The getJMenuItem method returns the JMenuItem that you can see in the above picture.
+Then, when the user clicks on it, we will go the xmlController stored inside the clickedPanel and add and Execute a
+command.
+This particular AddPanelCommand simply adds the JPanel onto the body of the parent Panel, **not** changing the
+underlying xml model.
+
+### What if I want to change the model and add my custom xml snippet to it?
+
+For that we dont need to change much, simply changing the command that is going to be inserted onto our stack will
+suffice:
+For the example lets implement a simple class that stores a snipet of code:
+
+```kotlin
+
+data class MySnippet(
+    val name: String = "for Loop",
+    val code: String = " for (int i = 0; i<Infinity; i++)"
+) {}
+
+```
+
+Then we need to implment the ICommandMenuItem in another class:
+
+```kotlin
+class CustomXMLSnippetCommandMenuItem : ICommandMenuItem<EntityPanel> {
+    override fun accept(panel: EntityPanel): Boolean = true
+
+    override fun getJMenuItem(panel: EntityPanel): JMenuItem {
+        val jMenuItem = JMenuItem("Add my xml Snippet")
+        jMenuItem.addActionListener {
+            panel.xmlController.addExecuteCommand(
+                AddChildCommand(
+                    panel.xmlEntity,
+                    XMLEntity(MySnippet(), parent = panel.xmlEntity)
+                )
+            )
+        }
+        return jMenuItem
+    }
+}
+```
+
+Now we used the AddChildCommand in order to take the xmlEntity of the parent panel and add our new entity to it,
+changing the underlying model.
+
+![CustomSnippet](https://user-images.githubusercontent.com/24848457/172526683-2f51a484-03ab-4000-a27c-22aeb11535ef.png)
+
+The xml after the change:
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Library subTitle="2022" title="Livraria de Lisboa">
+    <books>
+        <Livro Writer="Jeronimo Stilton" pages="1000" store="BERTRAND">Jeronimo em Belém
+            <chapters>
+                <Chapter name="Chapter 1" pageN="20"/>
+                <Chapter name="Chapter 2" pageN="40"/>
+                <MySnippet code=" for (int i = 0; i<Infinity; i++)" name="for Loop"/>
+            </chapters>
+        </Livro>
+    </books>
+</Library> 
+```
+
+### What if I want to change how the xml model is displayed on the GUI?
+
+TODO
+

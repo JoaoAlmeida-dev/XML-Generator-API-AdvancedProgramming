@@ -37,7 +37,7 @@ class AddAtributeCommandMenuItem() : ICommandMenuItem<EntityPanel> {
             if (field1.text != null && field1.text.isNotEmpty() &&
                 field2.text != null && field2.text.isNotEmpty()
             ) {
-                panel.xmlController.addExecuteCommand(AddAtributeCommand(panel.XMLEntity, field1.text, field2.text))
+                panel.xmlController.addExecuteCommand(AddAtributeCommand(panel.xmlEntity, field1.text, field2.text))
                 //  revalidate()
                 //  repaint()
             } else {

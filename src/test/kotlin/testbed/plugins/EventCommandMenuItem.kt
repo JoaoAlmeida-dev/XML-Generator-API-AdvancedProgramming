@@ -1,10 +1,9 @@
 package testbed.plugins
 
-import model.XMLEntity
 import model.abstracts.XMLContainer
 import view.custom.commands.commandInterfaces.ICommand
 import view.custom.commands.commandInterfaces.ICommandMenuItem
-import view.custom.commands.entitypanel.AddChildCommand
+import view.custom.commands.entitypanel.AddPanelCommand
 import view.custom.panels.ContainerPanel
 import view.custom.panels.EntityPanel
 import java.awt.Color
@@ -15,7 +14,7 @@ import javax.swing.*
 class EventCommandMenuItem : ICommandMenuItem<EntityPanel> {
 
     override fun accept(panel: EntityPanel): Boolean {
-        return panel.XMLEntity.name == "Chapter"
+        return panel.xmlEntity.name == "Chapter"
     }
 
     //TODO Accept method
@@ -44,13 +43,9 @@ class EventCommandMenuItem : ICommandMenuItem<EntityPanel> {
                 val date: Date = jSpinner.value as Date
                 println(date)
                 val event = Event(date.toString(), descriptionTextBox.text, isMandatoryCheckBox.isSelected)
-                panel.xmlController.addExecuteCommand(AddEventCommand(panel, event))
-                panel.xmlController.addExecuteCommand(
-                    AddChildCommand(
-                        panel.XMLEntity,
-                        XMLEntity(event, parent = panel.XMLEntity)
-                    )
-                )
+                //panel.xmlController.addExecuteCommand(AddEventCommand(panel, event))
+                //panel.xmlController.addExecuteCommand(AddChildCommand(panel.XMLEntity, XMLEntity(event, parent = panel.XMLEntity)))
+                panel.xmlController.addExecuteCommand(AddPanelCommand(panel, EventPanel(event)))
             }
         }
         return addChildMenuItem
@@ -65,13 +60,11 @@ class AddEventCommand(val panel: ContainerPanel, event: Event) : ICommand {
     }
 
     override fun execute() {
-        panel.addChild(eventpanel)
-        panel.redraw()
+        panel.addPanel(eventpanel)
     }
 
     override fun undo() {
-        panel.removeChild(eventpanel)
-        panel.redraw()
+        panel.removePanel(eventpanel)
     }
 
 }

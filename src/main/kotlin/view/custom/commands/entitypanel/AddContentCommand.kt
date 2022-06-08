@@ -27,7 +27,7 @@ class AddContentCommandMenuItem() : ICommandMenuItem<EntityPanel> {
             contentField.requestFocus()
 
             if (contentField.text != null && contentField.text.isNotEmpty()) {
-                panel.xmlController.addExecuteCommand(AddContentCommand(panel.XMLEntity, contentField.text))
+                panel.xmlController.addExecuteCommand(AddContentCommand(panel.xmlEntity, contentField.text))
             }
             // revalidate()
             // repaint()

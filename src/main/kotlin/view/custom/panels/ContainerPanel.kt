@@ -9,12 +9,12 @@ import javax.swing.SwingUtilities
 
 abstract class ContainerPanel : JPanel() {
 
-    public open fun addChild(child: JPanel) {
+    public open fun addPanel(child: JPanel) {
         add(child)
         redraw()
     }
 
-    public open fun removeChild(child: JPanel) {
+    public open fun removePanel(child: JPanel) {
         remove(child)
         redraw()
     }

@@ -11,7 +11,7 @@ class RenameEntityCommandMenuItem() : ICommandMenuItem<EntityPanel> {
     override fun getJMenuItem(panel: EntityPanel): JMenuItem {
         val addChildMenuItem = JMenuItem("Rename")
         addChildMenuItem.addActionListener {
-            val nameField = JTextField(panel.XMLEntity.name)
+            val nameField = JTextField(panel.xmlEntity.name)
             val nameFieldLabel = JLabel("New name")
             val jPanel = JPanel()
             jPanel.layout = GridLayout(1, 2)
@@ -26,7 +26,7 @@ class RenameEntityCommandMenuItem() : ICommandMenuItem<EntityPanel> {
             )
             nameField.requestFocus()
             if (nameField.text.isNotEmpty()) {
-                panel.xmlController.addExecuteCommand(RenameEntityCommand(panel.XMLEntity, nameField.text))
+                panel.xmlController.addExecuteCommand(RenameEntityCommand(panel.xmlEntity, nameField.text))
             }
 
         }

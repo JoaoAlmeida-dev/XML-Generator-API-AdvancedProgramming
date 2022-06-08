@@ -9,7 +9,7 @@ import java.awt.event.KeyListener
 import javax.swing.*
 import javax.swing.border.CompoundBorder
 
-class EntityPanel(val XMLEntity: XMLEntity, val xmlController: XMLDocumentController) : ContainerPanel() {
+class EntityPanel(val xmlEntity: XMLEntity, val xmlController: XMLDocumentController) : ContainerPanel() {
 
 
     private var northPanel = JPanel()
@@ -33,10 +33,10 @@ class EntityPanel(val XMLEntity: XMLEntity, val xmlController: XMLDocumentContro
         add(northPanel, BorderLayout.NORTH)
         add(centerPanel, BorderLayout.CENTER)
         add(southPanel, BorderLayout.SOUTH)
-        addChildren(XMLEntity)
+        addChildren(xmlEntity)
 
 //TODO adicionar tipo de notificiação - lesspriority
-        XMLEntity.addObserver { entity ->
+        xmlEntity.addObserver { entity ->
             run {
                 entity as XMLEntity
                 clear()
@@ -47,12 +47,14 @@ class EntityPanel(val XMLEntity: XMLEntity, val xmlController: XMLDocumentContro
         createPopupMenu(xmlController.entityCommands, xmlController.entityPluginCommands)
     }
 
-    override fun addChild(child: JPanel) {
+    override fun addPanel(child: JPanel) {
         centerPanel.add(child)
+        redraw()
     }
 
-    override fun removeChild(child: JPanel) {
+    override fun removePanel(child: JPanel) {
         centerPanel.remove(child)
+        redraw()
     }
 
     private fun addChildren(XMLEntity: XMLEntity) {
@@ -103,7 +105,7 @@ class EntityPanel(val XMLEntity: XMLEntity, val xmlController: XMLDocumentContro
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
         g.font = Font("Arial", Font.BOLD, 16)
-        g.drawString(XMLEntity.name, 10, 20)
+        g.drawString(xmlEntity.name, 10, 20)
     }
 
 }
