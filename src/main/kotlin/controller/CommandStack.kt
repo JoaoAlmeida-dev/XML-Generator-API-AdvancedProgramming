@@ -7,6 +7,7 @@ import view.custom.commandMenuItems.commandMenuInterfaces.ICommand
 class CommandStack : IObservable<(CommandStack) -> Unit> {
     override val observers: MutableList<(CommandStack) -> Unit> = mutableListOf()
 
+    //TODO make getter for undoCommandsList that returns imutable or copy of original.
     public val undoCommandsList: MutableList<ICommand> = mutableListOf<ICommand>()
     private val redoCommandsList: MutableList<ICommand> = mutableListOf<ICommand>()
 
