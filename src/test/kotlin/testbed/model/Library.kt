@@ -1,7 +1,7 @@
 package testbed.model
 
 data class Library(
-    val stores: Array<BookStore>,
+    val stores: List<String>,
     val title: String,
     val subTitle: String,
     val books: Collection<Book>,
@@ -17,19 +17,21 @@ data class Library(
 
         other as Library
 
+        if (stores != other.stores) return false
         if (title != other.title) return false
         if (subTitle != other.subTitle) return false
         if (books != other.books) return false
-        if (!stores.contentEquals(other.stores)) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = title.hashCode()
+        var result = stores.hashCode()
+        result = 31 * result + title.hashCode()
         result = 31 * result + subTitle.hashCode()
         result = 31 * result + books.hashCode()
-        result = 31 * result + stores.contentHashCode()
         return result
     }
+
+
 }

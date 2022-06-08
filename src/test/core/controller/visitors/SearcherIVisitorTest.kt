@@ -42,7 +42,7 @@ internal class SearcherIVisitorTest {
 
         val library: Library =
             Library(
-                stores = BookStore.values(),
+                stores = BookStore.values().map { it.toString() },
                 title = "Livraria de Lisboa",
                 subTitle = "2022",
                 books = mutableListOf(book, book2)

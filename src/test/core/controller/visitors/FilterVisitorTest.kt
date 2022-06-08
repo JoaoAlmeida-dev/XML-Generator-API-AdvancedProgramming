@@ -38,7 +38,7 @@ internal class FilterVisitorTest {
         )
 
         val library = Library(
-            stores = BookStore.values(),
+            stores = BookStore.values().map { it.toString() },
             title = "Livraria de Lisboa",
             subTitle = "2022",
             books = mutableListOf(book, book2)
