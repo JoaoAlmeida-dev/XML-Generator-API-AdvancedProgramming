@@ -1,5 +1,11 @@
 # XML-Generator-API-AdvancedProgramming
 
+Academic project to learn and put to practice:
+
+ * MVC (with java Swing)
+ * Dependency injection (through plugins)
+ * Reflexion (creating xml objects from user defined classes and kotlin standart objects like list, array, maps, etc)
+
 ![Preview of the GUI](https://user-images.githubusercontent.com/24848457/172510919-b219eea2-caa1-4bdf-9d06-c032f28fd00b.png)
 
 ### You can view the initial instructions that inspired this project [here](https://andre-santos-pt.github.io/projetoxml/)
